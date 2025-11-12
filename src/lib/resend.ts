@@ -4,6 +4,12 @@ import { Resend } from "resend"
 import { env } from "@/lib/env"
 
 export async function sendEmail({ subject, template, to }: { subject: string; template: ReactElement; to: string }) {
+  if (!env.RESEND_API_KEY) {
+    console.log(`[sendEmail] to: ${to}, subject: ${subject}`)
+    console.log(await render(template))
+    return
+  }
+
   const resend = new Resend(env.RESEND_API_KEY)
 
   try {
