@@ -1,22 +1,22 @@
-import { Eye, Monitor, Moon, Sun, Type, Volume2 } from "lucide-react";
-import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { LanguageSwitch } from "@/components/language-switch";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
+import { Eye, Monitor, Moon, Sun, Type, Volume2 } from "lucide-react"
+import { useTheme } from "next-themes"
+import { useEffect, useState } from "react"
+import { useTranslation } from "react-i18next"
+import { LanguageSwitch } from "@/components/language-switch"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
+import { Switch } from "@/components/ui/switch"
 
 export function AppearanceSettings() {
   // Use real theme hook from next-themes
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme } = useTheme()
 
   // Use real translation hook
-  const { i18n } = useTranslation();
+  const { i18n } = useTranslation()
 
   // Local settings for display preferences (these could be stored in localStorage or user preferences)
   const [displaySettings, setDisplaySettings] = useState({
@@ -24,33 +24,33 @@ export function AppearanceSettings() {
     compactMode: false,
     reducedMotion: false,
     highContrast: false,
-  });
+  })
 
   // Load settings from localStorage on mount
   useEffect(() => {
     const loadSetting = (key: string, defaultValue: string | boolean) => {
       try {
-        const stored = localStorage.getItem(`display-${key}`);
-        return stored ? JSON.parse(stored) : defaultValue;
+        const stored = localStorage.getItem(`display-${key}`)
+        return stored ? JSON.parse(stored) : defaultValue
       } catch {
-        return defaultValue;
+        return defaultValue
       }
-    };
+    }
 
     setDisplaySettings({
       fontSize: loadSetting("fontSize", "medium"),
       compactMode: loadSetting("compactMode", false),
       reducedMotion: loadSetting("reducedMotion", false),
       highContrast: loadSetting("highContrast", false),
-    });
-  }, []);
+    })
+  }, [])
 
   const handleDisplaySettingChange = (key: string, value: string | boolean) => {
-    setDisplaySettings((prev) => ({ ...prev, [key]: value }));
+    setDisplaySettings((prev) => ({ ...prev, [key]: value }))
     // Persist to localStorage
-    localStorage.setItem(`display-${key}`, JSON.stringify(value));
-    console.log(`Display setting ${key} changed to ${value}`);
-  };
+    localStorage.setItem(`display-${key}`, JSON.stringify(value))
+    console.log(`Display setting ${key} changed to ${value}`)
+  }
 
   const themes = [
     {
@@ -71,7 +71,7 @@ export function AppearanceSettings() {
       icon: Monitor,
       description: "Use system preference",
     },
-  ];
+  ]
 
   return (
     <div className="space-y-6">
@@ -267,5 +267,5 @@ export function AppearanceSettings() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

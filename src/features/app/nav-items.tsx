@@ -1,11 +1,11 @@
-import { Link } from "@tanstack/react-router";
-import { Folder, Forward, type LucideIcon, Trash2 } from "lucide-react";
+import { Link } from "@tanstack/react-router"
+import { Folder, Forward, type LucideIcon, Trash2 } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dropdown-menu"
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -13,20 +13,20 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar";
+} from "@/components/ui/sidebar"
 
 export function NavItems({
   items,
   label,
 }: {
   items: {
-    name: string;
-    url: string;
-    icon: LucideIcon;
-  }[];
-  label: string;
+    name: string
+    url: string
+    icon: LucideIcon
+  }[]
+  label: string
 }) {
-  const { isMobile } = useSidebar();
+  const { isMobile } = useSidebar()
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -65,5 +65,5 @@ export function NavItems({
         ))}
       </SidebarMenu>
     </SidebarGroup>
-  );
+  )
 }

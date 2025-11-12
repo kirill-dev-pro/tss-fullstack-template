@@ -1,19 +1,19 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Loader2 } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
-import { OrganizationCard } from "@/features/organization/organization-card";
-import AdminDashboard from "@/features/user/admin";
-import UserCard from "@/features/user/user-card";
-import { useSessions } from "@/features/user/user-hooks";
-import { useTranslation } from "@/lib/intl/react";
+import { createFileRoute } from "@tanstack/react-router"
+import { Loader2 } from "lucide-react"
+import { Separator } from "@/components/ui/separator"
+import { OrganizationCard } from "@/features/organization/organization-card"
+import AdminDashboard from "@/features/user/admin"
+import UserCard from "@/features/user/user-card"
+import { useSessions } from "@/features/user/user-hooks"
+import { useTranslation } from "@/lib/intl/react"
 
 export const Route = createFileRoute("/dashboard/settings/")({
   component: RouteComponent,
-});
+})
 
 function RouteComponent() {
-  const { t } = useTranslation();
-  const { data, isLoading, error } = useSessions();
+  const { t } = useTranslation()
+  const { data, isLoading, error } = useSessions()
 
   if (isLoading) {
     return (
@@ -23,7 +23,7 @@ function RouteComponent() {
           <p className="text-muted-foreground text-sm">Loading...</p>
         </div>
       </div>
-    );
+    )
   }
 
   if (error) {
@@ -34,7 +34,7 @@ function RouteComponent() {
           <p className="text-muted-foreground text-xs">Please try refreshing the page</p>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -82,5 +82,5 @@ function RouteComponent() {
         )}
       </div>
     </div>
-  );
+  )
 }

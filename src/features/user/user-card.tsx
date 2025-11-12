@@ -1,20 +1,20 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "@tanstack/react-router";
-import { Laptop, LogOut, PhoneIcon, QrCode, ShieldCheck, ShieldOff } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import QRCode from "react-qr-code";
-import { toast } from "sonner";
-import { UAParser } from "ua-parser-js";
-import * as z from "zod";
-import CopyButton from "@/components/copy-button";
-import { LanguageSwitch } from "@/components/language-switch";
-import { AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useNavigate } from "@tanstack/react-router"
+import { Laptop, LogOut, PhoneIcon, QrCode, ShieldCheck, ShieldOff } from "lucide-react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
+import QRCode from "react-qr-code"
+import { toast } from "sonner"
+import { UAParser } from "ua-parser-js"
+import * as z from "zod"
+import CopyButton from "@/components/copy-button"
+import { LanguageSwitch } from "@/components/language-switch"
+import { AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Dialog,
   DialogContent,
@@ -23,7 +23,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog"
 import {
   Field,
   FieldContent,
@@ -32,37 +32,37 @@ import {
   FieldGroup,
   FieldLabel,
   FieldSet,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import { Label } from "@/components/ui/label";
-import { Spinner } from "@/components/ui/spinner";
-import { AddPasskey } from "@/features/auth/add-passkey";
-import { useAuthHelpers, useLogout } from "@/features/auth/auth-hooks";
-import { ChangePassword } from "@/features/auth/change-password";
-import { ChangeUser } from "@/features/auth/change-user";
-import { ListPasskeys } from "@/features/auth/list-passkeys";
-import type { AuthClient } from "@/lib/auth/auth-client";
-import { authClient } from "@/lib/auth/auth-client";
+} from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import { Label } from "@/components/ui/label"
+import { Spinner } from "@/components/ui/spinner"
+import { AddPasskey } from "@/features/auth/add-passkey"
+import { useAuthHelpers, useLogout } from "@/features/auth/auth-hooks"
+import { ChangePassword } from "@/features/auth/change-password"
+import { ChangeUser } from "@/features/auth/change-user"
+import { ListPasskeys } from "@/features/auth/list-passkeys"
+import type { AuthClient } from "@/lib/auth/auth-client"
+import { authClient } from "@/lib/auth/auth-client"
 
 // Validation schemas
 const qrCodePasswordSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters"),
-});
+})
 
 const twoFactorPasswordSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters"),
-});
+})
 
 const twoFactorOtpSchema = z.object({
   otp: z.string().length(6, "OTP must be exactly 6 digits").regex(/^\d+$/, "OTP must contain only digits"),
-});
+})
 
 export default function UserCard(props: { activeSessions: AuthClient["$Infer"]["Session"]["session"][] }) {
-  const { t } = useTranslation();
-  const logout = useLogout();
-  const navigate = useNavigate();
-  const { data: session } = authClient.useSession();
+  const { t } = useTranslation()
+  const logout = useLogout()
+  const navigate = useNavigate()
+  const { data: session } = authClient.useSession()
   const {
     getTotpUri,
     enableTwoFactor,
@@ -71,10 +71,10 @@ export default function UserCard(props: { activeSessions: AuthClient["$Infer"]["
     sendVerificationEmail,
     signOut,
     revokeSession,
-  } = useAuthHelpers();
-  const [isTerminating, setIsTerminating] = useState<string>();
-  const [twoFactorDialog, setTwoFactorDialog] = useState<boolean>(false);
-  const [twoFactorVerifyURI, setTwoFactorVerifyURI] = useState<string>("");
+  } = useAuthHelpers()
+  const [isTerminating, setIsTerminating] = useState<string>()
+  const [twoFactorDialog, setTwoFactorDialog] = useState<boolean>(false)
+  const [twoFactorVerifyURI, setTwoFactorVerifyURI] = useState<string>("")
 
   // Form for QR code password verification
   const qrCodeForm = useForm({
@@ -82,45 +82,45 @@ export default function UserCard(props: { activeSessions: AuthClient["$Infer"]["
     defaultValues: {
       password: "",
     },
-  });
+  })
 
   const {
     register: registerQrCode,
     handleSubmit: handleSubmitQrCode,
     formState: { errors: qrCodeErrors, isSubmitting: isSubmittingQrCode },
     reset: resetQrCode,
-  } = qrCodeForm;
+  } = qrCodeForm
 
   const onSubmitQrCode = async (data: z.infer<typeof qrCodePasswordSchema>) => {
     getTotpUri.mutate(
       { password: data.password },
       {
         onSuccess: (data) => {
-          setTwoFactorVerifyURI(data.data?.totpURI || "");
-          resetQrCode();
+          setTwoFactorVerifyURI(data.data?.totpURI || "")
+          resetQrCode()
         },
         onError: (error) => {
-          toast.error(error.message);
+          toast.error(error.message)
         },
       }
-    );
-  };
+    )
+  }
 
   // Form for two-factor enable/disable
   const twoFactorForm = useForm({
     resolver: (data) => {
       if (twoFactorVerifyURI) {
         // When showing OTP input
-        return zodResolver(twoFactorOtpSchema)(data);
+        return zodResolver(twoFactorOtpSchema)(data)
       }
       // When showing password input
-      return zodResolver(twoFactorPasswordSchema)(data);
+      return zodResolver(twoFactorPasswordSchema)(data)
     },
     defaultValues: {
       password: "",
       otp: "",
     },
-  });
+  })
 
   const {
     register: registerTwoFactor,
@@ -129,9 +129,9 @@ export default function UserCard(props: { activeSessions: AuthClient["$Infer"]["
     setValue,
     reset: resetTwoFactor,
     watch,
-  } = twoFactorForm;
-  const watchOtp = watch("otp");
-  const watchPassword = watch("password");
+  } = twoFactorForm
+  const watchOtp = watch("otp")
+  const watchPassword = watch("password")
 
   const onSubmitTwoFactor = async (data: any) => {
     if (session?.user.twoFactorEnabled) {
@@ -140,47 +140,47 @@ export default function UserCard(props: { activeSessions: AuthClient["$Infer"]["
         { password: data.password },
         {
           onSuccess: () => {
-            toast("2FA disabled successfully");
-            setTwoFactorDialog(false);
-            resetTwoFactor();
+            toast("2FA disabled successfully")
+            setTwoFactorDialog(false)
+            resetTwoFactor()
           },
           onError: (error) => {
-            toast.error(error.message);
+            toast.error(error.message)
           },
         }
-      );
+      )
     } else if (twoFactorVerifyURI) {
       // Verify OTP to enable 2FA
       verifyTotpForEnable.mutate(
         { code: data.otp },
         {
           onSuccess: () => {
-            toast("2FA enabled successfully");
-            setTwoFactorVerifyURI("");
-            resetTwoFactor();
-            setTwoFactorDialog(false);
+            toast("2FA enabled successfully")
+            setTwoFactorVerifyURI("")
+            resetTwoFactor()
+            setTwoFactorDialog(false)
           },
           onError: (error) => {
-            setValue("otp", "");
-            toast.error(error.message);
+            setValue("otp", "")
+            toast.error(error.message)
           },
         }
-      );
+      )
     } else {
       // Enable 2FA - get TOTP URI
       enableTwoFactor.mutate(
         { password: data.password },
         {
           onSuccess: (data) => {
-            setTwoFactorVerifyURI(data.data?.totpURI || "");
+            setTwoFactorVerifyURI(data.data?.totpURI || "")
           },
           onError: (error) => {
-            toast.error(error.message);
+            toast.error(error.message)
           },
         }
-      );
+      )
     }
-  };
+  }
 
   const handleSendVerificationEmail = async () => {
     sendVerificationEmail.mutate(
@@ -189,36 +189,36 @@ export default function UserCard(props: { activeSessions: AuthClient["$Infer"]["
       },
       {
         onError(error) {
-          toast.error(error.message);
+          toast.error(error.message)
         },
         onSuccess() {
-          toast.success("Verification email sent successfully");
+          toast.success("Verification email sent successfully")
         },
       }
-    );
-  };
+    )
+  }
 
   const handleRevokeSession = async (item: AuthClient["$Infer"]["Session"]["session"]) => {
-    setIsTerminating(item.id);
+    setIsTerminating(item.id)
     const res = await revokeSession.mutateAsync({
       token: item.token,
-    });
+    })
 
     if (res.error) {
-      toast.error(res.error.message);
+      toast.error(res.error.message)
     } else {
-      toast.success("Session terminated successfully");
+      toast.success("Session terminated successfully")
     }
     if (item.id === session?.session?.id) {
       signOut.mutate(undefined, {
         onSuccess() {
-          setIsTerminating(undefined);
-          navigate({ to: "/" });
+          setIsTerminating(undefined)
+          navigate({ to: "/" })
         },
-      });
+      })
     }
-    setIsTerminating(undefined);
-  };
+    setIsTerminating(undefined)
+  }
   return (
     <Card className="w-full">
       <CardHeader className="flex flex-row items-center justify-between">
@@ -442,7 +442,7 @@ export default function UserCard(props: { activeSessions: AuthClient["$Infer"]["
             //   },
             // });
             // setIsSignOut(false);
-            logout.mutate();
+            logout.mutate()
           }}
           variant="secondary"
         >
@@ -459,5 +459,5 @@ export default function UserCard(props: { activeSessions: AuthClient["$Infer"]["
         </Button>
       </CardFooter>
     </Card>
-  );
+  )
 }

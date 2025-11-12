@@ -1,16 +1,11 @@
-import { Check, Globe } from "lucide-react";
-import { useTranslation } from "react-i18next";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Check, Globe } from "lucide-react"
+import { useTranslation } from "react-i18next"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export function LanguageSwitch() {
-  const { t, i18n } = useTranslation();
+  const { t, i18n } = useTranslation()
 
   return (
     <DropdownMenu>
@@ -42,5 +37,5 @@ export function LanguageSwitch() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
+  )
 }

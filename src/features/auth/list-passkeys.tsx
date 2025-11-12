@@ -1,8 +1,8 @@
-import { Fingerprint, Loader2, Trash } from "lucide-react";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
+import { Fingerprint, Loader2, Trash } from "lucide-react"
+import { useState } from "react"
+import { useTranslation } from "react-i18next"
+import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -11,36 +11,36 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { authClient } from "@/lib/auth/auth-client";
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { authClient } from "@/lib/auth/auth-client"
 
 export function ListPasskeys() {
-  const { t } = useTranslation();
-  const { data } = authClient.useListPasskeys();
-  const [isOpen, setIsOpen] = useState(false);
-  const [passkeyName, setPasskeyName] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [isDeletePasskey, setIsDeletePasskey] = useState<boolean>(false);
+  const { t } = useTranslation()
+  const { data } = authClient.useListPasskeys()
+  const [isOpen, setIsOpen] = useState(false)
+  const [passkeyName, setPasskeyName] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [isDeletePasskey, setIsDeletePasskey] = useState<boolean>(false)
 
   const handleAddPasskey = async () => {
     if (!passkeyName) {
-      toast.error("Passkey name is required");
-      return;
+      toast.error("Passkey name is required")
+      return
     }
-    setIsLoading(true);
+    setIsLoading(true)
     const res = await authClient.passkey.addPasskey({
       name: passkeyName,
-    });
-    setIsLoading(false);
+    })
+    setIsLoading(false)
     if (res?.error) {
-      toast.error(res?.error.message);
+      toast.error(res?.error.message)
     } else {
-      toast.success("Passkey added successfully. You can now use it to login.");
+      toast.success("Passkey added successfully. You can now use it to login.")
     }
-  };
+  }
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
@@ -74,18 +74,18 @@ export function ListPasskeys() {
                           id: passkey.id,
                           fetchOptions: {
                             onRequest: () => {
-                              setIsDeletePasskey(true);
+                              setIsDeletePasskey(true)
                             },
                             onSuccess: () => {
-                              toast("Passkey deleted successfully");
-                              setIsDeletePasskey(false);
+                              toast("Passkey deleted successfully")
+                              setIsDeletePasskey(false)
                             },
                             onError: (error) => {
-                              toast.error(error.error.message);
-                              setIsDeletePasskey(false);
+                              toast.error(error.error.message)
+                              setIsDeletePasskey(false)
                             },
                           },
-                        });
+                        })
                       }}
                     >
                       {isDeletePasskey ? (
@@ -132,5 +132,5 @@ export function ListPasskeys() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

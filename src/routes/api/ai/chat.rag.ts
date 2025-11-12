@@ -1,20 +1,20 @@
-import { openai } from "@ai-sdk/openai";
-import { createFileRoute } from "@tanstack/react-router";
-import { convertToModelMessages, stepCountIs, streamText, tool } from "ai";
-import { z } from "zod";
-import { findRelevantContent } from "@/features/ai/embedding";
-import { createResource } from "@/features/resource/create";
+import { openai } from "@ai-sdk/openai"
+import { createFileRoute } from "@tanstack/react-router"
+import { convertToModelMessages, stepCountIs, streamText, tool } from "ai"
+import { z } from "zod"
+import { findRelevantContent } from "@/features/ai/embedding"
+import { createResource } from "@/features/resource/create"
 
 export const Route = createFileRoute("/api/ai/chat/rag")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const { messages } = await request.json();
+        const { messages } = await request.json()
 
         const result = streamText({
           model: openai("gpt-4o"),
           onError: (error) => {
-            console.log("error", error);
+            console.log("error", error)
           },
           stopWhen: stepCountIs(3),
           messages: convertToModelMessages(messages),
@@ -38,10 +38,10 @@ export const Route = createFileRoute("/api/ai/chat/rag")({
               execute: async ({ question }) => findRelevantContent(question),
             }),
           },
-        });
+        })
 
-        return result.toUIMessageStreamResponse();
+        return result.toUIMessageStreamResponse()
       },
     },
   },
-});
+})

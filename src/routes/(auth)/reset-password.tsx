@@ -1,13 +1,13 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import ResetPasswordForm from "@/features/auth/reset-password";
-import { useTranslation } from "@/lib/intl/react";
+import { createFileRoute, Link } from "@tanstack/react-router"
+import ResetPasswordForm from "@/features/auth/reset-password"
+import { useTranslation } from "@/lib/intl/react"
 
 export const Route = createFileRoute("/(auth)/reset-password")({
   component: RouteComponent,
-});
+})
 
 function RouteComponent() {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   return (
     <div className="flex flex-col items-center p-2 md:p-6">
@@ -21,5 +21,5 @@ function RouteComponent() {
         !
       </div>
     </div>
-  );
+  )
 }

@@ -1,7 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router"
 
-import { oAuthDiscoveryMetadata } from "better-auth/plugins";
-import { auth } from "@/lib/auth/auth";
+import { oAuthDiscoveryMetadata } from "better-auth/plugins"
+import { auth } from "@/lib/auth/auth"
 
 export const Route = createFileRoute("/.well-known/oauth-authorization-server")({
   server: {
@@ -9,4 +9,4 @@ export const Route = createFileRoute("/.well-known/oauth-authorization-server")(
       GET: oAuthDiscoveryMetadata(auth),
     },
   },
-});
+})

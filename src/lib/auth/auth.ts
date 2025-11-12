@@ -1,20 +1,20 @@
-import { betterAuth } from "better-auth";
-import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { admin, magicLink, mcp, openAPI, organization } from "better-auth/plugins";
-import { emailOTP } from "better-auth/plugins/email-otp";
-import { passkey } from "better-auth/plugins/passkey";
-import { twoFactor } from "better-auth/plugins/two-factor";
-import { reactStartCookies } from "better-auth/react-start";
-import ResetPasswordEmail from "@/components/emails/reset-password-email";
-import SendMagicLinkEmail from "@/components/emails/send-magic-link-email";
-import SendVerificationOtp from "@/components/emails/send-verification-otp";
-import VerifyEmail from "@/components/emails/verify-email";
-import WelcomeEmail from "@/components/emails/welcome-email";
-import { db } from "@/lib/db";
-import * as schema from "@/lib/db/schema/auth";
-import { sendEmail } from "@/lib/resend";
-import { env } from "../env.server";
-import { ac, admin as adminRole, superadmin as superAdminRole, user as userRole } from "./permissions";
+import { betterAuth } from "better-auth"
+import { drizzleAdapter } from "better-auth/adapters/drizzle"
+import { admin, magicLink, mcp, openAPI, organization } from "better-auth/plugins"
+import { emailOTP } from "better-auth/plugins/email-otp"
+import { passkey } from "better-auth/plugins/passkey"
+import { twoFactor } from "better-auth/plugins/two-factor"
+import { reactStartCookies } from "better-auth/react-start"
+import ResetPasswordEmail from "@/components/emails/reset-password-email"
+import SendMagicLinkEmail from "@/components/emails/send-magic-link-email"
+import SendVerificationOtp from "@/components/emails/send-verification-otp"
+import VerifyEmail from "@/components/emails/verify-email"
+import WelcomeEmail from "@/components/emails/welcome-email"
+import { db } from "@/lib/db"
+import * as schema from "@/lib/db/schema/auth"
+import { sendEmail } from "@/lib/resend"
+import { env } from "../env.server"
+import { ac, admin as adminRole, superadmin as superAdminRole, user as userRole } from "./permissions"
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {
@@ -28,7 +28,7 @@ export const auth = betterAuth({
   onAPIError: {
     throw: true,
     onError: (error) => {
-      console.error("auth onAPIError", error);
+      console.error("auth onAPIError", error)
     },
     errorURL: "/login",
   },
@@ -56,7 +56,7 @@ export const auth = betterAuth({
               username: user.name || user.email,
             }),
             to: user.email,
-          });
+          })
         },
       },
     },
@@ -72,7 +72,7 @@ export const auth = betterAuth({
           username: user.email,
         }),
         to: user.email,
-      });
+      })
     },
   },
   emailVerification: {
@@ -84,7 +84,7 @@ export const auth = betterAuth({
           username: user.email,
         }),
         to: user.email,
-      });
+      })
     },
   },
 
@@ -115,7 +115,7 @@ export const auth = betterAuth({
             otp,
           }),
           to: email,
-        });
+        })
       },
     }),
     magicLink({
@@ -128,9 +128,9 @@ export const auth = betterAuth({
             token,
           }),
           to: email,
-        });
+        })
       },
     }),
     reactStartCookies(), // make sure this is the last plugin in the array
   ],
-});
+})

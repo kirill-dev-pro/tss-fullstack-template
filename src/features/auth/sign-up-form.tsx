@@ -1,13 +1,13 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useNavigate } from "@tanstack/react-router";
-import { X } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useNavigate } from "@tanstack/react-router"
+import { X } from "lucide-react"
+import { useState } from "react"
+import { toast } from "sonner"
+import * as z from "zod"
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Field,
   FieldContent,
@@ -16,14 +16,14 @@ import {
   FieldGroup,
   FieldLabel,
   FieldSet,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import { Label } from "@/components/ui/label";
-import { Spinner } from "@/components/ui/spinner";
-import { authClient } from "@/lib/auth/auth-client";
-import { useTranslation } from "@/lib/intl/react";
-import { convertImageToBase64 } from "@/lib/utils";
+} from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import { Label } from "@/components/ui/label"
+import { Spinner } from "@/components/ui/spinner"
+import { authClient } from "@/lib/auth/auth-client"
+import { useTranslation } from "@/lib/intl/react"
+import { convertImageToBase64 } from "@/lib/utils"
 
 const signUpSchema = z
   .object({
@@ -37,12 +37,12 @@ const signUpSchema = z
   .refine((data) => data.password === data.passwordConfirmation, {
     message: "The two passwords do not match.",
     path: ["passwordConfirmation"],
-  });
+  })
 
 export function SignUpForm() {
-  const { t } = useTranslation();
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const navigate = useNavigate();
+  const { t } = useTranslation()
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   const form = useForm({
     resolver: zodResolver(signUpSchema),
@@ -54,9 +54,15 @@ export function SignUpForm() {
       passwordConfirmation: "",
       image: undefined as File | undefined,
     },
-  });
+  })
 
-  const { register, handleSubmit, formState: { errors, isSubmitting }, setValue, reset } = form;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setValue,
+    reset,
+  } = form
 
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
     try {
@@ -68,34 +74,34 @@ export function SignUpForm() {
         callbackURL: "/dashboard",
         fetchOptions: {
           onError: (ctx) => {
-            toast.error(ctx.error.message);
+            toast.error(ctx.error.message)
           },
           onSuccess: async () => {
-            navigate({ to: "/dashboard" });
+            navigate({ to: "/dashboard" })
           },
         },
-      });
+      })
     } catch (error) {
-      toast.error("An error occurred during sign up");
+      toast.error("An error occurred during sign up")
     }
-  };
+  }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.[0]
     if (file) {
-      setValue("image", file);
-      const reader = new FileReader();
+      setValue("image", file)
+      const reader = new FileReader()
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+        setImagePreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
     }
-  };
+  }
 
   const clearImage = () => {
-    setValue("image", undefined);
-    setImagePreview(null);
-  };
+    setValue("image", undefined)
+    setImagePreview(null)
+  }
 
   return (
     <Card className="z-50 max-w-md rounded-2xl">
@@ -111,11 +117,7 @@ export function SignUpForm() {
                 <Field>
                   <FieldLabel htmlFor="firstName">{t("FIRST_NAME")}</FieldLabel>
                   <InputGroup>
-                    <InputGroupInput
-                      id="firstName"
-                      placeholder="Max"
-                      {...register("firstName")}
-                    />
+                    <InputGroupInput id="firstName" placeholder="Max" {...register("firstName")} />
                   </InputGroup>
                   <FieldError errors={errors.firstName} />
                 </Field>
@@ -123,11 +125,7 @@ export function SignUpForm() {
                 <Field>
                   <FieldLabel htmlFor="lastName">{t("LAST_NAME")}</FieldLabel>
                   <InputGroup>
-                    <InputGroupInput
-                      id="lastName"
-                      placeholder="Robinson"
-                      {...register("lastName")}
-                    />
+                    <InputGroupInput id="lastName" placeholder="Robinson" {...register("lastName")} />
                   </InputGroup>
                   <FieldError errors={errors.lastName} />
                 </Field>
@@ -136,12 +134,7 @@ export function SignUpForm() {
               <Field>
                 <FieldLabel htmlFor="email">{t("EMAIL")}</FieldLabel>
                 <InputGroup>
-                  <InputGroupInput
-                    id="email"
-                    type="email"
-                    placeholder="m@example.com"
-                    {...register("email")}
-                  />
+                  <InputGroupInput id="email" type="email" placeholder="m@example.com" {...register("email")} />
                 </InputGroup>
                 <FieldError errors={errors.email} />
               </Field>
@@ -179,12 +172,7 @@ export function SignUpForm() {
           <Field>
             <FieldLabel>{t("PROFILE_IMAGE")}</FieldLabel>
             <FieldContent>
-              <Input
-                id="image"
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-              />
+              <Input id="image" type="file" accept="image/*" onChange={handleImageChange} />
               {imagePreview && (
                 <div className="mt-2 flex items-center gap-2">
                   <img
@@ -221,5 +209,5 @@ export function SignUpForm() {
         </div>
       </CardFooter>
     </Card>
-  );
+  )
 }

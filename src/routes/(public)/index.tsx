@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router"
 
 import {
   Activity,
@@ -19,19 +19,19 @@ import {
   UserCheck,
   Users,
   Wrench,
-} from "lucide-react";
+} from "lucide-react"
 
-import { useState } from "react";
+import { useState } from "react"
 
-import { ModeToggle } from "@/components/theme-toggle";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ModeToggle } from "@/components/theme-toggle"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 export const Route = createFileRoute("/(public)/")({
   component: LandingPage,
-});
+})
 
 const techStack = [
   {
@@ -147,10 +147,10 @@ const techStack = [
     description: "Support for multiple languages.",
     libs: [{ name: "i18next", href: "https://www.i18next.com/" }],
   },
-];
+]
 
 function LandingPage() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-background">
@@ -339,5 +339,5 @@ function LandingPage() {
         </div>
       </footer>
     </div>
-  );
+  )
 }

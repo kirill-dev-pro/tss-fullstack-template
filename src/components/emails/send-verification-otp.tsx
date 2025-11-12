@@ -1,5 +1,5 @@
-import { Text } from "@react-email/components";
-import { EmailLayout } from "./layout-email";
+import { Text } from "@react-email/components"
+import { EmailLayout } from "./layout-email"
 
 const SendVerificationOTP = ({ username, otp }: { username: string; otp: string }) => {
   return (
@@ -12,12 +12,12 @@ const SendVerificationOTP = ({ username, otp }: { username: string; otp: string 
         If you didn't request this code, you can safely ignore this email.
       </Text>
     </EmailLayout>
-  );
-};
+  )
+}
 
-export default SendVerificationOTP;
+export default SendVerificationOTP
 
 SendVerificationOTP.PreviewProps = {
   username: "John Doe",
   otp: "596853",
-};
+}

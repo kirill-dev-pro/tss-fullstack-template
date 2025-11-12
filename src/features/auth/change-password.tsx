@@ -1,12 +1,12 @@
-import { useForm } from "@tanstack/react-form";
-import { Loader2 } from "lucide-react";
-import { useState } from "react";
-import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
-import * as z from "zod";
-import { PasswordField } from "@/components/form/password-field";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import { useForm } from "@tanstack/react-form"
+import { Loader2 } from "lucide-react"
+import { useState } from "react"
+import { useTranslation } from "react-i18next"
+import { toast } from "sonner"
+import * as z from "zod"
+import { PasswordField } from "@/components/form/password-field"
+import { Button } from "@/components/ui/button"
+import { Checkbox } from "@/components/ui/checkbox"
 import {
   Dialog,
   DialogContent,
@@ -15,8 +15,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { authClient } from "@/lib/auth/auth-client";
+} from "@/components/ui/dialog"
+import { authClient } from "@/lib/auth/auth-client"
 
 const changePasswordSchema = z
   .object({
@@ -28,11 +28,11 @@ const changePasswordSchema = z
   .refine((data) => data.newPassword === data.confirmPassword, {
     message: "The two passwords do not match.",
     path: ["confirmPassword"],
-  });
+  })
 
 export function ChangePassword() {
-  const { t } = useTranslation();
-  const [open, setOpen] = useState<boolean>(false);
+  const { t } = useTranslation()
+  const [open, setOpen] = useState<boolean>(false)
 
   const form = useForm({
     defaultValues: {
@@ -43,11 +43,11 @@ export function ChangePassword() {
     },
     validators: {
       onChange: ({ value }) => {
-        const result = changePasswordSchema.safeParse(value);
+        const result = changePasswordSchema.safeParse(value)
         if (!result.success) {
-          return result.error.formErrors.fieldErrors;
+          return result.error.formErrors.fieldErrors
         }
-        return undefined;
+        return undefined
       },
     },
     onSubmit: async ({ value }) => {
@@ -56,19 +56,19 @@ export function ChangePassword() {
           newPassword: value.newPassword,
           currentPassword: value.currentPassword,
           revokeOtherSessions: value.signOutDevices || false,
-        });
+        })
         if (res.error) {
-          toast.error(res.error.message || "Couldn't change your password! Make sure it's correct");
+          toast.error(res.error.message || "Couldn't change your password! Make sure it's correct")
         } else {
-          setOpen(false);
-          form.reset();
-          toast.success("Password changed successfully");
+          setOpen(false)
+          form.reset()
+          toast.success("Password changed successfully")
         }
       } catch (error) {
-        toast.error("An error occurred while changing password");
+        toast.error("An error occurred while changing password")
       }
     },
-  });
+  })
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -125,8 +125,8 @@ export function ChangePassword() {
               <Button
                 disabled={!canSubmit || isSubmitting}
                 onClick={(e) => {
-                  e.preventDefault();
-                  form.handleSubmit();
+                  e.preventDefault()
+                  form.handleSubmit()
                 }}
               >
                 {isSubmitting ? <Loader2 size={15} className="animate-spin" /> : t("CHANGE_PASSWORD")}
@@ -136,5 +136,5 @@ export function ChangePassword() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

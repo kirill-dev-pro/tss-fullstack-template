@@ -1,9 +1,9 @@
-import { Body, Container, Head, Html, Preview, Section, Tailwind } from "@react-email/components";
-import type { ReactNode } from "react";
+import { Body, Container, Head, Html, Preview, Section, Tailwind } from "@react-email/components"
+import type { ReactNode } from "react"
 
 interface EmailLayoutProps {
-  preview: string;
-  children: ReactNode;
+  preview: string
+  children: ReactNode
 }
 
 export const EmailLayout = ({ preview, children }: EmailLayoutProps) => {
@@ -19,5 +19,5 @@ export const EmailLayout = ({ preview, children }: EmailLayoutProps) => {
         </Body>
       </Tailwind>
     </Html>
-  );
-};
+  )
+}

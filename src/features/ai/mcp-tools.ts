@@ -1,22 +1,22 @@
-import { z } from "zod";
+import { z } from "zod"
 
-import { db } from "@/lib/db";
+import { db } from "@/lib/db"
 
 const getCatFact = async () => {
   try {
-    const res = await fetch("https://catfact.ninja/fact");
-    const data = await res.json();
+    const res = await fetch("https://catfact.ninja/fact")
+    const data = await res.json()
 
-    return { content: [{ type: "text", text: `🐱 ${data.fact}` }] };
+    return { content: [{ type: "text", text: `🐱 ${data.fact}` }] }
   } catch (error) {
-    return { content: [{ type: "text", text: "Failed to fetch cat fact" }] };
+    return { content: [{ type: "text", text: "Failed to fetch cat fact" }] }
   }
-};
+}
 
 const getQuote = async () => {
   try {
-    const res = await fetch("https://api.quotable.io/random");
-    const data = await res.json();
+    const res = await fetch("https://api.quotable.io/random")
+    const data = await res.json()
     return {
       content: [
         {
@@ -24,16 +24,16 @@ const getQuote = async () => {
           text: `💭 "${data.content}" - ${data.author}`,
         },
       ],
-    };
+    }
   } catch (error) {
-    return { content: [{ type: "text", text: "Failed to fetch quote" }] };
+    return { content: [{ type: "text", text: "Failed to fetch quote" }] }
   }
-};
+}
 
 const getJoke = async () => {
   try {
-    const res = await fetch("https://official-joke-api.appspot.com/random_joke");
-    const data = await res.json();
+    const res = await fetch("https://official-joke-api.appspot.com/random_joke")
+    const data = await res.json()
     return {
       content: [
         {
@@ -41,33 +41,33 @@ const getJoke = async () => {
           text: `😄 ${data.setup}\n\n${data.punchline}`,
         },
       ],
-    };
+    }
   } catch (error) {
-    return { content: [{ type: "text", text: "Failed to fetch joke" }] };
+    return { content: [{ type: "text", text: "Failed to fetch joke" }] }
   }
-};
+}
 
 const getWelcomeMessage = async ({ name }: { name: string }) => {
   return {
     content: [{ type: "text", text: `Welcome to the AI, ${name}!` }],
-  };
-};
+  }
+}
 
 const calculateBMI = async ({ weight, height }: { weight: number; height: number }) => {
-  const bmi = weight / (height * height);
-  console.log("💪 BMI", bmi);
+  const bmi = weight / (height * height)
+  console.log("💪 BMI", bmi)
   return {
     content: [{ type: "text", text: `Your BMI is ${bmi}` }],
-  };
-};
+  }
+}
 
 const getTodos = async () => {
-  const todos = await db.query.todo.findMany();
-  console.log("🔑 Todos", todos);
+  const todos = await db.query.todo.findMany()
+  console.log("🔑 Todos", todos)
   return {
     content: [{ type: "text", text: `Todos: ${JSON.stringify(todos)}` }],
-  };
-};
+  }
+}
 
 export const tools = [
   {
@@ -108,4 +108,4 @@ export const tools = [
     description: "Get the todos from the app",
     callback: getTodos,
   },
-];
+]

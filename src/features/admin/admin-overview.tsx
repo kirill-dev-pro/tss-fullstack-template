@@ -1,15 +1,15 @@
-import { Shield, ShieldCheck, UserCheck, Users } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { useUsers } from '@/features/user/user-hooks';
-import { authClient } from '@/lib/auth/auth-client';
-import { canManageUsers, type UserRole } from '@/lib/auth/permissions';
+import { Shield, ShieldCheck, UserCheck, Users } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { useUsers } from "@/features/user/user-hooks"
+import { authClient } from "@/lib/auth/auth-client"
+import { canManageUsers, type UserRole } from "@/lib/auth/permissions"
 
 export function AdminOverview() {
-  const { data: users, isLoading } = useUsers();
-  const { data: session } = authClient.useSession();
+  const { data: users, isLoading } = useUsers()
+  const { data: session } = authClient.useSession()
 
-  const currentUserRole = (session?.user?.role as UserRole) || 'user';
+  const currentUserRole = (session?.user?.role as UserRole) || "user"
 
   if (!canManageUsers(currentUserRole)) {
     return (
@@ -20,13 +20,13 @@ export function AdminOverview() {
           <p className="text-muted-foreground text-sm">You don't have permission to access admin features.</p>
         </div>
       </div>
-    );
+    )
   }
 
-  const totalUsers = users?.length || 0;
-  const activeUsers = users?.filter((user) => user.emailVerified && !user.banned).length || 0;
-  const bannedUsers = users?.filter((user) => user.banned).length || 0;
-  const adminUsers = users?.filter((user) => user.role === 'admin' || user.role === 'superadmin').length || 0;
+  const totalUsers = users?.length || 0
+  const activeUsers = users?.filter((user) => user.emailVerified && !user.banned).length || 0
+  const bannedUsers = users?.filter((user) => user.banned).length || 0
+  const adminUsers = users?.filter((user) => user.role === "admin" || user.role === "superadmin").length || 0
 
   return (
     <div className="space-y-6">
@@ -90,22 +90,22 @@ export function AdminOverview() {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <span>Manage Users</span>
-              <Badge variant={canManageUsers(currentUserRole) ? 'default' : 'secondary'}>
-                {canManageUsers(currentUserRole) ? 'Allowed' : 'Denied'}
+              <Badge variant={canManageUsers(currentUserRole) ? "default" : "secondary"}>
+                {canManageUsers(currentUserRole) ? "Allowed" : "Denied"}
               </Badge>
             </div>
             <div className="flex items-center justify-between">
               <span>Ban/Unban Users</span>
               <Badge
-                variant={currentUserRole === 'admin' || currentUserRole === 'superadmin' ? 'default' : 'secondary'}
+                variant={currentUserRole === "admin" || currentUserRole === "superadmin" ? "default" : "secondary"}
               >
-                {currentUserRole === 'admin' || currentUserRole === 'superadmin' ? 'Allowed' : 'Denied'}
+                {currentUserRole === "admin" || currentUserRole === "superadmin" ? "Allowed" : "Denied"}
               </Badge>
             </div>
             <div className="flex items-center justify-between">
               <span>Delete Users</span>
-              <Badge variant={currentUserRole === 'superadmin' ? 'default' : 'secondary'}>
-                {currentUserRole === 'superadmin' ? 'Allowed' : 'Denied'}
+              <Badge variant={currentUserRole === "superadmin" ? "default" : "secondary"}>
+                {currentUserRole === "superadmin" ? "Allowed" : "Denied"}
               </Badge>
             </div>
           </div>
@@ -121,5 +121,5 @@ export function AdminOverview() {
         </Card>
       )}
     </div>
-  );
+  )
 }

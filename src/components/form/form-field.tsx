@@ -1,14 +1,14 @@
-import type { AnyFieldApi } from "@tanstack/react-form";
-import FormFieldInfo from "@/components/form-field-info";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import type { AnyFieldApi } from "@tanstack/react-form"
+import FormFieldInfo from "@/components/form-field-info"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 interface FormFieldProps {
-  field: AnyFieldApi;
-  label: string;
-  type?: string;
-  placeholder?: string;
-  className?: string;
+  field: AnyFieldApi
+  label: string
+  type?: string
+  placeholder?: string
+  className?: string
 }
 
 export function FormField({ field, label, type = "text", placeholder, className = "mt-1" }: FormFieldProps) {
@@ -27,5 +27,5 @@ export function FormField({ field, label, type = "text", placeholder, className 
       />
       <FormFieldInfo field={field} />
     </>
-  );
+  )
 }

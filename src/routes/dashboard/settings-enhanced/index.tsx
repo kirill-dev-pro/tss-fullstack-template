@@ -1,19 +1,19 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AppearanceSettings } from "@/features/user/appearance-settings";
-import { EnhancedUserProfile } from "@/features/user/enhanced-user-profile";
-import { NotificationSettings } from "@/features/user/notification-settings";
-import { SecuritySettings } from "@/features/user/security-settings";
+import { createFileRoute } from "@tanstack/react-router"
+import { useState } from "react"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { AppearanceSettings } from "@/features/user/appearance-settings"
+import { EnhancedUserProfile } from "@/features/user/enhanced-user-profile"
+import { NotificationSettings } from "@/features/user/notification-settings"
+import { SecuritySettings } from "@/features/user/security-settings"
 
 export const Route = createFileRoute("/dashboard/settings-enhanced/")({
   component: EnhancedSettingsPage,
-});
+})
 
 function EnhancedSettingsPage() {
-  const [activeTab, setActiveTab] = useState("profile");
+  const [activeTab, setActiveTab] = useState("profile")
 
   return (
     <div className="container mx-auto py-6 space-y-6">
@@ -85,5 +85,5 @@ function EnhancedSettingsPage() {
         </TabsContent>
       </Tabs>
     </div>
-  );
+  )
 }

@@ -1,31 +1,31 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router"
 
-import { createMcpHandler } from "@vercel/mcp-adapter";
-import { tools } from "@/features/ai/mcp-tools";
-import { auth } from "@/lib/auth/auth";
+import { createMcpHandler } from "@vercel/mcp-adapter"
+import { tools } from "@/features/ai/mcp-tools"
+import { auth } from "@/lib/auth/auth"
 
 const handler = async (req: Request) => {
   const session = await auth.api.getMcpSession({
     headers: req.headers,
-  });
+  })
 
-  console.log("🔑 Session", session);
+  console.log("🔑 Session", session)
 
   // If commented this will register my MCP server to Cursor
   if (!session) {
-    console.log("🔑 No session");
+    console.log("🔑 No session")
     return new Response(null, {
       status: 401,
-    });
+    })
   }
 
   return createMcpHandler(
     async (server) => {
       // biome-ignore lint/complexity/noForEach: <explanation>
       tools.forEach((tool) => {
-        console.log("🌐 Registering tool", tool.name);
-        server.tool(tool.name, tool.description, tool.inputSchema ? tool.inputSchema.shape : {}, tool.callback);
-      });
+        console.log("🌐 Registering tool", tool.name)
+        server.tool(tool.name, tool.description, tool.inputSchema ? tool.inputSchema.shape : {}, tool.callback)
+      })
     },
     {
       capabilities: {
@@ -34,8 +34,8 @@ const handler = async (req: Request) => {
             (acc, tool) => {
               acc[tool.name] = {
                 description: tool.description,
-              };
-              return acc;
+              }
+              return acc
             },
             {} as Record<string, { description: string }>
           ),
@@ -47,11 +47,11 @@ const handler = async (req: Request) => {
       verboseLogs: true,
       maxDuration: 60,
       onEvent(event) {
-        console.log("🔑 Event", event);
+        console.log("🔑 Event", event)
       },
     }
-  )(req);
-};
+  )(req)
+}
 
 export const Route = createFileRoute("/api/ai/mcp/$transport")({
   server: {
@@ -61,4 +61,4 @@ export const Route = createFileRoute("/api/ai/mcp/$transport")({
       DELETE: async ({ request }) => handler(request),
     },
   },
-});
+})

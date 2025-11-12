@@ -1,5 +1,5 @@
-import { Text } from "@react-email/components";
-import { EmailLayout } from "./layout-email";
+import { Text } from "@react-email/components"
+import { EmailLayout } from "./layout-email"
 
 const WelcomeEmail = ({ username }: { username: string }) => {
   return (
@@ -11,11 +11,11 @@ const WelcomeEmail = ({ username }: { username: string }) => {
         If you have any questions or need assistance, feel free to contact our support team.
       </Text>
     </EmailLayout>
-  );
-};
+  )
+}
 
-export default WelcomeEmail;
+export default WelcomeEmail
 
 WelcomeEmail.PreviewProps = {
   username: "John Doe",
-};
+}

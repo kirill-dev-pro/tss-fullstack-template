@@ -1,5 +1,5 @@
-import { ChevronsUpDown, Plus } from "lucide-react";
-import * as React from "react";
+import { ChevronsUpDown, Plus } from "lucide-react"
+import * as React from "react"
 
 import {
   DropdownMenu,
@@ -9,24 +9,24 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar";
-import { useActiveOrganization, useOrganizations } from "@/features/organization/organization-hooks";
+} from "@/components/ui/dropdown-menu"
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar"
+import { useActiveOrganization, useOrganizations } from "@/features/organization/organization-hooks"
 
 export function OrganizationSwitcher({
   organizations,
 }: {
   organizations: {
-    name: string;
-    logo: React.ElementType;
-    plan: string;
-  }[];
+    name: string
+    logo: React.ElementType
+    plan: string
+  }[]
 }) {
-  const { isMobile } = useSidebar();
-  const [activeOrganization, setActiveOrganization] = React.useState(organizations[0]);
+  const { isMobile } = useSidebar()
+  const [activeOrganization, setActiveOrganization] = React.useState(organizations[0])
 
   if (!activeOrganization) {
-    return null;
+    return null
   }
 
   return (
@@ -79,5 +79,5 @@ export function OrganizationSwitcher({
         </DropdownMenu>
       </SidebarMenuItem>
     </SidebarMenu>
-  );
+  )
 }

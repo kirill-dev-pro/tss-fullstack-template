@@ -1,9 +1,9 @@
-import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
-import { ArrowUpIcon, StopCircleIcon } from "lucide-react";
-import { memo, useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { useChat } from "@ai-sdk/react"
+import { DefaultChatTransport } from "ai"
+import { ArrowUpIcon, StopCircleIcon } from "lucide-react"
+import { memo, useEffect, useRef, useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Textarea } from "@/components/ui/textarea"
 
 // Suggestion card component
 function ChatWelcome({ onSelectSuggestion }: { onSelectSuggestion: (suggestion: string) => void }) {
@@ -28,7 +28,7 @@ function ChatWelcome({ onSelectSuggestion }: { onSelectSuggestion: (suggestion: 
       description: "Explore current AI developments",
       prompt: "What are the latest AI trends in 2024?",
     },
-  ];
+  ]
 
   return (
     <div className="mt-12 flex flex-col items-center justify-center space-y-6">
@@ -47,55 +47,55 @@ function ChatWelcome({ onSelectSuggestion }: { onSelectSuggestion: (suggestion: 
         ))}
       </div>
     </div>
-  );
+  )
 }
 
 export function Chat() {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState("")
   const { messages, sendMessage, status, stop } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/ai/chat/image/generation",
     }),
-  });
+  })
 
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const handleSelectSuggestion = (suggestion: string) => {
-    setInput(suggestion);
-  };
+    setInput(suggestion)
+  }
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       setTimeout(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-      }, 100);
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+      }, 100)
     }
-  };
+  }
 
   // Scroll when messages change
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    scrollToBottom()
+  }, [messages])
 
   // Scroll when status changes
   useEffect(() => {
     if (status === "streaming") {
-      scrollToBottom();
+      scrollToBottom()
     }
-  }, [status]);
+  }, [status])
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (input.trim()) {
-      sendMessage({ text: input });
-      setInput("");
+      sendMessage({ text: input })
+      setInput("")
     }
-  };
+  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setInput(e.target.value);
-  };
+    setInput(e.target.value)
+  }
 
   return (
     <div className="relative flex w-full flex-col items-center justify-center gap-4">
@@ -105,24 +105,24 @@ export function Chat() {
             <div key={m.id} className="whitespace-pre-wrap">
               <div key={m.id}>
                 <div className="font-bold">{m.role}</div>
-                                <div>
+                <div>
                   {m.parts.map((part, index) => {
-                    console.log("🔑 Part", part);
-                    
+                    console.log("🔑 Part", part)
+
                     if (part.type === "text") {
-                      return <p key={index}>{part.text}</p>;
+                      return <p key={index}>{part.text}</p>
                     }
-                    
+
                     // Handle new v5 tool pattern - tools are prefixed with 'tool-'
                     if (part.type === "tool-generateImage") {
-                      const toolPart = part as any; // Type assertion for tool part
-                      const { toolCallId, state } = toolPart;
-                      
+                      const toolPart = part as any // Type assertion for tool part
+                      const { toolCallId, state } = toolPart
+
                       // Tool is completed and has output
                       if (state === "output-available" && toolPart.output) {
-                        const output = toolPart.output as { image: string; prompt?: string };
-                        const input = toolPart.input as { prompt?: string };
-                        
+                        const output = toolPart.output as { image: string; prompt?: string }
+                        const input = toolPart.input as { prompt?: string }
+
                         return (
                           <img
                             key={toolCallId}
@@ -133,9 +133,9 @@ export function Chat() {
                             onLoad={scrollToBottom}
                             className="rounded-lg shadow-lg"
                           />
-                        );
+                        )
                       }
-                      
+
                       // Tool is still processing (input streaming, input available, etc.)
                       return (
                         <div key={toolCallId} className="animate-pulse bg-gray-100 rounded-lg p-4">
@@ -148,15 +148,15 @@ export function Chat() {
                             </span>
                           </div>
                         </div>
-                      );
+                      )
                     }
-                    
+
                     // Handle step indicators
                     if (part.type === "step-start") {
-                      return null; // Don't render step indicators for cleaner UI
+                      return null // Don't render step indicators for cleaner UI
                     }
-                    
-                    return null;
+
+                    return null
                   })}
                 </div>
               </div>
@@ -182,9 +182,9 @@ export function Chat() {
               autoFocus
               onKeyDown={(e) => {
                 if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
+                  e.preventDefault()
                   if (input.trim()) {
-                    handleSubmit(e);
+                    handleSubmit(e)
                   }
                 }
               }}
@@ -200,7 +200,7 @@ export function Chat() {
         </div>
       </form>
     </div>
-  );
+  )
 }
 
 function PureStopButton({ stop }: { stop: () => void }) {
@@ -209,43 +209,43 @@ function PureStopButton({ stop }: { stop: () => void }) {
       data-testid="stop-button"
       className="h-fit rounded-full border p-1.5 dark:border-zinc-600 "
       onClick={(event) => {
-        event.preventDefault();
-        stop();
+        event.preventDefault()
+        stop()
       }}
     >
       <StopCircleIcon size={14} />
     </Button>
-  );
+  )
 }
 
-const StopButton = memo(PureStopButton);
+const StopButton = memo(PureStopButton)
 
 function PureSendButton({
   submitForm,
   input,
   uploadQueue,
 }: {
-  submitForm: (e: React.FormEvent) => void;
-  input: string;
-  uploadQueue: Array<string>;
+  submitForm: (e: React.FormEvent) => void
+  input: string
+  uploadQueue: Array<string>
 }) {
   return (
     <Button
       data-testid="send-button"
       className="h-fit rounded-full border p-1.5 dark:border-zinc-600"
       onClick={(event) => {
-        event.preventDefault();
-        submitForm(event as React.FormEvent);
+        event.preventDefault()
+        submitForm(event as React.FormEvent)
       }}
       disabled={!input || input.length === 0 || uploadQueue.length > 0}
     >
       <ArrowUpIcon size={14} />
     </Button>
-  );
+  )
 }
 
 const SendButton = memo(PureSendButton, (prevProps, nextProps) => {
-  if (prevProps.uploadQueue.length !== nextProps.uploadQueue.length) return false;
-  if (prevProps.input !== nextProps.input) return false;
-  return true;
-});
+  if (prevProps.uploadQueue.length !== nextProps.uploadQueue.length) return false
+  if (prevProps.input !== nextProps.input) return false
+  return true
+})

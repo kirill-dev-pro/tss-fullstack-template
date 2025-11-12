@@ -1,5 +1,5 @@
-import { Button, Text } from "@react-email/components";
-import { EmailLayout } from "./layout-email";
+import { Button, Text } from "@react-email/components"
+import { EmailLayout } from "./layout-email"
 
 const ResetPasswordEmail = ({ resetLink, username }: { resetLink: string; username: string }) => {
   return (
@@ -14,12 +14,12 @@ const ResetPasswordEmail = ({ resetLink, username }: { resetLink: string; userna
         If you didn't request a password reset, you can safely ignore this email.
       </Text>
     </EmailLayout>
-  );
-};
+  )
+}
 
-export default ResetPasswordEmail;
+export default ResetPasswordEmail
 
 ResetPasswordEmail.PreviewProps = {
   resetLink: "https://example.com/reset-password",
   username: "John Doe",
-};
+}

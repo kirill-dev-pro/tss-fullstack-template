@@ -1,4 +1,4 @@
-import type { AnyFieldApi } from "@tanstack/react-form";
+import type { AnyFieldApi } from "@tanstack/react-form"
 
 export default function FormFieldInfo({ field }: { field: AnyFieldApi }) {
   return (
@@ -8,5 +8,5 @@ export default function FormFieldInfo({ field }: { field: AnyFieldApi }) {
       ) : null}
       {field.state.meta.isValidating ? "Validating..." : null}
     </div>
-  );
+  )
 }

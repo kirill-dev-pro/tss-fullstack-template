@@ -1,22 +1,22 @@
-import { Clock, Key, Laptop, MapPin, Shield, ShieldCheck, Smartphone, Trash2 } from "lucide-react";
-import { useState } from "react";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
-import { authClient } from "@/lib/auth/auth-client";
+import { Clock, Key, Laptop, MapPin, Shield, ShieldCheck, Smartphone, Trash2 } from "lucide-react"
+import { useState } from "react"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
+import { Switch } from "@/components/ui/switch"
+import { authClient } from "@/lib/auth/auth-client"
 
 export function SecuritySettings() {
-  const { data: session } = authClient.useSession();
+  const { data: session } = authClient.useSession()
   const [settings, setSettings] = useState({
     twoFactorEnabled: session?.user?.twoFactorEnabled || false,
     loginNotifications: true,
     suspiciousActivityAlerts: true,
     autoSessionTimeout: false,
-  });
+  })
 
   // Mock active sessions data
   const activeSessions = [
@@ -47,18 +47,18 @@ export function SecuritySettings() {
       lastActive: "1 day ago",
       current: false,
     },
-  ];
+  ]
 
   const handleSettingChange = (key: string, value: boolean) => {
-    setSettings((prev) => ({ ...prev, [key]: value }));
+    setSettings((prev) => ({ ...prev, [key]: value }))
     // TODO: Implement actual settings update with Better-auth
-    console.log(`Setting ${key} changed to ${value}`);
-  };
+    console.log(`Setting ${key} changed to ${value}`)
+  }
 
   const handleTerminateSession = (sessionId: string) => {
-    console.log(`Terminating session ${sessionId}`);
+    console.log(`Terminating session ${sessionId}`)
     // TODO: Implement session termination with Better-auth
-  };
+  }
 
   return (
     <div className="space-y-6">
@@ -243,5 +243,5 @@ export function SecuritySettings() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

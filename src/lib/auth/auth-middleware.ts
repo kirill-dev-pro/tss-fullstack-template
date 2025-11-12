@@ -1,6 +1,6 @@
-import { createMiddleware } from "@tanstack/react-start";
-import { getHeaders } from "@tanstack/react-start/server";
-import { authClient } from "@/lib/auth/auth-client";
+import { createMiddleware } from "@tanstack/react-start"
+import { getHeaders } from "@tanstack/react-start/server"
+import { authClient } from "@/lib/auth/auth-client"
 
 export const authMiddleware = createMiddleware({
   type: "request",
@@ -10,7 +10,7 @@ export const authMiddleware = createMiddleware({
     fetchOptions: {
       headers: getHeaders() as HeadersInit,
     },
-  });
+  })
   return await next({
     context: {
       user: {
@@ -19,5 +19,5 @@ export const authMiddleware = createMiddleware({
         image: session?.user.image,
       },
     },
-  });
-});
+  })
+})

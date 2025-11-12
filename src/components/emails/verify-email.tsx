@@ -1,5 +1,5 @@
-import { Button, Text } from "@react-email/components";
-import { EmailLayout } from "./layout-email";
+import { Button, Text } from "@react-email/components"
+import { EmailLayout } from "./layout-email"
 
 // TODO: add a template for the email using React EMAIL instead of plain text
 const VerifyEmail = ({ url, username }: { url: string; username: string }) => {
@@ -12,12 +12,12 @@ const VerifyEmail = ({ url, username }: { url: string; username: string }) => {
         Verify Email
       </Button>
     </EmailLayout>
-  );
-};
+  )
+}
 
-export default VerifyEmail;
+export default VerifyEmail
 
 VerifyEmail.PreviewProps = {
   url: "https://example.com/verify-email",
   username: "John Doe",
-};
+}

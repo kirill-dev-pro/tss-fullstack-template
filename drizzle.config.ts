@@ -1,5 +1,5 @@
-import { env } from "@/lib/env.server";
-import { defineConfig } from "drizzle-kit";
+import { env } from "@/lib/env.server"
+import { defineConfig } from "drizzle-kit"
 
 export default defineConfig({
   schema: "./src/lib/db/schema",
@@ -8,4 +8,4 @@ export default defineConfig({
   dbCredentials: {
     url: env.DATABASE_URL,
   },
-});
+})

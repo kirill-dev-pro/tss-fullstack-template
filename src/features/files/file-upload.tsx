@@ -1,93 +1,93 @@
-import { useMutation } from "@tanstack/react-query";
-import { AnimatePresence, motion } from "framer-motion";
-import { FileUp, Loader2, Plus } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { useTRPC } from "@/lib/trpc/react";
+import { useMutation } from "@tanstack/react-query"
+import { AnimatePresence, motion } from "framer-motion"
+import { FileUp, Loader2, Plus } from "lucide-react"
+import { useState } from "react"
+import { toast } from "sonner"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Progress } from "@/components/ui/progress"
+import { useTRPC } from "@/lib/trpc/react"
 
 export default function UploadComponent() {
-  const api = useTRPC();
-  const [files, setFiles] = useState<File[]>([]);
-  const [isDragging, setIsDragging] = useState(false);
-  const [title, setTitle] = useState<string>();
-  const [progress, setProgress] = useState(0);
-  const [content, setContent] = useState<string>();
+  const api = useTRPC()
+  const [files, setFiles] = useState<File[]>([])
+  const [isDragging, setIsDragging] = useState(false)
+  const [title, setTitle] = useState<string>()
+  const [progress, setProgress] = useState(0)
+  const [content, setContent] = useState<string>()
 
   const { mutate: uploadMutation, isPending } = useMutation(
     api.resources.upload.mutationOptions({
       onSuccess: (data) => {
-        setProgress(100);
-        setContent(data.id);
-        toast.success(`PDF processed with ${data.pageCount} pages`);
+        setProgress(100)
+        setContent(data.id)
+        toast.success(`PDF processed with ${data.pageCount} pages`)
       },
       onError: (error) => {
-        console.log(error);
-        toast.error(error.message);
+        console.log(error)
+        toast.error(error.message)
       },
-    }),
-  );
+    })
+  )
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
 
     if (isSafari && isDragging) {
-      toast.error("Safari does not support drag & drop. Please use the file picker.");
-      return;
+      toast.error("Safari does not support drag & drop. Please use the file picker.")
+      return
     }
 
-    const selectedFiles = Array.from(e.target.files || []);
-    const validFiles = selectedFiles.filter((file) => file.type === "application/pdf" && file.size <= 5 * 1024 * 1024);
-    console.log(validFiles);
+    const selectedFiles = Array.from(e.target.files || [])
+    const validFiles = selectedFiles.filter((file) => file.type === "application/pdf" && file.size <= 5 * 1024 * 1024)
+    console.log(validFiles)
 
     if (validFiles.length !== selectedFiles.length) {
-      toast.error("Only PDF files under 5MB are allowed.");
+      toast.error("Only PDF files under 5MB are allowed.")
     }
 
-    setFiles(validFiles);
-  };
+    setFiles(validFiles)
+  }
 
   const handleSubmitWithFiles = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (files.length === 0) return;
+    e.preventDefault()
+    if (files.length === 0) return
 
-    const file = files[0];
-    setTitle(file.name);
-    setProgress(10);
+    const file = files[0]
+    setTitle(file.name)
+    setProgress(10)
 
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("title", file.name);
-    uploadMutation(formData);
-  };
+    const formData = new FormData()
+    formData.append("file", file)
+    formData.append("title", file.name)
+    uploadMutation(formData)
+  }
 
   // Function to reset the component state
   const clearPDF = () => {
-    setFiles([]);
-    setTitle(undefined);
-    setProgress(0);
-    setContent(undefined);
-  };
+    setFiles([])
+    setTitle(undefined)
+    setProgress(0)
+    setContent(undefined)
+  }
 
   return (
     <div
       className="sticky top-4 flex max-h-[calc(100vh-2rem)] min-h-[200px] w-full justify-center overflow-visible"
       onDragOver={(e) => {
-        e.preventDefault();
-        setIsDragging(true);
+        e.preventDefault()
+        setIsDragging(true)
       }}
       onDragExit={() => setIsDragging(false)}
       onDragEnd={() => setIsDragging(false)}
       onDragLeave={() => setIsDragging(false)}
       onDrop={(e) => {
-        e.preventDefault();
-        setIsDragging(false);
-        console.log(e.dataTransfer.files);
+        e.preventDefault()
+        setIsDragging(false)
+        console.log(e.dataTransfer.files)
         handleFileChange({
           target: { files: e.dataTransfer.files },
-        } as React.ChangeEvent<HTMLInputElement>);
+        } as React.ChangeEvent<HTMLInputElement>)
       }}
     >
       <AnimatePresence>
@@ -190,5 +190,5 @@ export default function UploadComponent() {
         )}
       </Card>
     </div>
-  );
+  )
 }

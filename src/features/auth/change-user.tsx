@@ -1,13 +1,13 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "@tanstack/react-router";
-import { Edit, X } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { useTranslation } from "react-i18next";
-import { toast } from "sonner";
-import * as z from "zod";
-import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter } from "@tanstack/react-router"
+import { Edit, X } from "lucide-react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import { useTranslation } from "react-i18next"
+import { toast } from "sonner"
+import * as z from "zod"
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
 import {
   Dialog,
   DialogContent,
@@ -16,27 +16,27 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Field, FieldContent, FieldError, FieldLabel, FieldSet } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
-import { Label } from "@/components/ui/label";
-import { Spinner } from "@/components/ui/spinner";
-import { useSession } from "@/features/auth/auth-hooks";
-import { authClient } from "@/lib/auth/auth-client";
-import { convertImageToBase64 } from "@/lib/utils";
+} from "@/components/ui/dialog"
+import { Field, FieldContent, FieldError, FieldLabel, FieldSet } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { InputGroup, InputGroupInput } from "@/components/ui/input-group"
+import { Label } from "@/components/ui/label"
+import { Spinner } from "@/components/ui/spinner"
+import { useSession } from "@/features/auth/auth-hooks"
+import { authClient } from "@/lib/auth/auth-client"
+import { convertImageToBase64 } from "@/lib/utils"
 
 const changeUserSchema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters").optional(),
   image: z.instanceof(File).optional(),
-});
+})
 
 export function ChangeUser() {
-  const { t } = useTranslation();
-  const { data } = useSession();
-  const router = useRouter();
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [open, setOpen] = useState<boolean>(false);
+  const { t } = useTranslation()
+  const { data } = useSession()
+  const router = useRouter()
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [open, setOpen] = useState<boolean>(false)
 
   const form = useForm({
     resolver: zodResolver(changeUserSchema),
@@ -44,7 +44,7 @@ export function ChangeUser() {
       name: "",
       image: undefined as File | undefined,
     },
-  });
+  })
 
   const {
     register,
@@ -52,7 +52,7 @@ export function ChangeUser() {
     formState: { errors, isSubmitting },
     setValue,
     reset,
-  } = form;
+  } = form
 
   const onSubmit = async (data: z.infer<typeof changeUserSchema>) => {
     try {
@@ -61,38 +61,38 @@ export function ChangeUser() {
         name: data.name ? data.name : undefined,
         fetchOptions: {
           onSuccess: () => {
-            toast.success("User updated successfully");
+            toast.success("User updated successfully")
           },
           onError: (error) => {
-            toast.error(error.error.message);
+            toast.error(error.error.message)
           },
         },
-      });
-      reset();
-      router.invalidate();
-      setImagePreview(null);
-      setOpen(false);
+      })
+      reset()
+      router.invalidate()
+      setImagePreview(null)
+      setOpen(false)
     } catch (error) {
-      toast.error("An error occurred while updating user");
+      toast.error("An error occurred while updating user")
     }
-  };
+  }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.[0]
     if (file) {
-      setValue("image", file);
-      const reader = new FileReader();
+      setValue("image", file)
+      const reader = new FileReader()
       reader.onloadend = () => {
-        setImagePreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+        setImagePreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
     }
-  };
+  }
 
   const clearImage = () => {
-    setValue("image", undefined);
-    setImagePreview(null);
-  };
+    setValue("image", undefined)
+    setImagePreview(null)
+  }
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
@@ -147,5 +147,5 @@ export function ChangeUser() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

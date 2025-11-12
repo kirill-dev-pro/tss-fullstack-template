@@ -202,4 +202,4 @@ export default {
   GERMAN: "Alemão",
   PORTUGUESE: "Português",
   SPANISH: "Espanhol",
-} as const;
+} as const

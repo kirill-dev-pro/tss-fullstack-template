@@ -1,4 +1,4 @@
-import { Loader2Icon } from "lucide-react";
+import { Loader2Icon } from "lucide-react"
 
 export default function DefaultLoading() {
   return (
@@ -6,5 +6,5 @@ export default function DefaultLoading() {
       <Loader2Icon className="animate-spin" />
       <p className="mt-2 text-muted-foreground text-sm">Loading...</p>
     </div>
-  );
+  )
 }

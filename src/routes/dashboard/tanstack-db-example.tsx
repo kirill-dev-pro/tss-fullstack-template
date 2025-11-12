@@ -1,25 +1,25 @@
-import { eq } from '@tanstack/db';
-import { queryCollectionOptions } from '@tanstack/query-db-collection';
-import { createCollection, useLiveQuery } from '@tanstack/react-db';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createFileRoute } from '@tanstack/react-router';
-import { Loader2, Trash2 } from 'lucide-react';
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { useTRPC } from '@/lib/trpc/react';
+import { eq } from "@tanstack/db"
+import { queryCollectionOptions } from "@tanstack/query-db-collection"
+import { createCollection, useLiveQuery } from "@tanstack/react-db"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { createFileRoute } from "@tanstack/react-router"
+import { Loader2, Trash2 } from "lucide-react"
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Input } from "@/components/ui/input"
+import { useTRPC } from "@/lib/trpc/react"
 
-export const Route = createFileRoute('/dashboard/tanstack-db-example')({
+export const Route = createFileRoute("/dashboard/tanstack-db-example")({
   component: RouteComponent,
-});
+})
 
 // Todo type based on Drizzle schema
 interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
+  id: number
+  text: string
+  completed: boolean
 }
 
 function RouteComponent() {
@@ -27,56 +27,56 @@ function RouteComponent() {
     <div className="flex w-full flex-col items-center justify-center">
       <TanStackDBTodosRoute />
     </div>
-  );
+  )
 }
 
 function TanStackDBTodosRoute() {
-  const [newTodoText, setNewTodoText] = useState('');
-  const trpc = useTRPC();
-  const queryClient = useQueryClient();
-  const todos = useQuery({ ...trpc.todo.getAll.queryOptions(), enabled: false });
+  const [newTodoText, setNewTodoText] = useState("")
+  const trpc = useTRPC()
+  const queryClient = useQueryClient()
+  const todos = useQuery({ ...trpc.todo.getAll.queryOptions(), enabled: false })
 
   // Create TanStack DB collection using queryCollectionOptions
   const todoCollection = createCollection(
     queryCollectionOptions({
-      queryKey: ['todos'],
+      queryKey: ["todos"],
       queryFn: async () => {
-        const data = await todos.refetch();
-        return data.data;
+        const data = await todos.refetch()
+        return data.data
       },
       queryClient,
       getKey: (item) => item.id,
     })
-  );
+  )
 
   // Standard tRPC mutations for server communication (matching original pattern)
   const createMutation = useMutation(
     trpc.todo.create.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['todos'] });
-        setNewTodoText('');
+        queryClient.invalidateQueries({ queryKey: ["todos"] })
+        setNewTodoText("")
       },
     })
-  );
+  )
 
   const toggleMutation = useMutation(
     trpc.todo.toggle.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['todos'] });
+        queryClient.invalidateQueries({ queryKey: ["todos"] })
       },
     })
-  );
+  )
 
   const deleteMutation = useMutation(
     trpc.todo.delete.mutationOptions({
       onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['todos'] });
+        queryClient.invalidateQueries({ queryKey: ["todos"] })
       },
     })
-  );
+  )
 
   // Live query for all todos
-  const { data: allTodos, isLoading, isError } = useLiveQuery((q) => q.from({ todo: todoCollection }));
+  const { data: allTodos, isLoading, isError } = useLiveQuery((q) => q.from({ todo: todoCollection }))
 
   // Live query for completed todos only
   const { data: completedTodos } = useLiveQuery((q) =>
@@ -88,7 +88,7 @@ function TanStackDBTodosRoute() {
         text: todo.text,
         completed: todo.completed,
       }))
-  );
+  )
 
   // Live query for pending todos only
   const { data: pendingTodos } = useLiveQuery((q) =>
@@ -100,25 +100,25 @@ function TanStackDBTodosRoute() {
         text: todo.text,
         completed: todo.completed,
       }))
-  );
+  )
 
   const handleAddTodo = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e.preventDefault()
     if (newTodoText.trim()) {
       // Send to server (setNewTodoText will be called in onSuccess)
-      await createMutation.mutateAsync({ text: newTodoText });
+      await createMutation.mutateAsync({ text: newTodoText })
     }
-  };
+  }
 
   const handleToggleTodo = async (id: number, completed: boolean) => {
     // Send to server
-    await toggleMutation.mutateAsync({ id, completed: !completed });
-  };
+    await toggleMutation.mutateAsync({ id, completed: !completed })
+  }
 
   const handleDeleteTodo = async (id: number) => {
     // Send to server
-    await deleteMutation.mutateAsync({ id });
-  };
+    await deleteMutation.mutateAsync({ id })
+  }
 
   if (isError) {
     return (
@@ -128,7 +128,7 @@ function TanStackDBTodosRoute() {
           <CardDescription>Failed to load todos</CardDescription>
         </CardHeader>
       </Card>
-    );
+    )
   }
 
   return (
@@ -153,7 +153,7 @@ function TanStackDBTodosRoute() {
               value={newTodoText}
             />
             <Button disabled={!newTodoText.trim() || createMutation.isPending} type="submit">
-              {createMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Add Todo'}
+              {createMutation.isPending ? <Loader2 className="h-4 w-4 animate-spin" /> : "Add Todo"}
             </Button>
           </form>
         </CardContent>
@@ -184,7 +184,7 @@ function TanStackDBTodosRoute() {
                         onCheckedChange={() => handleToggleTodo(todo.id, todo.completed)}
                       />
                       <label
-                        className={`text-sm ${todo.completed ? 'text-muted-foreground line-through' : ''}`}
+                        className={`text-sm ${todo.completed ? "text-muted-foreground line-through" : ""}`}
                         htmlFor={`todo-all-${todo.id}`}
                       >
                         {todo.text}
@@ -317,5 +317,5 @@ function TanStackDBTodosRoute() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

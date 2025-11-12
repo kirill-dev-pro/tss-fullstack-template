@@ -1,8 +1,8 @@
-import { Button, Text } from "@react-email/components";
-import { EmailLayout } from "./layout-email";
+import { Button, Text } from "@react-email/components"
+import { EmailLayout } from "./layout-email"
 
 const SendMagicLinkEmail = ({ username, url, token }: { username: string; url: string; token: string }) => {
-  const link = url + "?token=" + token;
+  const link = url + "?token=" + token
   return (
     <EmailLayout preview="Your magic link to sign in">
       <Text className="font-bold text-2xl text-gray-800">Magic Link</Text>
@@ -17,13 +17,13 @@ const SendMagicLinkEmail = ({ username, url, token }: { username: string; url: s
         If you didn't request this magic link, you can safely ignore this email.
       </Text>
     </EmailLayout>
-  );
-};
+  )
+}
 
-export default SendMagicLinkEmail;
+export default SendMagicLinkEmail
 
 SendMagicLinkEmail.PreviewProps = {
   username: "John Doe",
   url: "https://example.com/magic-link",
   token: "123456",
-};
+}

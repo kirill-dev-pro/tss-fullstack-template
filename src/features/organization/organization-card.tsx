@@ -1,15 +1,15 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { AnimatePresence, motion } from "framer-motion";
-import { ChevronDownIcon, MailPlus, PlusIcon } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import * as z from "zod";
-import CopyButton from "@/components/copy-button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { AnimatePresence, motion } from "framer-motion"
+import { ChevronDownIcon, MailPlus, PlusIcon } from "lucide-react"
+import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import * as z from "zod"
+import CopyButton from "@/components/copy-button"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Dialog,
   DialogClose,
@@ -19,13 +19,8 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from "@/components/ui/dialog"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import {
   Field,
   FieldContent,
@@ -34,14 +29,14 @@ import {
   FieldGroup,
   FieldLabel,
   FieldSet,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Spinner } from "@/components/ui/spinner";
+} from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Spinner } from "@/components/ui/spinner"
 
-import { useSession } from "@/features/auth/auth-hooks";
+import { useSession } from "@/features/auth/auth-hooks"
 import {
   useCancelInvitation,
   useCreateOrganization,
@@ -49,41 +44,41 @@ import {
   useOrganizations,
   useRemoveMember,
   useSetActiveOrganization,
-} from "@/features/organization/organization-hooks";
-import type { AuthClient } from "@/lib/auth/auth-client";
-import { authClient } from "@/lib/auth/auth-client";
-import { useTranslation } from "@/lib/intl/react";
+} from "@/features/organization/organization-hooks"
+import type { AuthClient } from "@/lib/auth/auth-client"
+import { authClient } from "@/lib/auth/auth-client"
+import { useTranslation } from "@/lib/intl/react"
 
-type ActiveOrganization = Awaited<ReturnType<typeof authClient.organization.getFullOrganization>>;
+type ActiveOrganization = Awaited<ReturnType<typeof authClient.organization.getFullOrganization>>
 
 export function OrganizationCard(props: {
-  session: AuthClient["$Infer"]["Session"] | null;
-  activeOrganization: ActiveOrganization | null;
+  session: AuthClient["$Infer"]["Session"] | null
+  activeOrganization: ActiveOrganization | null
 }) {
-  const { t } = useTranslation();
-  const { data: organizations } = useOrganizations();
-  const setActiveOrganization = useSetActiveOrganization();
-  const createOrganization = useCreateOrganization();
-  const inviteMember = useInviteMember();
-  const removeMember = useRemoveMember();
-  const cancelInvitation = useCancelInvitation();
+  const { t } = useTranslation()
+  const { data: organizations } = useOrganizations()
+  const setActiveOrganization = useSetActiveOrganization()
+  const createOrganization = useCreateOrganization()
+  const inviteMember = useInviteMember()
+  const removeMember = useRemoveMember()
+  const cancelInvitation = useCancelInvitation()
 
   const optimisticOrg =
     // TODO: Fix this type
     // @ts-expect-error
-    props.activeOrganization as typeof setActiveOrganization.data.data;
+    props.activeOrganization as typeof setActiveOrganization.data.data
 
-  const [isRevoking, setIsRevoking] = useState<string[]>([]);
+  const [isRevoking, setIsRevoking] = useState<string[]>([])
   const inviteVariants = {
     hidden: { opacity: 0, height: 0 },
     visible: { opacity: 1, height: "auto" },
     exit: { opacity: 0, height: 0 },
-  };
+  }
 
-  const { data } = useSession();
-  const session = data || props.session;
+  const { data } = useSession()
+  const session = data || props.session
 
-  const currentMember = optimisticOrg?.members?.find((member) => member.userId === session?.user.id);
+  const currentMember = optimisticOrg?.members?.find((member) => member.userId === session?.user.id)
 
   return (
     <Card className="w-full">
@@ -106,7 +101,7 @@ export function OrganizationCard(props: {
                 onClick={async () => {
                   setActiveOrganization.mutate({
                     organizationId: null,
-                  });
+                  })
                 }}
               >
                 <p className="sm text-sm">{t("PERSONAL")}</p>
@@ -117,12 +112,12 @@ export function OrganizationCard(props: {
                   key={org.id}
                   onClick={async () => {
                     if (org.id === optimisticOrg?.id) {
-                      return;
+                      return
                     }
 
                     setActiveOrganization.mutate({
                       organizationId: org.id,
-                    });
+                    })
                   }}
                 >
                   <p className="sm text-sm">{org.name}</p>
@@ -171,7 +166,7 @@ export function OrganizationCard(props: {
                       onClick={() => {
                         removeMember.mutate({
                           userId: member.id,
-                        });
+                        })
                       }}
                       size="sm"
                       variant="destructive"
@@ -227,21 +222,21 @@ export function OrganizationCard(props: {
                         <Button
                           disabled={isRevoking.includes(invitation.id)}
                           onClick={() => {
-                            setIsRevoking([...isRevoking, invitation.id]);
+                            setIsRevoking([...isRevoking, invitation.id])
                             cancelInvitation.mutate(
                               {
                                 invitationId: invitation.id,
                               },
                               {
                                 onSuccess: () => {
-                                  toast.message("Invitation revoked successfully");
-                                  setIsRevoking(isRevoking.filter((id) => id !== invitation.id));
+                                  toast.message("Invitation revoked successfully")
+                                  setIsRevoking(isRevoking.filter((id) => id !== invitation.id))
                                 },
                                 onError: () => {
-                                  setIsRevoking(isRevoking.filter((id) => id !== invitation.id));
+                                  setIsRevoking(isRevoking.filter((id) => id !== invitation.id))
                                 },
                               }
-                            );
+                            )
                           }}
                           size="sm"
                           variant="destructive"
@@ -278,7 +273,7 @@ export function OrganizationCard(props: {
         </div>
       </CardContent>
     </Card>
-  );
+  )
 }
 
 const createOrganizationSchema = z.object({
@@ -288,14 +283,14 @@ const createOrganizationSchema = z.object({
     .min(2, "Slug must be at least 2 characters")
     .regex(/^[a-z0-9-]+$/, "Slug can only contain lowercase letters, numbers, and hyphens"),
   logo: z.instanceof(File).optional(),
-});
+})
 
 function CreateOrganizationDialog() {
-  const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
-  const [isSlugEdited, setIsSlugEdited] = useState(false);
-  const [logoPreview, setLogoPreview] = useState<string | null>(null);
-  const createOrganization = useCreateOrganization();
+  const { t } = useTranslation()
+  const [open, setOpen] = useState(false)
+  const [isSlugEdited, setIsSlugEdited] = useState(false)
+  const [logoPreview, setLogoPreview] = useState<string | null>(null)
+  const createOrganization = useCreateOrganization()
 
   const form = useForm({
     resolver: zodResolver(createOrganizationSchema),
@@ -304,7 +299,7 @@ function CreateOrganizationDialog() {
       slug: "",
       logo: undefined as File | undefined,
     },
-  });
+  })
 
   const {
     register,
@@ -313,47 +308,47 @@ function CreateOrganizationDialog() {
     setValue,
     watch,
     reset,
-  } = form;
-  const watchName = watch("name");
+  } = form
+  const watchName = watch("name")
 
   // Auto-generate slug from name if not manually edited
   useEffect(() => {
     if (!isSlugEdited && watchName) {
-      const generatedSlug = watchName.trim().toLowerCase().replace(/\s+/g, "-");
-      setValue("slug", generatedSlug);
+      const generatedSlug = watchName.trim().toLowerCase().replace(/\s+/g, "-")
+      setValue("slug", generatedSlug)
     }
-  }, [watchName, isSlugEdited, setValue]);
+  }, [watchName, isSlugEdited, setValue])
 
   const convertImageToBase64 = (file: File): Promise<string> =>
     new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result as string);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
+      const reader = new FileReader()
+      reader.onloadend = () => resolve(reader.result as string)
+      reader.onerror = reject
+      reader.readAsDataURL(file)
+    })
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+    const file = e.target.files?.[0]
     if (file) {
-      setValue("logo", file);
-      const reader = new FileReader();
+      setValue("logo", file)
+      const reader = new FileReader()
       reader.onloadend = () => {
-        setLogoPreview(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+        setLogoPreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
     }
-  };
+  }
 
   const clearLogo = () => {
-    setValue("logo", undefined);
-    setLogoPreview(null);
-  };
+    setValue("logo", undefined)
+    setLogoPreview(null)
+  }
 
   const onSubmit = async (data: z.infer<typeof createOrganizationSchema>) => {
     try {
-      let logoBase64: string | undefined;
+      let logoBase64: string | undefined
       if (data.logo) {
-        logoBase64 = await convertImageToBase64(data.logo);
+        logoBase64 = await convertImageToBase64(data.logo)
       }
 
       createOrganization.mutate(
@@ -364,21 +359,21 @@ function CreateOrganizationDialog() {
         },
         {
           onSuccess: () => {
-            toast.success("Organization created successfully");
-            setOpen(false);
-            reset();
-            setLogoPreview(null);
-            setIsSlugEdited(false);
+            toast.success("Organization created successfully")
+            setOpen(false)
+            reset()
+            setLogoPreview(null)
+            setIsSlugEdited(false)
           },
           onError: (error) => {
-            toast.error(error.message);
+            toast.error(error.message)
           },
         }
-      );
+      )
     } catch (error) {
-      toast.error("An error occurred while creating organization");
+      toast.error("An error occurred while creating organization")
     }
-  };
+  }
 
   return (
     <Dialog onOpenChange={setOpen} open={open}>
@@ -458,7 +453,7 @@ function CreateOrganizationDialog() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
 
 const inviteMemberSchema = z.object({
@@ -466,12 +461,12 @@ const inviteMemberSchema = z.object({
   role: z.enum(["admin", "member"], {
     message: "Please select a role",
   }),
-});
+})
 
 function InviteMemberDialog() {
-  const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
-  const inviteMember = useInviteMember();
+  const { t } = useTranslation()
+  const [open, setOpen] = useState(false)
+  const inviteMember = useInviteMember()
 
   const form = useForm({
     resolver: zodResolver(inviteMemberSchema),
@@ -479,14 +474,14 @@ function InviteMemberDialog() {
       email: "",
       role: "member" as "admin" | "member",
     },
-  });
+  })
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = form;
+  } = form
 
   const onSubmit = async (data: z.infer<typeof inviteMemberSchema>) => {
     inviteMember.mutate(
@@ -496,16 +491,16 @@ function InviteMemberDialog() {
       },
       {
         onSuccess: () => {
-          toast.success("Member invited successfully");
-          reset();
-          setOpen(false);
+          toast.success("Member invited successfully")
+          reset()
+          setOpen(false)
         },
         onError: (error) => {
-          toast.error(error.message);
+          toast.error(error.message)
         },
       }
-    );
-  };
+    )
+  }
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
@@ -559,5 +554,5 @@ function InviteMemberDialog() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }

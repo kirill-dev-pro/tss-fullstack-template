@@ -1,5 +1,5 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { AnimatePresence, motion } from "framer-motion";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { AnimatePresence, motion } from "framer-motion"
 import {
   ChevronDownIcon,
   Copy,
@@ -13,17 +13,17 @@ import {
   UserMinus,
   Users,
   UserX,
-} from "lucide-react";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import * as z from "zod";
-import CopyButton from "@/components/copy-button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+} from "lucide-react"
+import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import * as z from "zod"
+import CopyButton from "@/components/copy-button"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Dialog,
   DialogClose,
@@ -33,7 +33,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "@/components/ui/dialog"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -41,18 +41,18 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Field, FieldContent, FieldError, FieldLabel, FieldSet } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
-import { Spinner } from "@/components/ui/spinner";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+} from "@/components/ui/dropdown-menu"
+import { Field, FieldContent, FieldError, FieldLabel, FieldSet } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { InputGroup, InputGroupInput } from "@/components/ui/input-group"
+import { Label } from "@/components/ui/label"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
+import { Spinner } from "@/components/ui/spinner"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-import { useSession } from "@/features/auth/auth-hooks";
+import { useSession } from "@/features/auth/auth-hooks"
 import {
   useCancelInvitation,
   useCreateOrganization,
@@ -60,24 +60,24 @@ import {
   useOrganizations,
   useRemoveMember,
   useSetActiveOrganization,
-} from "@/features/organization/organization-hooks";
-import type { AuthClient } from "@/lib/auth/auth-client";
-import { authClient } from "@/lib/auth/auth-client";
-import { useTranslation } from "@/lib/intl/react";
+} from "@/features/organization/organization-hooks"
+import type { AuthClient } from "@/lib/auth/auth-client"
+import { authClient } from "@/lib/auth/auth-client"
+import { useTranslation } from "@/lib/intl/react"
 
-type ActiveOrganization = Awaited<ReturnType<typeof authClient.organization.getFullOrganization>>;
+type ActiveOrganization = Awaited<ReturnType<typeof authClient.organization.getFullOrganization>>
 
 const inviteMemberSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   role: z.enum(["admin", "member"], {
     required_error: "Please select a role",
   }),
-});
+})
 
 function InviteMemberDialog() {
-  const { t } = useTranslation();
-  const [open, setOpen] = useState(false);
-  const inviteMember = useInviteMember();
+  const { t } = useTranslation()
+  const [open, setOpen] = useState(false)
+  const inviteMember = useInviteMember()
 
   const form = useForm({
     resolver: zodResolver(inviteMemberSchema),
@@ -85,14 +85,14 @@ function InviteMemberDialog() {
       email: "",
       role: "member" as "admin" | "member",
     },
-  });
+  })
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = form;
+  } = form
 
   const onSubmit = (data: z.infer<typeof inviteMemberSchema>) => {
     inviteMember.mutate(
@@ -102,16 +102,16 @@ function InviteMemberDialog() {
       },
       {
         onSuccess: () => {
-          toast.success("Member invited successfully");
-          reset();
-          setOpen(false);
+          toast.success("Member invited successfully")
+          reset()
+          setOpen(false)
         },
         onError: (error) => {
-          toast.error(error.message);
+          toast.error(error.message)
         },
       }
-    );
-  };
+    )
+  }
 
   return (
     <Dialog onOpenChange={setOpen} open={open}>
@@ -164,65 +164,65 @@ function InviteMemberDialog() {
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
+  )
 }
 
 export function WorkspacePage() {
-  const { t } = useTranslation();
-  const { data: session } = useSession();
-  const { data: organizations } = useOrganizations();
-  const { data: activeOrgData } = authClient.organization.useGetFullOrganization();
-  const setActiveOrganization = useSetActiveOrganization();
-  const removeMember = useRemoveMember();
-  const cancelInvitation = useCancelInvitation();
+  const { t } = useTranslation()
+  const { data: session } = useSession()
+  const { data: organizations } = useOrganizations()
+  const { data: activeOrgData } = authClient.organization.useGetFullOrganization()
+  const setActiveOrganization = useSetActiveOrganization()
+  const removeMember = useRemoveMember()
+  const cancelInvitation = useCancelInvitation()
 
-  const [isRevoking, setIsRevoking] = useState<string[]>([]);
+  const [isRevoking, setIsRevoking] = useState<string[]>([])
 
-  const optimisticOrg = activeOrgData?.data;
-  const currentMember = optimisticOrg?.members?.find((member) => member.userId === session?.user.id);
+  const optimisticOrg = activeOrgData?.data
+  const currentMember = optimisticOrg?.members?.find((member) => member.userId === session?.user.id)
 
   const inviteVariants = {
     hidden: { opacity: 0, height: 0 },
     visible: { opacity: 1, height: "auto" },
     exit: { opacity: 0, height: 0 },
-  };
+  }
 
   const stats = {
     totalMembers: optimisticOrg?.members?.length || 0,
     pendingInvitations: optimisticOrg?.invitations?.filter((inv) => inv.status === "pending").length || 0,
     adminMembers:
       optimisticOrg?.members?.filter((member) => member.role === "admin" || member.role === "owner").length || 0,
-  };
+  }
 
   const handleRemoveMember = (memberId: string) => {
     removeMember.mutate({
       userId: memberId,
-    });
-  };
+    })
+  }
 
   const handleCancelInvitation = (invitationId: string) => {
-    setIsRevoking([...isRevoking, invitationId]);
+    setIsRevoking([...isRevoking, invitationId])
     cancelInvitation.mutate(
       {
         invitationId,
       },
       {
         onSuccess: () => {
-          toast.success("Invitation revoked successfully");
-          setIsRevoking(isRevoking.filter((id) => id !== invitationId));
+          toast.success("Invitation revoked successfully")
+          setIsRevoking(isRevoking.filter((id) => id !== invitationId))
         },
         onError: () => {
-          setIsRevoking(isRevoking.filter((id) => id !== invitationId));
+          setIsRevoking(isRevoking.filter((id) => id !== invitationId))
         },
       }
-    );
-  };
+    )
+  }
 
   const copyInvitationLink = (invitationId: string) => {
-    const link = `${window.location.origin}/accept-invitation/${invitationId}`;
-    navigator.clipboard.writeText(link);
-    toast.success("Invitation link copied to clipboard");
-  };
+    const link = `${window.location.origin}/accept-invitation/${invitationId}`
+    navigator.clipboard.writeText(link)
+    toast.success("Invitation link copied to clipboard")
+  }
 
   return (
     <div className="container mx-auto space-y-6 py-6">
@@ -243,7 +243,7 @@ export function WorkspacePage() {
             <DropdownMenuContent align="end">
               <DropdownMenuItem
                 onClick={() => {
-                  setActiveOrganization.mutate({ organizationId: null });
+                  setActiveOrganization.mutate({ organizationId: null })
                 }}
               >
                 Personal
@@ -253,7 +253,7 @@ export function WorkspacePage() {
                   key={org.id}
                   onClick={() => {
                     if (org.id !== optimisticOrg?.id) {
-                      setActiveOrganization.mutate({ organizationId: org.id });
+                      setActiveOrganization.mutate({ organizationId: org.id })
                     }
                   }}
                 >
@@ -480,5 +480,5 @@ export function WorkspacePage() {
         </Card>
       )}
     </div>
-  );
+  )
 }

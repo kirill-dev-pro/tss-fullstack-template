@@ -1,10 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
-import { Chat } from "@/features/ai/chat-rag";
-import UploadComponent from "@/features/files/file-upload";
+import { createFileRoute } from "@tanstack/react-router"
+import { Chat } from "@/features/ai/chat-rag"
+import UploadComponent from "@/features/files/file-upload"
 
 export const Route = createFileRoute("/dashboard/chat/rag")({
   component: RouteComponent,
-});
+})
 
 function RouteComponent() {
   return (
@@ -16,5 +16,5 @@ function RouteComponent() {
         <UploadComponent />
       </div>
     </div>
-  );
+  )
 }

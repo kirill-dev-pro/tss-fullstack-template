@@ -1,13 +1,13 @@
-'use client';
+"use client"
 
-import { Code2, CreditCard, Settings, Shield, Trash2, User, Users } from 'lucide-react';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import CopyButton from './copy-button';
-import { Protect, useAuth } from './protect';
+import { Code2, CreditCard, Settings, Shield, Trash2, User, Users } from "lucide-react"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import CopyButton from "./copy-button"
+import { Protect, useAuth } from "./protect"
 
 /**
  * Code block component for displaying formatted code with copy functionality
@@ -22,7 +22,7 @@ const CodeBlock = ({ code, title }: { code: string; title: string }) => (
       <code className="text-foreground">{code}</code>
     </pre>
   </div>
-);
+)
 
 /**
  * Examples demonstrating how to use the Protect component with better-auth
@@ -39,8 +39,8 @@ const CodeBlock = ({ code, title }: { code: string; title: string }) => (
  * In a real application, you would split this into smaller, focused components.
  */
 export function ProtectExamples() {
-  const authData = useAuth();
-  const { user, isAuthenticated, hasRole, hasPermission, canManageUsers, canDeleteUsers } = authData;
+  const authData = useAuth()
+  const { user, isAuthenticated, hasRole, hasPermission, canManageUsers, canDeleteUsers } = authData
 
   return (
     <div className="space-y-8 p-6">
@@ -60,9 +60,9 @@ export function ProtectExamples() {
       <Alert>
         <User className="h-4 w-4" />
         <AlertDescription>
-          <strong>Current Status:</strong>{' '}
-          {isAuthenticated ? `Signed in as ${user?.email} with role: ` : 'Not signed in '}
-          {isAuthenticated && <Badge variant="outline">{user?.role || 'user'}</Badge>}
+          <strong>Current Status:</strong>{" "}
+          {isAuthenticated ? `Signed in as ${user?.email} with role: ` : "Not signed in "}
+          {isAuthenticated && <Badge variant="outline">{user?.role || "user"}</Badge>}
         </AlertDescription>
       </Alert>
 
@@ -276,7 +276,7 @@ return (
                       You don't have permission to create projects.
                     </div>
                   }
-                  permission={{ resource: 'project', action: 'create' }}
+                  permission={{ resource: "project", action: "create" }}
                 >
                   <div className="rounded-lg border border-green-200 bg-green-50 p-4 dark:border-green-800 dark:bg-green-950">
                     <p className="mb-2 text-green-800 dark:text-green-200">✅ You can create new projects!</p>
@@ -297,7 +297,7 @@ return (
                       You don't have permission to manage billing.
                     </div>
                   }
-                  permission={{ resource: 'billing', action: 'manage' }}
+                  permission={{ resource: "billing", action: "manage" }}
                 >
                   <div className="rounded-lg border border-yellow-200 bg-yellow-50 p-4 dark:border-yellow-800 dark:bg-yellow-950">
                     <p className="mb-2 text-yellow-800 dark:text-yellow-200">
@@ -320,7 +320,7 @@ return (
                       You don't have permission to delete users.
                     </div>
                   }
-                  permission={{ resource: 'user', action: 'delete' }}
+                  permission={{ resource: "user", action: "delete" }}
                 >
                   <div className="rounded-lg border border-red-200 bg-red-50 p-4 dark:border-red-800 dark:bg-red-950">
                     <p className="mb-2 text-red-800 dark:text-red-200">⚠️ You can delete users - use with caution!</p>
@@ -375,7 +375,7 @@ return (
               <Alert>
                 <Code2 className="h-4 w-4" />
                 <AlertDescription>
-                  <strong>Dynamic Types:</strong> All resource and action types are automatically derived from your{' '}
+                  <strong>Dynamic Types:</strong> All resource and action types are automatically derived from your{" "}
                   <code>permissions.ts</code> configuration. Add new permissions there and they'll be available here
                   with full TypeScript support!
                 </AlertDescription>
@@ -408,7 +408,7 @@ return (
                 <Protect
                   condition={({ user: conditionUser }) => {
                     // Custom logic: User must be authenticated AND have a role
-                    return Boolean(conditionUser && conditionUser.role && conditionUser.role !== 'user');
+                    return Boolean(conditionUser && conditionUser.role && conditionUser.role !== "user")
                   }}
                   fallback={
                     <div className="rounded bg-muted p-3 text-muted-foreground text-sm">
@@ -430,7 +430,7 @@ return (
                 <Protect
                   condition={({ user: conditionUser }) => {
                     // Custom logic: Check if user email is from specific domain
-                    return Boolean(conditionUser?.email?.endsWith('@company.com'));
+                    return Boolean(conditionUser?.email?.endsWith("@company.com"))
                   }}
                   fallback={
                     <div className="rounded bg-muted p-3 text-muted-foreground text-sm">
@@ -517,23 +517,23 @@ return (
                   <h4 className="font-semibold">Your Current Permissions:</h4>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <Badge variant={canManageUsers() ? 'default' : 'outline'}>
-                        {canManageUsers() ? '✅' : '❌'} Manage Users
+                      <Badge variant={canManageUsers() ? "default" : "outline"}>
+                        {canManageUsers() ? "✅" : "❌"} Manage Users
                       </Badge>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge variant={canDeleteUsers() ? 'default' : 'outline'}>
-                        {canDeleteUsers() ? '✅' : '❌'} Delete Users
+                      <Badge variant={canDeleteUsers() ? "default" : "outline"}>
+                        {canDeleteUsers() ? "✅" : "❌"} Delete Users
                       </Badge>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge variant={hasPermission('project', 'create') ? 'default' : 'outline'}>
-                        {hasPermission('project', 'create') ? '✅' : '❌'} Create Projects
+                      <Badge variant={hasPermission("project", "create") ? "default" : "outline"}>
+                        {hasPermission("project", "create") ? "✅" : "❌"} Create Projects
                       </Badge>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge variant={hasPermission('billing', 'manage') ? 'default' : 'outline'}>
-                        {hasPermission('billing', 'manage') ? '✅' : '❌'} Manage Billing
+                      <Badge variant={hasPermission("billing", "manage") ? "default" : "outline"}>
+                        {hasPermission("billing", "manage") ? "✅" : "❌"} Manage Billing
                       </Badge>
                     </div>
                   </div>
@@ -543,18 +543,18 @@ return (
                   <h4 className="font-semibold">Role Checks:</h4>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <Badge variant={hasRole('user') ? 'default' : 'outline'}>
-                        {hasRole('user') ? '✅' : '❌'} User Role
+                      <Badge variant={hasRole("user") ? "default" : "outline"}>
+                        {hasRole("user") ? "✅" : "❌"} User Role
                       </Badge>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge variant={hasRole('admin') ? 'default' : 'outline'}>
-                        {hasRole('admin') ? '✅' : '❌'} Admin Role
+                      <Badge variant={hasRole("admin") ? "default" : "outline"}>
+                        {hasRole("admin") ? "✅" : "❌"} Admin Role
                       </Badge>
                     </div>
                     <div className="flex items-center gap-2">
-                      <Badge variant={hasRole('superadmin') ? 'default' : 'outline'}>
-                        {hasRole('superadmin') ? '✅' : '❌'} Superadmin Role
+                      <Badge variant={hasRole("superadmin") ? "default" : "outline"}>
+                        {hasRole("superadmin") ? "✅" : "❌"} Superadmin Role
                       </Badge>
                     </div>
                   </div>
@@ -678,5 +678,5 @@ return (
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

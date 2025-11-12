@@ -1,30 +1,30 @@
 /** biome-ignore-all lint/performance/noNamespaceImport: <explanation> */
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "@tanstack/react-router";
-import { AlertCircle, Key } from "lucide-react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Field, FieldError, FieldLabel } from "@/components/ui/field";
-import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
-import { Spinner } from "@/components/ui/spinner";
-import { useLogin } from "@/features/auth/auth-hooks";
-import { useTranslation } from "@/lib/intl/react";
-import { cn } from "@/lib/utils";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Link } from "@tanstack/react-router"
+import { AlertCircle, Key } from "lucide-react"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Field, FieldError, FieldLabel } from "@/components/ui/field"
+import { InputGroup, InputGroupInput } from "@/components/ui/input-group"
+import { Spinner } from "@/components/ui/spinner"
+import { useLogin } from "@/features/auth/auth-hooks"
+import { useTranslation } from "@/lib/intl/react"
+import { cn } from "@/lib/utils"
 
 const signInSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
   password: z.string().min(1, "Password is required"),
   rememberMe: z.boolean().optional(),
-});
+})
 
 export default function SignInForm() {
-  const { t } = useTranslation();
-  const { loginWithCredentials, loginWithPasskey, loginWithSocial } = useLogin();
+  const { t } = useTranslation()
+  const { loginWithCredentials, loginWithPasskey, loginWithSocial } = useLogin()
 
   const form = useForm({
     resolver: zodResolver(signInSchema),
@@ -33,21 +33,21 @@ export default function SignInForm() {
       password: "",
       rememberMe: false,
     },
-  });
+  })
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = form;
+  } = form
 
   const onSubmit = (data: z.infer<typeof signInSchema>) => {
     loginWithCredentials.mutate({
       email: data.email,
       password: data.password,
       rememberMe: !!data.rememberMe,
-    });
-  };
+    })
+  }
 
   return (
     <Card className="w-full max-w-md">
@@ -130,7 +130,7 @@ export default function SignInForm() {
           <Button
             className="gap-2"
             onClick={() => {
-              loginWithPasskey.mutate();
+              loginWithPasskey.mutate()
             }}
             variant="secondary"
           >
@@ -146,7 +146,7 @@ export default function SignInForm() {
                 loginWithSocial.mutate({
                   provider: "google",
                   callbackURL: "/dashboard",
-                });
+                })
               }}
               variant="outline"
             >
@@ -177,7 +177,7 @@ export default function SignInForm() {
                 loginWithSocial.mutate({
                   provider: "github",
                   callbackURL: "/dashboard",
-                });
+                })
               }}
               variant="outline"
             >
@@ -204,5 +204,5 @@ export default function SignInForm() {
         </div>
       </CardFooter>
     </Card>
-  );
+  )
 }

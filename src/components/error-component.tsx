@@ -1,21 +1,21 @@
-import { useQueryErrorResetBoundary } from "@tanstack/react-query";
-import { Link, useRouter } from "@tanstack/react-router";
-import { AlertTriangleIcon } from "lucide-react";
-import { useEffect } from "react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
+import { useQueryErrorResetBoundary } from "@tanstack/react-query"
+import { Link, useRouter } from "@tanstack/react-router"
+import { AlertTriangleIcon } from "lucide-react"
+import { useEffect } from "react"
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+import { Button } from "@/components/ui/button"
 
 export default function ErrorComponent({ error }: { error: Error }) {
-  const router = useRouter();
+  const router = useRouter()
 
-  const queryClientErrorBoundary = useQueryErrorResetBoundary();
+  const queryClientErrorBoundary = useQueryErrorResetBoundary()
 
-  const isDev = process.env.NODE_ENV !== "production";
+  const isDev = process.env.NODE_ENV !== "production"
 
   useEffect(() => {
-    queryClientErrorBoundary.reset();
-  }, [queryClientErrorBoundary]);
+    queryClientErrorBoundary.reset()
+  }, [queryClientErrorBoundary])
 
   return (
     <div className="mt-8 flex items-center justify-center p-4">
@@ -29,7 +29,7 @@ export default function ErrorComponent({ error }: { error: Error }) {
           <Button
             className="w-full"
             onClick={() => {
-              router.invalidate();
+              router.invalidate()
             }}
           >
             Try again
@@ -55,5 +55,5 @@ export default function ErrorComponent({ error }: { error: Error }) {
         </div>
       </div>
     </div>
-  );
+  )
 }

@@ -1,16 +1,20 @@
 {
-  "name": "fullstack-start-template",
+  "name": "ai-realty",
   "private": true,
   "version": "0.0.1",
   "type": "module",
   "author": {
-    "name": "Carlos Ziegler",
-    "url": "https://github.com/carlosziegler"
+    "name": "Chuprov Kirill",
+    "url": "https://github.com/kirill-dev-pro"
   },
   "contributors": [
     {
       "name": "Carlos Ziegler",
       "url": "https://github.com/carlosziegler"
+    },
+    {
+      "name": "Chuprov Kirill",
+      "url": "https://github.com/kirill-dev-pro"
     }
   ],
   "license": "MIT",

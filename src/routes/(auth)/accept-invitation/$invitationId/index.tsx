@@ -1,22 +1,22 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router";
-import { CheckIcon, XIcon } from "lucide-react";
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
-import { InvitationError } from "@/features/organization/invitation-error";
-import { authClient } from "@/lib/auth/auth-client";
-import { useTranslation } from "@/lib/intl/react";
+import { createFileRoute, useRouter } from "@tanstack/react-router"
+import { CheckIcon, XIcon } from "lucide-react"
+import { useEffect, useState } from "react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
+import { InvitationError } from "@/features/organization/invitation-error"
+import { authClient } from "@/lib/auth/auth-client"
+import { useTranslation } from "@/lib/intl/react"
 
 export const Route = createFileRoute("/(auth)/accept-invitation/$invitationId/")({
   component: RouteComponent,
-});
+})
 
 function RouteComponent() {
-  const { t } = useTranslation();
-  const params = Route.useParams();
-  const router = useRouter();
-  const [invitationStatus, setInvitationStatus] = useState<"pending" | "accepted" | "rejected">("pending");
+  const { t } = useTranslation()
+  const params = Route.useParams()
+  const router = useRouter()
+  const [invitationStatus, setInvitationStatus] = useState<"pending" | "accepted" | "rejected">("pending")
 
   const handleAccept = async () => {
     await authClient.organization
@@ -25,13 +25,13 @@ function RouteComponent() {
       })
       .then((res) => {
         if (res.error) {
-          setError(res.error.message || "An error occurred");
+          setError(res.error.message || "An error occurred")
         } else {
-          setInvitationStatus("accepted");
-          router.navigate({ to: "/dashboard" });
+          setInvitationStatus("accepted")
+          router.navigate({ to: "/dashboard" })
         }
-      });
-  };
+      })
+  }
 
   const handleReject = async () => {
     await authClient.organization
@@ -40,27 +40,27 @@ function RouteComponent() {
       })
       .then((res) => {
         if (res.error) {
-          setError(res.error.message || "An error occurred");
+          setError(res.error.message || "An error occurred")
         } else {
-          setInvitationStatus("rejected");
+          setInvitationStatus("rejected")
         }
-      });
-  };
+      })
+  }
 
   const [invitation, setInvitation] = useState<{
-    organizationName: string;
-    organizationSlug: string;
-    inviterEmail: string;
-    id: string;
-    status: "pending" | "accepted" | "rejected" | "canceled";
-    email: string;
-    expiresAt: Date;
-    organizationId: string;
-    role: string;
-    inviterId: string;
-  } | null>(null);
+    organizationName: string
+    organizationSlug: string
+    inviterEmail: string
+    id: string
+    status: "pending" | "accepted" | "rejected" | "canceled"
+    email: string
+    expiresAt: Date
+    organizationId: string
+    role: string
+    inviterId: string
+  } | null>(null)
 
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     authClient.organization
@@ -71,12 +71,12 @@ function RouteComponent() {
       })
       .then((res) => {
         if (res.error) {
-          setError(res.error.message || "An error occurred");
+          setError(res.error.message || "An error occurred")
         } else {
-          setInvitation(res.data);
+          setInvitation(res.data)
         }
-      });
-  }, []);
+      })
+  }, [])
 
   return (
     <div className="flex min-h-[80vh] items-center justify-center">
@@ -137,7 +137,7 @@ function RouteComponent() {
         <InvitationSkeleton />
       )}
     </div>
-  );
+  )
 }
 
 function InvitationSkeleton() {
@@ -162,5 +162,5 @@ function InvitationSkeleton() {
         <Skeleton className="h-10 w-24" />
       </CardFooter>
     </Card>
-  );
+  )
 }

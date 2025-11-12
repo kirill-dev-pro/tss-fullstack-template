@@ -1,11 +1,11 @@
-import { Link } from "@tanstack/react-router";
-import { AlertCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { useTranslation } from "@/lib/intl/react";
+import { Link } from "@tanstack/react-router"
+import { AlertCircle } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { useTranslation } from "@/lib/intl/react"
 
 export function InvitationError() {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
 
   return (
     <Card className="mx-auto w-full max-w-md">
@@ -27,5 +27,5 @@ export function InvitationError() {
         </Link>
       </CardFooter>
     </Card>
-  );
+  )
 }

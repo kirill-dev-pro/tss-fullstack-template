@@ -1,11 +1,11 @@
-import { Loader2 } from "lucide-react";
-import * as React from "react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react"
+import * as React from "react"
+import { Button } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 interface LoadingButtonProps extends React.ComponentProps<typeof Button> {
-  loading?: boolean;
-  loadingText?: string;
+  loading?: boolean
+  loadingText?: string
 }
 
 const LoadingButton = React.forwardRef<HTMLButtonElement, LoadingButtonProps>(
@@ -15,11 +15,11 @@ const LoadingButton = React.forwardRef<HTMLButtonElement, LoadingButtonProps>(
         {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
         {loading ? loadingText || children : children}
       </Button>
-    );
-  },
-);
+    )
+  }
+)
 
-LoadingButton.displayName = "LoadingButton";
+LoadingButton.displayName = "LoadingButton"
 
-export { LoadingButton };
-export type { LoadingButtonProps };
+export { LoadingButton }
+export type { LoadingButtonProps }

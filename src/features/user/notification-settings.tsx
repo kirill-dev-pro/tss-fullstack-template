@@ -1,13 +1,13 @@
-import { Bell, Mail, MessageSquare, Smartphone, Volume2 } from "lucide-react";
-import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Separator } from "@/components/ui/separator";
-import { Switch } from "@/components/ui/switch";
+import { Bell, Mail, MessageSquare, Smartphone, Volume2 } from "lucide-react"
+import { useState } from "react"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
+import { Switch } from "@/components/ui/switch"
 
 export function NotificationSettings() {
   const [settings, setSettings] = useState({
@@ -29,7 +29,7 @@ export function NotificationSettings() {
       sound: true,
       showPreviews: false,
     },
-  });
+  })
 
   const handleEmailNotificationChange = (key: string, value: boolean) => {
     setSettings((prev) => ({
@@ -38,8 +38,8 @@ export function NotificationSettings() {
         ...prev.emailNotifications,
         [key]: value,
       },
-    }));
-  };
+    }))
+  }
 
   const handlePushNotificationChange = (key: string, value: boolean) => {
     setSettings((prev) => ({
@@ -48,8 +48,8 @@ export function NotificationSettings() {
         ...prev.pushNotifications,
         [key]: value,
       },
-    }));
-  };
+    }))
+  }
 
   const handleDesktopNotificationChange = (key: string, value: boolean) => {
     setSettings((prev) => ({
@@ -58,8 +58,8 @@ export function NotificationSettings() {
         ...prev.desktopNotifications,
         [key]: value,
       },
-    }));
-  };
+    }))
+  }
 
   return (
     <div className="space-y-6">
@@ -318,5 +318,5 @@ export function NotificationSettings() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

@@ -1,12 +1,12 @@
-import { useForm } from "@tanstack/react-form";
-import { useRouter } from "@tanstack/react-router";
-import { toast } from "sonner";
-import * as z from "zod";
-import { PasswordField } from "@/components/form/password-field";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { authClient } from "@/lib/auth/auth-client";
-import { useTranslation } from "@/lib/intl/react";
+import { useForm } from "@tanstack/react-form"
+import { useRouter } from "@tanstack/react-router"
+import { toast } from "sonner"
+import * as z from "zod"
+import { PasswordField } from "@/components/form/password-field"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { authClient } from "@/lib/auth/auth-client"
+import { useTranslation } from "@/lib/intl/react"
 
 const resetPasswordSchema = z
   .object({
@@ -16,11 +16,11 @@ const resetPasswordSchema = z
   .refine((data) => data.password === data.confirmPassword, {
     message: "The two passwords do not match.",
     path: ["confirmPassword"],
-  });
+  })
 
 export default function ResetPasswordForm() {
-  const { t } = useTranslation();
-  const router = useRouter();
+  const { t } = useTranslation()
+  const router = useRouter()
 
   const form = useForm({
     defaultValues: {
@@ -29,11 +29,11 @@ export default function ResetPasswordForm() {
     },
     validators: {
       onChange: ({ value }) => {
-        const result = resetPasswordSchema.safeParse(value);
+        const result = resetPasswordSchema.safeParse(value)
         if (!result.success) {
-          return result.error.formErrors.fieldErrors;
+          return result.error.formErrors.fieldErrors
         }
-        return undefined;
+        return undefined
       },
     },
     onSubmit: async ({ value }) => {
@@ -41,17 +41,17 @@ export default function ResetPasswordForm() {
         const res = await authClient.resetPassword({
           newPassword: value.password,
           token: new URLSearchParams(window.location.search).get("token")!,
-        });
+        })
         if (res.error) {
-          toast.error(res.error.message);
+          toast.error(res.error.message)
         } else {
-          router.navigate({ to: "/login" });
+          router.navigate({ to: "/login" })
         }
       } catch (error) {
-        toast.error("An error occurred during password reset");
+        toast.error("An error occurred during password reset")
       }
     },
-  });
+  })
   return (
     <div className="flex min-h-[calc(100vh-10rem)] flex-col items-center justify-center">
       <Card className="w-[350px]">
@@ -62,9 +62,9 @@ export default function ResetPasswordForm() {
         <CardContent>
           <form
             onSubmit={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              form.handleSubmit();
+              e.preventDefault()
+              e.stopPropagation()
+              form.handleSubmit()
             }}
           >
             <div className="grid w-full items-center gap-2">
@@ -97,5 +97,5 @@ export default function ResetPasswordForm() {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }

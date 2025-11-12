@@ -1,4 +1,4 @@
-import type { AnyFieldApi, FieldApi } from "@tanstack/react-form";
+import type { AnyFieldApi, FieldApi } from "@tanstack/react-form"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function FieldInfo({ field }: { field: AnyFieldApi }) {
@@ -8,5 +8,5 @@ export default function FieldInfo({ field }: { field: AnyFieldApi }) {
         <p className="font-medium text-[0.8rem] text-destructive">{field.state.meta.errors.join(", ")}</p>
       ) : null}
     </>
-  );
+  )
 }

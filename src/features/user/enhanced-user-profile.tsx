@@ -1,14 +1,14 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { BadgeCheck, Calendar, Camera, Github, Link as LinkIcon, MapPin, Twitter } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import * as z from "zod";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { BadgeCheck, Calendar, Camera, Github, Link as LinkIcon, MapPin, Twitter } from "lucide-react"
+import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import * as z from "zod"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Field,
   FieldContent,
@@ -17,14 +17,14 @@ import {
   FieldGroup,
   FieldLabel,
   FieldSet,
-} from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { Spinner } from "@/components/ui/spinner";
-import { Textarea } from "@/components/ui/textarea";
-import { authClient } from "@/lib/auth/auth-client";
+} from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
+import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
+import { Spinner } from "@/components/ui/spinner"
+import { Textarea } from "@/components/ui/textarea"
+import { authClient } from "@/lib/auth/auth-client"
 
 // Validation schema
 const profileSchema = z.object({
@@ -35,11 +35,11 @@ const profileSchema = z.object({
   website: z.string().url("Please enter a valid URL").optional().or(z.literal("")),
   github: z.string().max(50, "GitHub username must be less than 50 characters").optional(),
   twitter: z.string().max(50, "Twitter handle must be less than 50 characters").optional(),
-});
+})
 
 export function EnhancedUserProfile() {
-  const { data: session } = authClient.useSession();
-  const [isEditing, setIsEditing] = useState(false);
+  const { data: session } = authClient.useSession()
+  const [isEditing, setIsEditing] = useState(false)
 
   const form = useForm({
     resolver: zodResolver(profileSchema),
@@ -52,7 +52,7 @@ export function EnhancedUserProfile() {
       github: "",
       twitter: "",
     },
-  });
+  })
 
   const {
     register,
@@ -60,8 +60,8 @@ export function EnhancedUserProfile() {
     formState: { errors, isSubmitting },
     reset,
     watch,
-  } = form;
-  const watchAll = watch();
+  } = form
+  const watchAll = watch()
 
   // Reset form when session changes
   useEffect(() => {
@@ -74,25 +74,25 @@ export function EnhancedUserProfile() {
         website: "",
         github: "",
         twitter: "",
-      });
+      })
     }
-  }, [session?.user, reset]);
+  }, [session?.user, reset])
 
   const onSubmit = async (data: z.infer<typeof profileSchema>) => {
     try {
       // TODO: Implement profile update with Better-auth
-      console.log("Saving profile:", data);
-      toast.success("Profile updated successfully");
-      setIsEditing(false);
+      console.log("Saving profile:", data)
+      toast.success("Profile updated successfully")
+      setIsEditing(false)
     } catch (error) {
-      toast.error("Failed to update profile");
+      toast.error("Failed to update profile")
     }
-  };
+  }
 
   const handleCancel = () => {
-    reset();
-    setIsEditing(false);
-  };
+    reset()
+    setIsEditing(false)
+  }
 
   return (
     <div className="space-y-6">
@@ -370,5 +370,5 @@ export function EnhancedUserProfile() {
         </div>
       )}
     </div>
-  );
+  )
 }

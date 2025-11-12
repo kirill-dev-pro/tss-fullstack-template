@@ -1,21 +1,21 @@
-import { wrapCreateRootRouteWithSentry } from "@sentry/tanstackstart-react";
-import { TanStackDevtools } from "@tanstack/react-devtools";
-import type { QueryClient } from "@tanstack/react-query";
-import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools";
-import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
-import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query";
-import { ThemeProvider } from "next-themes";
-import { I18nextProvider } from "react-i18next";
-import { Toaster } from "@/components/ui/sonner";
-import i18n from "@/lib/intl/i18n";
-import { seo } from "@/lib/seo";
-import type { TRPCRouter } from "@/server/router";
-import appCss from "../styles.css?url";
+import { wrapCreateRootRouteWithSentry } from "@sentry/tanstackstart-react"
+import { TanStackDevtools } from "@tanstack/react-devtools"
+import type { QueryClient } from "@tanstack/react-query"
+import { ReactQueryDevtoolsPanel } from "@tanstack/react-query-devtools"
+import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from "@tanstack/react-router"
+import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools"
+import type { TRPCOptionsProxy } from "@trpc/tanstack-react-query"
+import { ThemeProvider } from "next-themes"
+import { I18nextProvider } from "react-i18next"
+import { Toaster } from "@/components/ui/sonner"
+import i18n from "@/lib/intl/i18n"
+import { seo } from "@/lib/seo"
+import type { TRPCRouter } from "@/server/router"
+import appCss from "../styles.css?url"
 
 interface MyRouterContext {
-  queryClient: QueryClient;
-  trpc: TRPCOptionsProxy<TRPCRouter>;
+  queryClient: QueryClient
+  trpc: TRPCOptionsProxy<TRPCRouter>
 }
 
 export const Route = wrapCreateRootRouteWithSentry(
@@ -47,7 +47,7 @@ export const Route = wrapCreateRootRouteWithSentry(
     component: () => <RootDocument />,
     wrapInSuspense: true,
   })
-);
+)
 
 function RootDocument() {
   return (
@@ -92,5 +92,5 @@ function RootDocument() {
         </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }

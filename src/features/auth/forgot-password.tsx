@@ -1,50 +1,50 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "@tanstack/react-router";
-import { ArrowLeft, CheckCircle2 } from "lucide-react";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Field, FieldContent, FieldError, FieldLabel, FieldSet } from "@/components/ui/field";
-import { Input } from "@/components/ui/input";
-import { InputGroup, InputGroupInput } from "@/components/ui/input-group";
-import { Spinner } from "@/components/ui/spinner";
-import { useAuthHelpers } from "@/features/auth/auth-hooks";
-import { useTranslation } from "@/lib/intl/react";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { Link } from "@tanstack/react-router"
+import { ArrowLeft, CheckCircle2 } from "lucide-react"
+import { useState } from "react"
+import { useForm } from "react-hook-form"
+import * as z from "zod"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Button } from "@/components/ui/button"
+import { ButtonGroup } from "@/components/ui/button-group"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Field, FieldContent, FieldError, FieldLabel, FieldSet } from "@/components/ui/field"
+import { Input } from "@/components/ui/input"
+import { InputGroup, InputGroupInput } from "@/components/ui/input-group"
+import { Spinner } from "@/components/ui/spinner"
+import { useAuthHelpers } from "@/features/auth/auth-hooks"
+import { useTranslation } from "@/lib/intl/react"
 
 const forgotPasswordSchema = z.object({
   email: z.string().email("Please enter a valid email address"),
-});
+})
 
 export default function ForgotPasswordForm() {
-  const { t } = useTranslation();
-  const { forgotPassword } = useAuthHelpers();
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const { t } = useTranslation()
+  const { forgotPassword } = useAuthHelpers()
+  const [isSubmitted, setIsSubmitted] = useState(false)
 
   const form = useForm({
     resolver: zodResolver(forgotPasswordSchema),
     defaultValues: {
       email: "",
     },
-  });
+  })
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = form;
+  } = form
 
   const onSubmit = async (data: z.infer<typeof forgotPasswordSchema>) => {
     try {
-      await forgotPassword.mutateAsync({ email: data.email });
-      setIsSubmitted(true);
+      await forgotPassword.mutateAsync({ email: data.email })
+      setIsSubmitted(true)
     } catch (err) {
       // Error handling is done via form validation
     }
-  };
+  }
 
   if (isSubmitted) {
     return (
@@ -67,7 +67,7 @@ export default function ForgotPasswordForm() {
           </CardFooter>
         </Card>
       </main>
-    );
+    )
   }
 
   return (
@@ -104,5 +104,5 @@ export default function ForgotPasswordForm() {
         </CardFooter>
       </Card>
     </main>
-  );
+  )
 }

@@ -1,7 +1,7 @@
-'use client';
+"use client"
 
-import React from 'react';
-import { useSession } from '@/features/auth/auth-hooks';
+import React from "react"
+import { useSession } from "@/features/auth/auth-hooks"
 // Import the statement type to get dynamic resource and action types
 import {
   canBanUsers,
@@ -15,70 +15,70 @@ import {
   hasPermission,
   statement,
   type UserRole,
-} from '@/lib/auth/permissions';
+} from "@/lib/auth/permissions"
 
 // Dynamic types derived from your actual permissions configuration
-type ResourceType = keyof typeof statement;
-type ActionType = (typeof statement)[keyof typeof statement][number];
+type ResourceType = keyof typeof statement
+type ActionType = (typeof statement)[keyof typeof statement][number]
 
 // Session type based on better-auth
 export interface SessionUser {
-  id: string;
-  email: string;
-  name: string;
-  role?: string | null;
-  image?: string | null;
+  id: string
+  email: string
+  name: string
+  role?: string | null
+  image?: string | null
 }
 
 export interface BetterAuthSession {
-  user?: SessionUser;
+  user?: SessionUser
 }
 
 // Types for authorization checks
 export interface AuthorizationContext {
   user: {
-    id: string;
-    email: string;
-    name: string;
-    role: UserRole;
-  } | null;
-  session: BetterAuthSession | null;
+    id: string
+    email: string
+    name: string
+    role: UserRole
+  } | null
+  session: BetterAuthSession | null
 }
 
 export interface HasParams {
-  userRole?: UserRole;
+  userRole?: UserRole
   permission?: {
-    resource: ResourceType;
-    action: ActionType;
-  };
+    resource: ResourceType
+    action: ActionType
+  }
 }
 
-export type ConditionFunction = (context: AuthorizationContext) => boolean;
+export type ConditionFunction = (context: AuthorizationContext) => boolean
 
 export interface ProtectProps {
-  children: React.ReactNode;
-  fallback?: React.ReactNode;
+  children: React.ReactNode
+  fallback?: React.ReactNode
 
   // Authentication props
-  requireAuth?: boolean;
+  requireAuth?: boolean
 
   // Authorization props
-  userRole?: UserRole;
+  userRole?: UserRole
   permission?: {
-    resource: ResourceType;
-    action: ActionType;
-  };
+    resource: ResourceType
+    action: ActionType
+  }
 
   // Custom condition function for complex logic
-  condition?: ConditionFunction;
+  condition?: ConditionFunction
 
   // Loading state
-  loading?: React.ReactNode;
+  loading?: React.ReactNode
 }
 
 // Helper function to create authorization context
 function createAuthContext(session: BetterAuthSession | null): AuthorizationContext {
-  const user = session?.user || null;
+  const user = session?.user || null
 
   return {
     user: user
@@ -86,27 +86,27 @@ function createAuthContext(session: BetterAuthSession | null): AuthorizationCont
           id: user.id,
           email: user.email,
           name: user.name,
-          role: (user.role || 'user') as UserRole,
+          role: (user.role || "user") as UserRole,
         }
       : null,
     session,
-  };
+  }
 }
 
 // Helper function to check permission-based authorization
 function checkPermissionAuthorization(
   user: SessionUser | null,
   permission: {
-    resource: ResourceType;
-    action: ActionType;
+    resource: ResourceType
+    action: ActionType
   }
 ): boolean {
   if (!user) {
-    return false;
+    return false
   }
 
-  const userRole = (user.role || 'user') as UserRole;
-  return hasPermission(userRole, permission.resource, permission.action);
+  const userRole = (user.role || "user") as UserRole
+  return hasPermission(userRole, permission.resource, permission.action)
 }
 
 /**
@@ -155,41 +155,41 @@ export function Protect({
   condition,
   loading = <div>Loading...</div>,
 }: ProtectProps) {
-  const { data: session, isPending } = useSession();
+  const { data: session, isPending } = useSession()
 
   // Show loading state while checking authentication
   if (isPending) {
-    return <>{loading}</>;
+    return <>{loading}</>
   }
 
   // Get user from session
-  const user = session?.user || null;
+  const user = session?.user || null
 
   // Check authentication if required
   if (requireAuth && !user) {
-    return <>{fallback}</>;
+    return <>{fallback}</>
   }
 
   // Check role-based authorization
   if (userRole && (!user || user.role !== userRole)) {
-    return <>{fallback}</>;
+    return <>{fallback}</>
   }
 
   // Check permission-based authorization
   if (permission && !checkPermissionAuthorization(user, permission)) {
-    return <>{fallback}</>;
+    return <>{fallback}</>
   }
 
   // Check custom condition
   if (condition) {
-    const authContext = createAuthContext(session || null);
+    const authContext = createAuthContext(session || null)
     if (!condition(authContext)) {
-      return <>{fallback}</>;
+      return <>{fallback}</>
     }
   }
 
   // All checks passed, render children
-  return <>{children}</>;
+  return <>{children}</>
 }
 
 /**
@@ -203,94 +203,94 @@ export function Protect({
  * }
  */
 export function useAuth() {
-  const { data: session, isPending } = useSession();
-  const user = session?.user || null;
+  const { data: session, isPending } = useSession()
+  const user = session?.user || null
 
-  const isAuthenticated = !!user;
+  const isAuthenticated = !!user
 
   const checkRole = (requiredRole: UserRole): boolean => {
     if (!user) {
-      return false;
+      return false
     }
-    return user.role === requiredRole;
-  };
+    return user.role === requiredRole
+  }
 
   const checkPermissionHelper = (
     sessionUser: SessionUser | null,
     permissionCheck: {
-      resource: ResourceType;
-      action: ActionType;
+      resource: ResourceType
+      action: ActionType
     }
   ): boolean => {
     if (!sessionUser?.role) {
-      return false;
+      return false
     }
 
-    const userRole = sessionUser.role as UserRole;
-    return hasPermission(userRole, permissionCheck.resource, permissionCheck.action);
-  };
+    const userRole = sessionUser.role as UserRole
+    return hasPermission(userRole, permissionCheck.resource, permissionCheck.action)
+  }
 
   const checkCondition = (condition: ConditionFunction): boolean => {
-    const authContext = createAuthContext(session || null);
-    return condition(authContext);
-  };
+    const authContext = createAuthContext(session || null)
+    return condition(authContext)
+  }
 
   // Helper functions using our permission system
   const canManageUsersCheck = (): boolean => {
     if (!user) {
-      return false;
+      return false
     }
-    return canManageUsers((user.role || 'user') as UserRole);
-  };
+    return canManageUsers((user.role || "user") as UserRole)
+  }
 
   const canBanUsersCheck = (): boolean => {
     if (!user) {
-      return false;
+      return false
     }
-    return canBanUsers((user.role || 'user') as UserRole);
-  };
+    return canBanUsers((user.role || "user") as UserRole)
+  }
 
   const canDeleteUsersCheck = (): boolean => {
     if (!user) {
-      return false;
+      return false
     }
-    return canDeleteUsers((user.role || 'user') as UserRole);
-  };
+    return canDeleteUsers((user.role || "user") as UserRole)
+  }
 
   const canImpersonateUsersCheck = (): boolean => {
     if (!user) {
-      return false;
+      return false
     }
-    return canImpersonateUsers((user.role || 'user') as UserRole);
-  };
+    return canImpersonateUsers((user.role || "user") as UserRole)
+  }
 
   const canSetUserRolesCheck = (): boolean => {
     if (!user) {
-      return false;
+      return false
     }
-    return canSetUserRoles((user.role || 'user') as UserRole);
-  };
+    return canSetUserRoles((user.role || "user") as UserRole)
+  }
 
   const canCreateUsersCheck = (): boolean => {
     if (!user) {
-      return false;
+      return false
     }
-    return canCreateUsers((user.role || 'user') as UserRole);
-  };
+    return canCreateUsers((user.role || "user") as UserRole)
+  }
 
   const canManageOrganizationsCheck = (): boolean => {
     if (!user) {
-      return false;
+      return false
     }
-    return canManageOrganizations((user.role || 'user') as UserRole);
-  };
+    return canManageOrganizations((user.role || "user") as UserRole)
+  }
 
   const canManageBillingCheck = (): boolean => {
     if (!user) {
-      return false;
+      return false
     }
-    return canManageBilling((user.role || 'user') as UserRole);
-  };
+    return canManageBilling((user.role || "user") as UserRole)
+  }
 
   return {
     isLoading: isPending,
@@ -300,7 +300,7 @@ export function useAuth() {
           id: user.id,
           email: user.email,
           name: user.name,
-          role: (user.role || 'user') as UserRole,
+          role: (user.role || "user") as UserRole,
         }
       : null,
     session,
@@ -319,5 +319,5 @@ export function useAuth() {
     canCreateUsers: canCreateUsersCheck,
     canManageOrganizations: canManageOrganizationsCheck,
     canManageBilling: canManageBillingCheck,
-  };
+  }
 }

@@ -1,14 +1,14 @@
-import i18n from "i18next";
-import LanguageDetector from "i18next-browser-languagedetector";
-import resourcesToBackend from "i18next-resources-to-backend";
-import { initReactI18next } from "react-i18next";
-import { resources } from "./resources";
+import i18n from "i18next"
+import LanguageDetector from "i18next-browser-languagedetector"
+import resourcesToBackend from "i18next-resources-to-backend"
+import { initReactI18next } from "react-i18next"
+import { resources } from "./resources"
 
-export type Language = keyof typeof resources;
+export type Language = keyof typeof resources
 
-export const languages = Object.keys(resources);
+export const languages = Object.keys(resources)
 
-const runsOnServerSide = typeof window === "undefined";
+const runsOnServerSide = typeof window === "undefined"
 
 // Cookie settings for client-side only
 const cookieSettings = !runsOnServerSide
@@ -19,7 +19,7 @@ const cookieSettings = !runsOnServerSide
       cookieSecure: window.location.protocol === "https:",
       caches: ["cookie"],
     }
-  : {};
+  : {}
 
 i18n
   .use(initReactI18next)
@@ -39,7 +39,7 @@ i18n
     lng: "en",
     debug: false, // Add debug mode temporarily
     preload: runsOnServerSide ? languages : [],
-  });
+  })
 
 /**
  * Change the application language and update the cookie
@@ -47,14 +47,14 @@ i18n
  */
 export const changeLanguage = (language: string) => {
   if (languages.includes(language)) {
-    i18n.changeLanguage(language);
+    i18n.changeLanguage(language)
     // The cookie will be set automatically by the LanguageDetector
-    console.log(`🌐 Language changed to ${language}`);
-    return true;
+    console.log(`🌐 Language changed to ${language}`)
+    return true
   }
-  console.warn(`🌐 Language ${language} not available`);
-  return false;
-};
+  console.warn(`🌐 Language ${language} not available`)
+  return false
+}
 
 // Preload languages and namespaces
 // const languages = Object.keys(resources);
@@ -65,7 +65,7 @@ export const changeLanguage = (language: string) => {
 // ]);
 
 i18n.on("languageChanged", (lng) => {
-  console.log("🌐 Language changed", lng);
-});
+  console.log("🌐 Language changed", lng)
+})
 
-export default i18n;
+export default i18n
