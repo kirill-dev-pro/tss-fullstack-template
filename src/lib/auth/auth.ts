@@ -13,7 +13,7 @@ import WelcomeEmail from "@/components/emails/welcome-email"
 import { db } from "@/lib/db"
 import * as schema from "@/lib/db/schema/auth"
 import { sendEmail } from "@/lib/resend"
-import { env } from "../env.server"
+import { env } from "../env"
 import { ac, admin as adminRole, superadmin as superAdminRole, user as userRole } from "./permissions"
 
 export const auth = betterAuth({

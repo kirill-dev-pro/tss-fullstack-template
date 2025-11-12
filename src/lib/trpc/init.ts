@@ -1,4 +1,5 @@
-import * as Sentry from "@sentry/node"
+/** biome-ignore-all lint/style/noMagicNumbers: Magic number for Sentry */
+import { trpcMiddleware as sentryTrpcMiddleware } from "@sentry/node"
 import { getCookie } from "@tanstack/react-start/server"
 import { initTRPC, TRPCError } from "@trpc/server"
 import superjson from "superjson"
@@ -33,13 +34,13 @@ const t = initTRPC.context<Context>().create({
     }
   },
   sse: {
-    maxDurationMs: 5 * 60 * 1_000, // 5 minutes
+    maxDurationMs: 5 * 60 * 1000, // 5 minutes
     ping: {
       enabled: true,
-      intervalMs: 3_000,
+      intervalMs: 3000,
     },
     client: {
-      reconnectAfterInactivityMs: 5_000,
+      reconnectAfterInactivityMs: 5000,
     },
   },
 })
@@ -47,7 +48,7 @@ const t = initTRPC.context<Context>().create({
 export const createTRPCRouter = t.router
 
 const sentryMiddleware = t.middleware(
-  Sentry.trpcMiddleware({
+  sentryTrpcMiddleware({
     attachRpcInput: true,
   })
 )

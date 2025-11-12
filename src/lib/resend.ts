@@ -1,7 +1,7 @@
 import { render } from "@react-email/render"
 import type { ReactElement } from "react"
 import { Resend } from "resend"
-import { env } from "@/lib/env.server"
+import { env } from "@/lib/env"
 
 export async function sendEmail({ subject, template, to }: { subject: string; template: ReactElement; to: string }) {
   const resend = new Resend(env.RESEND_API_KEY)
