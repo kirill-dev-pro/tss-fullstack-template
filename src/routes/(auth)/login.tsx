@@ -13,7 +13,7 @@ function RouteComponent() {
       <SignInForm />
       <div className="mt-4 text-center">
         {t("DONT_HAVE_ACCOUNT")}{" "}
-        <Link to="/register" className="underline">
+        <Link className="underline" to="/register">
           {t("REGISTER")}
         </Link>
         !

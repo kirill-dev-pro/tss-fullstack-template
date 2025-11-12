@@ -19,11 +19,11 @@ export function FormField({ field, label, type = "text", placeholder, className 
         className={className}
         id={field.name}
         name={field.name}
-        type={type}
-        value={field.state.value}
         onBlur={field.handleBlur}
         onChange={(e) => field.handleChange(e.target.value)}
         placeholder={placeholder}
+        type={type}
+        value={field.state.value}
       />
       <FormFieldInfo field={field} />
     </>

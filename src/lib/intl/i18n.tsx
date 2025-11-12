@@ -11,15 +11,15 @@ export const languages = Object.keys(resources)
 const runsOnServerSide = typeof window === "undefined"
 
 // Cookie settings for client-side only
-const cookieSettings = !runsOnServerSide
-  ? {
+const cookieSettings = runsOnServerSide
+  ? {}
+  : {
       lookupCookie: "i18next",
       cookieExpirationDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 365), // 1 year
       cookieDomain: window.location.hostname,
       cookieSecure: window.location.protocol === "https:",
       caches: ["cookie"],
     }
-  : {}
 
 i18n
   .use(initReactI18next)

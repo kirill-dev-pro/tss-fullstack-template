@@ -42,9 +42,9 @@ export function ListPasskeys() {
     }
   }
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog onOpenChange={setIsOpen} open={isOpen}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="text-xs md:text-sm">
+        <Button className="text-xs md:text-sm" variant="outline">
           <Fingerprint className="mr-2 h-4 w-4" />
           <span>
             {t("PASSKEYS")} {data?.length ? `[${data?.length}]` : ""}
@@ -65,7 +65,7 @@ export function ListPasskeys() {
             </TableHeader>
             <TableBody>
               {data.map((passkey) => (
-                <TableRow key={passkey.id} className="flex items-center justify-between">
+                <TableRow className="flex items-center justify-between" key={passkey.id}>
                   <TableCell>{passkey.name || t("NEW_PASSKEY")}</TableCell>
                   <TableCell className="text-right">
                     <Button
@@ -89,9 +89,9 @@ export function ListPasskeys() {
                       }}
                     >
                       {isDeletePasskey ? (
-                        <Loader2 size={15} className="animate-spin" />
+                        <Loader2 className="animate-spin" size={15} />
                       ) : (
-                        <Trash size={15} className="cursor-pointer text-red-600" />
+                        <Trash className="cursor-pointer text-red-600" size={15} />
                       )}
                     </Button>
                   </TableCell>
@@ -105,19 +105,19 @@ export function ListPasskeys() {
         {!data?.length && (
           <div className="flex flex-col gap-2">
             <div className="flex flex-col gap-2">
-              <Label htmlFor="passkey-name" className="text-sm">
+              <Label className="text-sm" htmlFor="passkey-name">
                 {t("NEW_PASSKEY")}
               </Label>
               <Input
                 id="passkey-name"
-                value={passkeyName}
                 onChange={(e) => setPasskeyName(e.target.value)}
                 placeholder={t("NEW_PASSKEY")}
+                value={passkeyName}
               />
             </div>
-            <Button type="submit" onClick={handleAddPasskey} className="w-full">
+            <Button className="w-full" onClick={handleAddPasskey} type="submit">
               {isLoading ? (
-                <Loader2 size={15} className="animate-spin" />
+                <Loader2 className="animate-spin" size={15} />
               ) : (
                 <>
                   <Fingerprint className="mr-2 h-4 w-4" />

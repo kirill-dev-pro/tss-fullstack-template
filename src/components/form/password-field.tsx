@@ -20,26 +20,26 @@ export function PasswordField({ field, label, placeholder }: PasswordFieldProps)
       <Label htmlFor={field.name}>{label}</Label>
       <div className="relative flex w-full items-center justify-end">
         <Input
+          autoComplete="new-password"
           className="mt-1"
           id={field.name}
           name={field.name}
-          type={isPasswordVisible ? "text" : "password"}
-          value={field.state.value}
           onBlur={field.handleBlur}
           onChange={(e) => field.handleChange(e.target.value)}
-          autoComplete="new-password"
           placeholder={placeholder}
+          type={isPasswordVisible ? "text" : "password"}
+          value={field.state.value}
         />
         <Button
           className="absolute mr-2 h-7 w-7 rounded-full"
-          type="button"
-          tabIndex={-1}
-          variant="ghost"
-          size="icon"
           onClick={(e) => {
             e.preventDefault()
             setIsPasswordVisible(!isPasswordVisible)
           }}
+          size="icon"
+          tabIndex={-1}
+          type="button"
+          variant="ghost"
         >
           {isPasswordVisible ? <EyeIcon /> : <EyeOffIcon />}
         </Button>

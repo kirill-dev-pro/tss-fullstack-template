@@ -16,8 +16,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Field, FieldContent, FieldError, FieldLabel, FieldSet } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
+import { Field, FieldError, FieldLabel, FieldSet } from "@/components/ui/field"
 import { InputGroup, InputGroupInput } from "@/components/ui/input-group"
 import { Spinner } from "@/components/ui/spinner"
 import { authClient } from "@/lib/auth/auth-client"

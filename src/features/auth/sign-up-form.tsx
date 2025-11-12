@@ -1,25 +1,15 @@
-import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useNavigate } from "@tanstack/react-router"
-import { X } from "lucide-react"
 import { useState } from "react"
+import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import * as z from "zod"
 import { Button } from "@/components/ui/button"
 import { ButtonGroup } from "@/components/ui/button-group"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-  Field,
-  FieldContent,
-  FieldDescription,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-  FieldSet,
-} from "@/components/ui/field"
+import { Field, FieldContent, FieldError, FieldGroup, FieldLabel, FieldSet } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
-import { InputGroup, InputGroupAddon, InputGroupInput } from "@/components/ui/input-group"
-import { Label } from "@/components/ui/label"
+import { InputGroup, InputGroupInput } from "@/components/ui/input-group"
 import { Spinner } from "@/components/ui/spinner"
 import { authClient } from "@/lib/auth/auth-client"
 import { useTranslation } from "@/lib/intl/react"
@@ -134,7 +124,7 @@ export function SignUpForm() {
               <Field>
                 <FieldLabel htmlFor="email">{t("EMAIL")}</FieldLabel>
                 <InputGroup>
-                  <InputGroupInput id="email" type="email" placeholder="m@example.com" {...register("email")} />
+                  <InputGroupInput id="email" placeholder="m@example.com" type="email" {...register("email")} />
                 </InputGroup>
                 <FieldError errors={errors.email} />
               </Field>
@@ -147,8 +137,8 @@ export function SignUpForm() {
                 <InputGroup>
                   <InputGroupInput
                     id="password"
-                    type="password"
                     placeholder={t("PASSWORD")}
+                    type="password"
                     {...register("password")}
                   />
                 </InputGroup>
@@ -160,8 +150,8 @@ export function SignUpForm() {
                 <InputGroup>
                   <InputGroupInput
                     id="passwordConfirmation"
-                    type="password"
                     placeholder={t("CONFIRM_PASSWORD")}
+                    type="password"
                     {...register("passwordConfirmation")}
                   />
                 </InputGroup>
@@ -172,20 +162,20 @@ export function SignUpForm() {
           <Field>
             <FieldLabel>{t("PROFILE_IMAGE")}</FieldLabel>
             <FieldContent>
-              <Input id="image" type="file" accept="image/*" onChange={handleImageChange} />
+              <Input accept="image/*" id="image" onChange={handleImageChange} type="file" />
               {imagePreview && (
                 <div className="mt-2 flex items-center gap-2">
                   <img
-                    src={imagePreview}
                     alt="Profile preview"
                     className="h-16 w-16 rounded object-cover"
-                    width={16}
                     height={16}
+                    src={imagePreview}
+                    width={16}
                   />
                   <button
-                    type="button"
-                    onClick={clearImage}
                     className="text-destructive text-sm hover:text-destructive/80"
+                    onClick={clearImage}
+                    type="button"
                   >
                     Remove
                   </button>
@@ -195,7 +185,7 @@ export function SignUpForm() {
           </Field>
 
           <ButtonGroup>
-            <Button type="submit" className="w-full" disabled={isSubmitting}>
+            <Button className="w-full" disabled={isSubmitting} type="submit">
               {isSubmitting ? <Spinner size="sm" /> : t("CREATE_ACCOUNT")}
             </Button>
           </ButtonGroup>

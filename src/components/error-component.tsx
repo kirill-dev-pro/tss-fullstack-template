@@ -38,7 +38,7 @@ export default function ErrorComponent({ error }: { error: Error }) {
             <Link to="/">Return to home</Link>
           </Button>
           {isDev ? (
-            <Accordion type="single" collapsible className="w-full">
+            <Accordion className="w-full" collapsible type="single">
               <AccordionItem value="error-details">
                 <AccordionTrigger>View error details</AccordionTrigger>
                 <AccordionContent>

@@ -6,19 +6,15 @@ import {
   MailPlus,
   MoreHorizontal,
   PlusIcon,
-  RefreshCw,
-  Settings,
   Shield,
-  Trash2,
   UserMinus,
   Users,
   UserX,
 } from "lucide-react"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 import * as z from "zod"
-import CopyButton from "@/components/copy-button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -26,7 +22,6 @@ import { ButtonGroup } from "@/components/ui/button-group"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -39,15 +34,11 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Field, FieldContent, FieldError, FieldLabel, FieldSet } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
 import { InputGroup, InputGroupInput } from "@/components/ui/input-group"
-import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
 import { Spinner } from "@/components/ui/spinner"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -55,13 +46,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { useSession } from "@/features/auth/auth-hooks"
 import {
   useCancelInvitation,
-  useCreateOrganization,
   useInviteMember,
   useOrganizations,
   useRemoveMember,
   useSetActiveOrganization,
 } from "@/features/organization/organization-hooks"
-import type { AuthClient } from "@/lib/auth/auth-client"
 import { authClient } from "@/lib/auth/auth-client"
 import { useTranslation } from "@/lib/intl/react"
 

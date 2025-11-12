@@ -4,25 +4,22 @@ import {
   Download,
   Eye,
   Filter,
-  Mail,
   MoreHorizontal,
-  Plus,
   RefreshCw,
   Search,
-  Settings,
   Shield,
   ShieldCheck,
   Trash2,
   UserCheck,
   UserPlus,
-  UserX,
   Users,
+  UserX,
 } from "lucide-react"
 import { useState } from "react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   Dialog,
   DialogContent,
@@ -42,19 +39,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { authClient } from "@/lib/auth/auth-client"
-import {
-  canBanUsers,
-  canCreateUsers,
-  canDeleteUsers,
-  canImpersonateUsers,
-  canManageUsers,
-  canSetUserRoles,
-  type UserRole,
-} from "@/lib/auth/permissions"
+import { UserDetailsDrawer } from "@/features/admin/user-details-drawer"
 import {
   useBanUser,
   useCreateUser,
@@ -66,7 +52,16 @@ import {
   useUnbanUser,
   useUsers,
 } from "@/features/user/user-hooks"
-import { UserDetailsDrawer } from "@/features/admin/user-details-drawer"
+import { authClient } from "@/lib/auth/auth-client"
+import {
+  canBanUsers,
+  canCreateUsers,
+  canDeleteUsers,
+  canImpersonateUsers,
+  canManageUsers,
+  canSetUserRoles,
+  type UserRole,
+} from "@/lib/auth/permissions"
 
 interface User {
   id: string
@@ -82,22 +77,22 @@ interface User {
 function getStatusBadge(user: User) {
   if (user.banned) {
     return (
-      <Badge variant="outline" className="border-red-200 text-red-700 bg-red-50 font-medium">
-        <Ban className="w-3 h-3 mr-1" />
+      <Badge className="border-red-200 bg-red-50 font-medium text-red-700" variant="outline">
+        <Ban className="mr-1 h-3 w-3" />
         Banned
       </Badge>
     )
   }
   if (user.emailVerified) {
     return (
-      <Badge variant="outline" className="border-emerald-200 text-emerald-700 bg-emerald-50 font-medium">
-        <CheckCircle className="w-3 h-3 mr-1" />
+      <Badge className="border-emerald-200 bg-emerald-50 font-medium text-emerald-700" variant="outline">
+        <CheckCircle className="mr-1 h-3 w-3" />
         Active
       </Badge>
     )
   }
   return (
-    <Badge variant="outline" className="border-amber-200 text-amber-700 bg-amber-50 font-medium">
+    <Badge className="border-amber-200 bg-amber-50 font-medium text-amber-700" variant="outline">
       Pending
     </Badge>
   )
@@ -107,28 +102,28 @@ function getRoleBadge(role: string) {
   switch (role) {
     case "superadmin":
       return (
-        <Badge variant="outline" className="border-purple-200 text-purple-700 bg-purple-50 font-medium">
-          <Shield className="w-3 h-3 mr-1" />
+        <Badge className="border-purple-200 bg-purple-50 font-medium text-purple-700" variant="outline">
+          <Shield className="mr-1 h-3 w-3" />
           Super Admin
         </Badge>
       )
     case "admin":
       return (
-        <Badge variant="outline" className="border-indigo-200 text-indigo-700 bg-indigo-50 font-medium">
-          <ShieldCheck className="w-3 h-3 mr-1" />
+        <Badge className="border-indigo-200 bg-indigo-50 font-medium text-indigo-700" variant="outline">
+          <ShieldCheck className="mr-1 h-3 w-3" />
           Admin
         </Badge>
       )
     case "user":
       return (
-        <Badge variant="outline" className="border-slate-200 text-slate-600 bg-slate-50 font-medium">
-          <UserCheck className="w-3 h-3 mr-1" />
+        <Badge className="border-slate-200 bg-slate-50 font-medium text-slate-600" variant="outline">
+          <UserCheck className="mr-1 h-3 w-3" />
           User
         </Badge>
       )
     default:
       return (
-        <Badge variant="outline" className="border-slate-200 text-slate-600 bg-slate-50 font-medium">
+        <Badge className="border-slate-200 bg-slate-50 font-medium text-slate-600" variant="outline">
           {role}
         </Badge>
       )
@@ -157,10 +152,10 @@ function CreateUserDialog() {
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
         <Button size="sm">
-          <UserPlus className="h-4 w-4 mr-2" />
+          <UserPlus className="mr-2 h-4 w-4" />
           Create User
         </Button>
       </DialogTrigger>
@@ -169,39 +164,39 @@ function CreateUserDialog() {
           <DialogTitle>Create New User</DialogTitle>
           <DialogDescription>Create a new user account with the specified details.</DialogDescription>
         </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>
             <Input
               id="name"
-              value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
+              value={formData.name}
             />
           </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
-              type="email"
-              value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               required
+              type="email"
+              value={formData.email}
             />
           </div>
           <div className="space-y-2">
             <Label htmlFor="password">Password</Label>
             <Input
               id="password"
-              type="password"
-              value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               required
+              type="password"
+              value={formData.password}
             />
           </div>
           <div className="space-y-2">
             <Label htmlFor="role">Role</Label>
-            <Select value={formData.role} onValueChange={(value) => setFormData({ ...formData, role: value })}>
+            <Select onValueChange={(value) => setFormData({ ...formData, role: value })} value={formData.role}>
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -213,10 +208,10 @@ function CreateUserDialog() {
             </Select>
           </div>
           <div className="flex justify-end space-x-2">
-            <Button type="button" variant="outline" onClick={() => setOpen(false)}>
+            <Button onClick={() => setOpen(false)} type="button" variant="outline">
               Cancel
             </Button>
-            <Button type="submit" disabled={isPending}>
+            <Button disabled={isPending} type="submit">
               {isPending ? "Creating..." : "Create User"}
             </Button>
           </div>
@@ -247,11 +242,11 @@ export function AdminUsersPage() {
 
   if (!canManageUsers(currentUserRole)) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex min-h-[400px] items-center justify-center">
         <div className="text-center">
-          <Shield className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-          <h3 className="text-lg font-semibold text-muted-foreground">Access Denied</h3>
-          <p className="text-sm text-muted-foreground">You don't have permission to access admin features.</p>
+          <Shield className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
+          <h3 className="font-semibold text-lg text-muted-foreground">Access Denied</h3>
+          <p className="text-muted-foreground text-sm">You don't have permission to access admin features.</p>
         </div>
       </div>
     )
@@ -263,8 +258,8 @@ export function AdminUsersPage() {
       name: user.name || "Unknown",
       email: user.email,
       role: user.role || "user",
-      emailVerified: user.emailVerified || false,
-      banned: user.banned || false,
+      emailVerified: user.emailVerified,
+      banned: user.banned,
       createdAt: user.createdAt ? new Date(user.createdAt) : new Date(),
       image: user.image || undefined,
     })) || []
@@ -331,26 +326,26 @@ export function AdminUsersPage() {
   const stats = {
     total: normalizedUsers.length,
     active: normalizedUsers.filter((u) => u.emailVerified && !u.banned).length,
-    pending: normalizedUsers.filter((u) => !u.emailVerified && !u.banned).length,
+    pending: normalizedUsers.filter((u) => !(u.emailVerified || u.banned)).length,
     banned: normalizedUsers.filter((u) => u.banned).length,
     admins: normalizedUsers.filter((u) => u.role === "admin" || u.role === "superadmin").length,
   }
 
   return (
-    <div className="container mx-auto py-6 space-y-6">
+    <div className="container mx-auto space-y-6 py-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">User Management</h1>
+          <h1 className="font-bold text-3xl tracking-tight">User Management</h1>
           <p className="text-muted-foreground">Manage users, roles, and permissions</p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" onClick={() => refetch()}>
-            <RefreshCw className="h-4 w-4 mr-2" />
+          <Button onClick={() => refetch()} size="sm" variant="outline">
+            <RefreshCw className="mr-2 h-4 w-4" />
             Refresh
           </Button>
-          <Button variant="outline" size="sm">
-            <Download className="h-4 w-4 mr-2" />
+          <Button size="sm" variant="outline">
+            <Download className="mr-2 h-4 w-4" />
             Export
           </Button>
           {canCreateUsers(currentUserRole) && <CreateUserDialog />}
@@ -361,47 +356,47 @@ export function AdminUsersPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+            <CardTitle className="font-medium text-sm">Total Users</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{stats.total}</div>
+            <div className="font-bold text-2xl">{stats.total}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active</CardTitle>
+            <CardTitle className="font-medium text-sm">Active</CardTitle>
             <CheckCircle className="h-4 w-4 text-emerald-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-emerald-600">{stats.active}</div>
+            <div className="font-bold text-2xl text-emerald-600">{stats.active}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending</CardTitle>
+            <CardTitle className="font-medium text-sm">Pending</CardTitle>
             <UserCheck className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-amber-600">{stats.pending}</div>
+            <div className="font-bold text-2xl text-amber-600">{stats.pending}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Banned</CardTitle>
+            <CardTitle className="font-medium text-sm">Banned</CardTitle>
             <Ban className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{stats.banned}</div>
+            <div className="font-bold text-2xl text-red-600">{stats.banned}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Admins</CardTitle>
+            <CardTitle className="font-medium text-sm">Admins</CardTitle>
             <Shield className="h-4 w-4 text-purple-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-purple-600">{stats.admins}</div>
+            <div className="font-bold text-2xl text-purple-600">{stats.admins}</div>
           </CardContent>
         </Card>
       </div>
@@ -413,19 +408,19 @@ export function AdminUsersPage() {
             <div className="flex items-center gap-4">
               {/* Search */}
               <div className="relative">
-                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Search className="absolute top-2.5 left-2 h-4 w-4 text-muted-foreground" />
                 <Input
+                  className="w-[300px] pl-8"
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   placeholder="Search users..."
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-8 w-[300px]"
                 />
               </div>
 
               {/* Status Filter */}
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
+              <Select onValueChange={setStatusFilter} value={statusFilter}>
                 <SelectTrigger className="w-[130px]">
-                  <Filter className="h-4 w-4 mr-2" />
+                  <Filter className="mr-2 h-4 w-4" />
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
                 <SelectContent>
@@ -437,7 +432,7 @@ export function AdminUsersPage() {
               </Select>
 
               {/* Role Filter */}
-              <Select value={roleFilter} onValueChange={setRoleFilter}>
+              <Select onValueChange={setRoleFilter} value={roleFilter}>
                 <SelectTrigger className="w-[120px]">
                   <SelectValue placeholder="Role" />
                 </SelectTrigger>
@@ -465,16 +460,16 @@ export function AdminUsersPage() {
             <TableBody>
               {isLoading ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center py-8">
+                  <TableCell className="py-8 text-center" colSpan={5}>
                     <div className="flex items-center justify-center">
-                      <RefreshCw className="h-6 w-6 animate-spin mr-2" />
+                      <RefreshCw className="mr-2 h-6 w-6 animate-spin" />
                       Loading users...
                     </div>
                   </TableCell>
                 </TableRow>
               ) : filteredUsers.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={5} className="text-center py-8 text-muted-foreground">
+                  <TableCell className="py-8 text-center text-muted-foreground" colSpan={5}>
                     No users found
                   </TableCell>
                 </TableRow>
@@ -484,7 +479,7 @@ export function AdminUsersPage() {
                     <TableCell>
                       <div className="flex items-center gap-3">
                         <Avatar className="h-8 w-8">
-                          <AvatarImage src={user.image} alt={user.name} />
+                          <AvatarImage alt={user.name} src={user.image} />
                           <AvatarFallback>
                             {user.name
                               .split(" ")
@@ -494,7 +489,7 @@ export function AdminUsersPage() {
                         </Avatar>
                         <div>
                           <div className="font-medium">{user.name}</div>
-                          <div className="text-sm text-muted-foreground">{user.email}</div>
+                          <div className="text-muted-foreground text-sm">{user.email}</div>
                         </div>
                       </div>
                     </TableCell>
@@ -506,7 +501,7 @@ export function AdminUsersPage() {
                     <TableCell>
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0">
+                          <Button className="h-8 w-8 p-0" variant="ghost">
                             <span className="sr-only">Open menu</span>
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
@@ -554,8 +549,8 @@ export function AdminUsersPage() {
 
                           {canDeleteUsers(currentUserRole) && (
                             <DropdownMenuItem
-                              onClick={() => handleUserAction("delete", user.id)}
                               className="text-destructive"
+                              onClick={() => handleUserAction("delete", user.id)}
                             >
                               <Trash2 className="mr-2 h-4 w-4" />
                               Delete User
@@ -574,10 +569,10 @@ export function AdminUsersPage() {
 
       {/* User Details Drawer */}
       <UserDetailsDrawer
-        user={selectedUser}
-        open={drawerOpen}
-        onOpenChange={setDrawerOpen}
         currentUserRole={currentUserRole}
+        onOpenChange={setDrawerOpen}
+        open={drawerOpen}
+        user={selectedUser}
       />
     </div>
   )

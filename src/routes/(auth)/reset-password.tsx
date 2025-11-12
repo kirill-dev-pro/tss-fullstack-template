@@ -15,7 +15,7 @@ function RouteComponent() {
 
       <div className="mt-4 text-center">
         {t("DONT_HAVE_ACCOUNT")}{" "}
-        <Link to="/login" className="underline">
+        <Link className="underline" to="/login">
           {t("LOGIN")}
         </Link>
         !

@@ -34,7 +34,7 @@ export function OverlayLoader({
     <div className={cn("fixed inset-0 z-50 flex items-center justify-center", backdrops[backdrop], className)}>
       <div className="flex flex-col items-center gap-3">
         <Loader2 className={cn("animate-spin text-primary", spinnerSizes[size])} />
-        {message && <p className="text-sm font-medium text-muted-foreground">{message}</p>}
+        {message && <p className="font-medium text-muted-foreground text-sm">{message}</p>}
       </div>
     </div>
   )
@@ -72,7 +72,7 @@ export function ComponentOverlayLoader({
     >
       <div className="flex flex-col items-center gap-2">
         <Loader2 className={cn("animate-spin text-primary", spinnerSizes[size])} />
-        {message && <p className="text-xs font-medium text-muted-foreground">{message}</p>}
+        {message && <p className="font-medium text-muted-foreground text-xs">{message}</p>}
       </div>
     </div>
   )
@@ -97,7 +97,7 @@ export function InlineLoader({ isLoading, message = "Loading...", size = "sm", c
   return (
     <div className={cn("flex items-center gap-2", className)}>
       <Loader2 className={cn("animate-spin text-muted-foreground", spinnerSizes[size])} />
-      {message && <span className="text-sm text-muted-foreground">{message}</span>}
+      {message && <span className="text-muted-foreground text-sm">{message}</span>}
     </div>
   )
 }

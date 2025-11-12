@@ -21,8 +21,8 @@ export const useActiveOrganization = () => {
   return activeOrganization
 }
 
-export const useFullOrganization = () => {
-  return useQuery({
+export const useFullOrganization = () =>
+  useQuery({
     queryKey: organizationQueryKeys.full(),
     queryFn: async () => {
       const data = await authClient.organization.getFullOrganization()
@@ -35,7 +35,6 @@ export const useFullOrganization = () => {
       return failureCount < 2
     },
   })
-}
 
 export const useSetActiveOrganization = () => {
   const queryClient = useQueryClient()
@@ -235,8 +234,8 @@ export const useRejectInvitation = () => {
   })
 }
 
-export const useGetInvitation = (invitationId: string) => {
-  return useQuery({
+export const useGetInvitation = (invitationId: string) =>
+  useQuery({
     queryKey: [...organizationQueryKeys.invitations(), invitationId],
     queryFn: async () => {
       const data = await authClient.organization.getInvitation({
@@ -258,4 +257,3 @@ export const useGetInvitation = (invitationId: string) => {
       return failureCount < 2
     },
   })
-}

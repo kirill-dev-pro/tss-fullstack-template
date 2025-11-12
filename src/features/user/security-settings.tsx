@@ -12,7 +12,7 @@ import { authClient } from "@/lib/auth/auth-client"
 export function SecuritySettings() {
   const { data: session } = authClient.useSession()
   const [settings, setSettings] = useState({
-    twoFactorEnabled: session?.user?.twoFactorEnabled || false,
+    twoFactorEnabled: session?.user?.twoFactorEnabled,
     loginNotifications: true,
     suspiciousActivityAlerts: true,
     autoSessionTimeout: false,
@@ -74,8 +74,8 @@ export function SecuritySettings() {
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <Label className="text-sm font-medium">Enable Two-Factor Authentication</Label>
-              <p className="text-sm text-muted-foreground">
+              <Label className="font-medium text-sm">Enable Two-Factor Authentication</Label>
+              <p className="text-muted-foreground text-sm">
                 {settings.twoFactorEnabled
                   ? "Your account is protected with 2FA"
                   : "Secure your account with an additional verification step"}
@@ -83,8 +83,8 @@ export function SecuritySettings() {
             </div>
             <div className="flex items-center gap-2">
               {settings.twoFactorEnabled && (
-                <Badge variant="outline" className="text-green-600 border-green-200">
-                  <ShieldCheck className="h-3 w-3 mr-1" />
+                <Badge className="border-green-200 text-green-600" variant="outline">
+                  <ShieldCheck className="mr-1 h-3 w-3" />
                   Enabled
                 </Badge>
               )}
@@ -101,10 +101,10 @@ export function SecuritySettings() {
               <AlertDescription>
                 Two-factor authentication is currently enabled using your authenticator app.
                 <div className="mt-2 space-x-2">
-                  <Button variant="outline" size="sm">
+                  <Button size="sm" variant="outline">
                     View Recovery Codes
                   </Button>
-                  <Button variant="outline" size="sm">
+                  <Button size="sm" variant="outline">
                     Regenerate Codes
                   </Button>
                 </div>
@@ -123,8 +123,8 @@ export function SecuritySettings() {
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <Label className="text-sm font-medium">Login Notifications</Label>
-              <p className="text-sm text-muted-foreground">Get notified when someone signs into your account</p>
+              <Label className="font-medium text-sm">Login Notifications</Label>
+              <p className="text-muted-foreground text-sm">Get notified when someone signs into your account</p>
             </div>
             <Switch
               checked={settings.loginNotifications}
@@ -136,8 +136,8 @@ export function SecuritySettings() {
 
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <Label className="text-sm font-medium">Suspicious Activity Alerts</Label>
-              <p className="text-sm text-muted-foreground">Get alerts for unusual account activity</p>
+              <Label className="font-medium text-sm">Suspicious Activity Alerts</Label>
+              <p className="text-muted-foreground text-sm">Get alerts for unusual account activity</p>
             </div>
             <Switch
               checked={settings.suspiciousActivityAlerts}
@@ -149,8 +149,8 @@ export function SecuritySettings() {
 
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <Label className="text-sm font-medium">Auto Session Timeout</Label>
-              <p className="text-sm text-muted-foreground">Automatically sign out after 30 minutes of inactivity</p>
+              <Label className="font-medium text-sm">Auto Session Timeout</Label>
+              <p className="text-muted-foreground text-sm">Automatically sign out after 30 minutes of inactivity</p>
             </div>
             <Switch
               checked={settings.autoSessionTimeout}
@@ -171,22 +171,22 @@ export function SecuritySettings() {
         </CardHeader>
         <CardContent className="space-y-4">
           {activeSessions.map((session) => (
-            <div key={session.id} className="flex items-center justify-between p-4 border rounded-lg">
+            <div className="flex items-center justify-between rounded-lg border p-4" key={session.id}>
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-muted rounded-lg">
+                <div className="rounded-lg bg-muted p-2">
                   <Laptop className="h-4 w-4" />
                 </div>
                 <div className="space-y-1">
                   <div className="flex items-center gap-2">
                     <p className="font-medium text-sm">{session.device}</p>
                     {session.current && (
-                      <Badge variant="outline" className="text-xs">
+                      <Badge className="text-xs" variant="outline">
                         Current
                       </Badge>
                     )}
                   </div>
-                  <p className="text-sm text-muted-foreground">{session.browser}</p>
-                  <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                  <p className="text-muted-foreground text-sm">{session.browser}</p>
+                  <div className="flex items-center gap-4 text-muted-foreground text-xs">
                     <div className="flex items-center gap-1">
                       <MapPin className="h-3 w-3" />
                       {session.location}
@@ -199,8 +199,8 @@ export function SecuritySettings() {
                 </div>
               </div>
               {!session.current && (
-                <Button variant="outline" size="sm" onClick={() => handleTerminateSession(session.id)}>
-                  <Trash2 className="h-4 w-4 mr-2" />
+                <Button onClick={() => handleTerminateSession(session.id)} size="sm" variant="outline">
+                  <Trash2 className="mr-2 h-4 w-4" />
                   Terminate
                 </Button>
               )}
@@ -217,28 +217,28 @@ export function SecuritySettings() {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex flex-col space-y-2">
-            <Button variant="outline" className="justify-start">
+            <Button className="justify-start" variant="outline">
               Change Password
             </Button>
-            <p className="text-sm text-muted-foreground ml-0">Update your password to keep your account secure</p>
+            <p className="ml-0 text-muted-foreground text-sm">Update your password to keep your account secure</p>
           </div>
 
           <Separator />
 
           <div className="flex flex-col space-y-2">
-            <Button variant="outline" className="justify-start">
+            <Button className="justify-start" variant="outline">
               Sign Out All Devices
             </Button>
-            <p className="text-sm text-muted-foreground ml-0">This will sign you out of all devices except this one</p>
+            <p className="ml-0 text-muted-foreground text-sm">This will sign you out of all devices except this one</p>
           </div>
 
           <Separator />
 
           <div className="flex flex-col space-y-2">
-            <Button variant="outline" className="justify-start text-destructive">
+            <Button className="justify-start text-destructive" variant="outline">
               Download Account Data
             </Button>
-            <p className="text-sm text-muted-foreground ml-0">Download a copy of your account data and activity</p>
+            <p className="ml-0 text-muted-foreground text-sm">Download a copy of your account data and activity</p>
           </div>
         </CardContent>
       </Card>

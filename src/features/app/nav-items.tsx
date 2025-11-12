@@ -42,9 +42,9 @@ export function NavItems({
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuContent
+                align={isMobile ? "end" : "start"}
                 className="w-48 rounded-lg"
                 side={isMobile ? "bottom" : "right"}
-                align={isMobile ? "end" : "start"}
               >
                 <DropdownMenuItem>
                   <Folder className="text-muted-foreground" />

@@ -124,7 +124,7 @@ function RouteComponent() {
           </CardContent>
           {invitationStatus === "pending" && (
             <CardFooter className="flex justify-between">
-              <Button variant="outline" onClick={handleReject}>
+              <Button onClick={handleReject} variant="outline">
                 {t("DECLINE")}
               </Button>
               <Button onClick={handleAccept}>{t("ACCEPT_INVITATION")}</Button>

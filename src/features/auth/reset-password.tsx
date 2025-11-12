@@ -33,7 +33,7 @@ export default function ResetPasswordForm() {
         if (!result.success) {
           return result.error.formErrors.fieldErrors
         }
-        return undefined
+        return
       },
     },
     onSubmit: async ({ value }) => {
@@ -70,28 +70,28 @@ export default function ResetPasswordForm() {
             <div className="grid w-full items-center gap-2">
               <div className="flex flex-col space-y-1.5">
                 <form.Field
-                  name="password"
                   children={(field) => (
                     <PasswordField field={field} label={t("NEW_PASSWORD")} placeholder={t("PASSWORD")} />
                   )}
+                  name="password"
                 />
               </div>
               <div className="flex flex-col space-y-1.5">
                 <form.Field
-                  name="confirmPassword"
                   children={(field) => (
                     <PasswordField field={field} label={t("CONFIRM_NEW_PASSWORD")} placeholder={t("PASSWORD")} />
                   )}
+                  name="confirmPassword"
                 />
               </div>
             </div>
             <form.Subscribe
-              selector={(state) => [state.canSubmit, state.isSubmitting]}
               children={([canSubmit, isSubmitting]) => (
-                <Button className="mt-4 w-full" type="submit" disabled={!canSubmit || isSubmitting}>
+                <Button className="mt-4 w-full" disabled={!canSubmit || isSubmitting} type="submit">
                   {isSubmitting ? t("RESETTING") : t("RESET_PASSWORD_BUTTON")}
                 </Button>
               )}
+              selector={(state) => [state.canSubmit, state.isSubmitting]}
             />
           </form>
         </CardContent>

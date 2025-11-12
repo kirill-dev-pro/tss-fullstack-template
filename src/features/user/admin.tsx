@@ -1,16 +1,7 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useNavigate } from "@tanstack/react-router"
 import { format } from "date-fns"
-import {
-  AlertCircle,
-  Calendar as CalendarIcon,
-  Loader2,
-  Plus,
-  RefreshCw,
-  ShieldX,
-  Trash,
-  UserCircle,
-} from "lucide-react"
+import { Calendar as CalendarIcon, Loader2, Plus, RefreshCw, ShieldX, Trash, UserCircle } from "lucide-react"
 import { useState } from "react"
 import { Toaster, toast } from "sonner"
 import { Alert, AlertDescription } from "@/components/ui/alert"
@@ -224,7 +215,7 @@ export default function AdminDashboard() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle className="text-2xl">{t("ADMIN_DASHBOARD")}</CardTitle>
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <Dialog onOpenChange={setIsDialogOpen} open={isDialogOpen}>
             <DialogTrigger asChild>
               <Button>
                 <Plus className="mr-2 h-4 w-4" /> {t("CREATE_USER")}
@@ -234,41 +225,41 @@ export default function AdminDashboard() {
               <DialogHeader>
                 <DialogTitle>{t("CREATE_USER")}</DialogTitle>
               </DialogHeader>
-              <form onSubmit={handleCreateUser} className="space-y-4">
+              <form className="space-y-4" onSubmit={handleCreateUser}>
                 <div>
                   <Label htmlFor="email">Email</Label>
                   <Input
                     id="email"
-                    type="email"
-                    value={newUser.email}
                     onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
                     required
+                    type="email"
+                    value={newUser.email}
                   />
                 </div>
                 <div>
                   <Label htmlFor="password">{t("PASSWORD")}</Label>
                   <Input
                     id="password"
-                    type="password"
-                    value={newUser.password}
                     onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
                     required
+                    type="password"
+                    value={newUser.password}
                   />
                 </div>
                 <div>
                   <Label htmlFor="name">{t("NAME")}</Label>
                   <Input
                     id="name"
-                    value={newUser.name}
                     onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
                     required
+                    value={newUser.name}
                   />
                 </div>
                 <div>
                   <Label htmlFor="role">{t("ROLE")}</Label>
                   <Select
-                    value={newUser.role}
                     onValueChange={(value: "admin" | "user") => setNewUser({ ...newUser, role: value as "user" })}
+                    value={newUser.role}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Select role" />
@@ -279,7 +270,7 @@ export default function AdminDashboard() {
                     </SelectContent>
                   </Select>
                 </div>
-                <Button type="submit" className="w-full" disabled={isLoading === "create"}>
+                <Button className="w-full" disabled={isLoading === "create"} type="submit">
                   {isLoading === "create" ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -292,19 +283,19 @@ export default function AdminDashboard() {
               </form>
             </DialogContent>
           </Dialog>
-          <Dialog open={isBanDialogOpen} onOpenChange={setIsBanDialogOpen}>
+          <Dialog onOpenChange={setIsBanDialogOpen} open={isBanDialogOpen}>
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>{t("BAN_USER")}</DialogTitle>
               </DialogHeader>
-              <form onSubmit={handleBanUser} className="space-y-4">
+              <form className="space-y-4" onSubmit={handleBanUser}>
                 <div>
                   <Label htmlFor="reason">{t("REASON")}</Label>
                   <Input
                     id="reason"
-                    value={banForm.reason}
                     onChange={(e) => setBanForm({ ...banForm, reason: e.target.value })}
                     required
+                    value={banForm.reason}
                   />
                 </div>
                 <div className="flex flex-col space-y-1.5">
@@ -312,12 +303,12 @@ export default function AdminDashboard() {
                   <Popover>
                     <PopoverTrigger asChild>
                       <Button
-                        id="expirationDate"
-                        variant={"outline"}
                         className={cn(
                           "w-full justify-start text-left font-normal",
                           !banForm.expirationDate && "text-muted-foreground"
                         )}
+                        id="expirationDate"
+                        variant={"outline"}
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
                         {banForm.expirationDate ? (
@@ -329,15 +320,15 @@ export default function AdminDashboard() {
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
                       <Calendar
-                        mode="single"
-                        selected={banForm.expirationDate}
-                        onSelect={(date) => setBanForm({ ...banForm, expirationDate: date })}
                         initialFocus
+                        mode="single"
+                        onSelect={(date) => setBanForm({ ...banForm, expirationDate: date })}
+                        selected={banForm.expirationDate}
                       />
                     </PopoverContent>
                   </Popover>
                 </div>
-                <Button type="submit" className="w-full" disabled={isLoading === `ban-${banForm.userId}`}>
+                <Button className="w-full" disabled={isLoading === `ban-${banForm.userId}`} type="submit">
                   {isLoading === `ban-${banForm.userId}` ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -353,7 +344,7 @@ export default function AdminDashboard() {
         </CardHeader>
         <CardContent>
           {usersError && (
-            <Alert variant="destructive" className="mb-6">
+            <Alert className="mb-6" variant="destructive">
               <ShieldX className="h-4 w-4" />
               <AlertDescription>
                 {usersError?.message?.includes("403") || usersError?.message?.includes("forbidden")
@@ -406,10 +397,10 @@ export default function AdminDashboard() {
                     <TableCell>
                       <div className="flex space-x-2">
                         <Button
-                          variant="destructive"
-                          size="sm"
-                          onClick={() => handleDeleteUser(user.id)}
                           disabled={isLoading?.startsWith("delete")}
+                          onClick={() => handleDeleteUser(user.id)}
+                          size="sm"
+                          variant="destructive"
                         >
                           {isLoading === `delete-${user.id}` ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -418,10 +409,10 @@ export default function AdminDashboard() {
                           )}
                         </Button>
                         <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleRevokeSessions(user.id)}
                           disabled={isLoading?.startsWith("revoke")}
+                          onClick={() => handleRevokeSessions(user.id)}
+                          size="sm"
+                          variant="outline"
                         >
                           {isLoading === `revoke-${user.id}` ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -430,10 +421,10 @@ export default function AdminDashboard() {
                           )}
                         </Button>
                         <Button
-                          variant="secondary"
-                          size="sm"
-                          onClick={() => handleImpersonateUser(user.id)}
                           disabled={isLoading?.startsWith("impersonate")}
+                          onClick={() => handleImpersonateUser(user.id)}
+                          size="sm"
+                          variant="secondary"
                         >
                           {isLoading === `impersonate-${user.id}` ? (
                             <Loader2 className="h-4 w-4 animate-spin" />
@@ -445,8 +436,7 @@ export default function AdminDashboard() {
                           )}
                         </Button>
                         <Button
-                          variant="outline"
-                          size="sm"
+                          disabled={isLoading?.startsWith("ban")}
                           onClick={async () => {
                             setBanForm({
                               userId: user.id,
@@ -479,7 +469,8 @@ export default function AdminDashboard() {
                               setIsBanDialogOpen(true)
                             }
                           }}
-                          disabled={isLoading?.startsWith("ban")}
+                          size="sm"
+                          variant="outline"
                         >
                           {isLoading === `ban-${user.id}` ? (
                             <Loader2 className="h-4 w-4 animate-spin" />

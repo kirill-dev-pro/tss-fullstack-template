@@ -7,7 +7,7 @@ export default function NotFound() {
       <div className="flex flex-col items-center gap-4">
         <p className="font-bold text-4xl">
           404{" "}
-          <Link to="/" className="hover:cursor-pointer hover:text-red-700">
+          <Link className="hover:cursor-pointer hover:text-red-700" to="/">
             <span className="mr-2 gap-3 text-5xl">&#10683;</span>
           </Link>
         </p>

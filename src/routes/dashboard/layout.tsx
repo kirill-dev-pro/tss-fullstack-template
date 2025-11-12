@@ -20,12 +20,10 @@ function RouteComponent() {
   const pathname = location.pathname
 
   const paths = pathname.split("/")
-  const breadcrumb = paths.map((path) => {
-    return {
-      label: path,
-      href: `/${path}`,
-    }
-  })
+  const breadcrumb = paths.map((path) => ({
+    label: path,
+    href: `/${path}`,
+  }))
   return (
     <AuthProvider>
       <SidebarProvider>

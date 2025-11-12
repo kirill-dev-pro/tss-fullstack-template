@@ -1,6 +1,6 @@
-import { db } from "../src/lib/db/index.js"
-import { sql } from "drizzle-orm"
 import { config } from "dotenv"
+import { sql } from "drizzle-orm"
+import { db } from "../src/lib/db/index.js"
 
 // Load environment variables
 config()

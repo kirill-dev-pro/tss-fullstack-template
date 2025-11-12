@@ -20,8 +20,8 @@ export function InvitationError() {
         <p className="mb-4 text-muted-foreground text-sm">{t("INVITATION_ERROR_MESSAGE")}</p>
       </CardContent>
       <CardFooter>
-        <Link to="/" className="w-full">
-          <Button variant="outline" className="w-full">
+        <Link className="w-full" to="/">
+          <Button className="w-full" variant="outline">
             {t("GO_HOME")}
           </Button>
         </Link>

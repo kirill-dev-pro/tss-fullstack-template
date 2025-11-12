@@ -14,7 +14,7 @@ function RouteComponent() {
       <SignUpForm />
       <div className="mt-4 text-center">
         {t("ALREADY_HAVE_ACCOUNT")}{" "}
-        <Link to="/login" className="underline">
+        <Link className="underline" to="/login">
           {t("LOG_IN")}
         </Link>
         !

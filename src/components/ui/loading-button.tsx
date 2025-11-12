@@ -9,14 +9,12 @@ interface LoadingButtonProps extends React.ComponentProps<typeof Button> {
 }
 
 const LoadingButton = React.forwardRef<HTMLButtonElement, LoadingButtonProps>(
-  ({ loading = false, loadingText, children, disabled, className, ...props }, ref) => {
-    return (
-      <Button ref={ref} disabled={loading || disabled} className={cn(className)} {...props}>
-        {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-        {loading ? loadingText || children : children}
-      </Button>
-    )
-  }
+  ({ loading = false, loadingText, children, disabled, className, ...props }, ref) => (
+    <Button className={cn(className)} disabled={loading || disabled} ref={ref} {...props}>
+      {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+      {loading ? loadingText || children : children}
+    </Button>
+  )
 )
 
 LoadingButton.displayName = "LoadingButton"
