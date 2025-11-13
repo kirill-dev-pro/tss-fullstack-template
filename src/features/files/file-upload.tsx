@@ -1,3 +1,6 @@
+/** biome-ignore-all lint/a11y/noNoninteractiveElementInteractions: stupid rule */
+/** biome-ignore-all lint/a11y/noStaticElementInteractions: stupid rule */
+
 import { useMutation } from "@tanstack/react-query"
 import { AnimatePresence, motion } from "framer-motion"
 import { FileUp, Loader2, Plus } from "lucide-react"
@@ -7,6 +10,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { useTRPC } from "@/lib/trpc/react"
+
+const isSafariRegex = new RegExp(/^((?!chrome|android).)*safari/i)
 
 export default function UploadComponent() {
   const api = useTRPC()
@@ -31,7 +36,7 @@ export default function UploadComponent() {
   )
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+    const isSafari = isSafariRegex.test(navigator.userAgent)
 
     if (isSafari && isDragging) {
       toast.error("Safari does not support drag & drop. Please use the file picker.")
@@ -49,9 +54,11 @@ export default function UploadComponent() {
     setFiles(validFiles)
   }
 
-  const handleSubmitWithFiles = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmitWithFiles = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (files.length === 0) return
+    if (files.length === 0) {
+      return
+    }
 
     const file = files[0]
     setTitle(file.name)

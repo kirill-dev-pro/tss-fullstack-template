@@ -1,8 +1,7 @@
-import { vercel } from "@ai-sdk/vercel"
 import { createFileRoute } from "@tanstack/react-router"
 import { json } from "@tanstack/react-start"
-
 import { convertToModelMessages, streamText } from "ai"
+import { chatModel } from "@/lib/openrouter"
 
 export const Route = createFileRoute("/api/ai/vercel/chat")({
   server: {
@@ -14,7 +13,7 @@ export const Route = createFileRoute("/api/ai/vercel/chat")({
           console.log("🔑 Messages", messages)
 
           const response = streamText({
-            model: vercel("v0-1.0-md"),
+            model: chatModel,
             messages: convertToModelMessages(messages),
           })
 

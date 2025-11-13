@@ -1,9 +1,14 @@
-import { openai } from "@ai-sdk/openai"
+import { createOpenRouter } from "@openrouter/ai-sdk-provider"
 import { createFileRoute } from "@tanstack/react-router"
 import { convertToModelMessages, stepCountIs, streamText, tool } from "ai"
 import { z } from "zod"
 import { findRelevantContent } from "@/features/ai/embedding"
 import { createResource } from "@/features/resource/create"
+import { env } from "@/lib/env"
+
+const openrouter = createOpenRouter({
+  apiKey: env.OPENROUTER_API_KEY,
+})
 
 export const Route = createFileRoute("/api/ai/chat/rag")({
   server: {
@@ -12,7 +17,7 @@ export const Route = createFileRoute("/api/ai/chat/rag")({
         const { messages } = await request.json()
 
         const result = streamText({
-          model: openai("gpt-4o"),
+          model: openrouter("deepseek/deepseek-r1-0528-qwen3-8b:free"),
           onError: (error) => {
             console.log("error", error)
           },

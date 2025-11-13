@@ -7,8 +7,9 @@ export const env = createEnv({
     DATABASE_URL: z.string().url(),
     RESEND_API_KEY: z.string().optional(),
     BETTER_AUTH_SECRET: z.string().min(1),
-    OPENAI_API_KEY: z.string().min(1).optional(),
-    ANTHROPIC_API_KEY: z.string().min(1).optional(),
+    OPENAI_API_KEY: z.string().optional(),
+    ANTHROPIC_API_KEY: z.string().optional(),
+    OPENROUTER_API_KEY: z.string().optional(),
   },
 
   /**

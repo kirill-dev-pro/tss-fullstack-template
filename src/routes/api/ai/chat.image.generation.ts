@@ -1,6 +1,4 @@
-import { openai } from "@ai-sdk/openai"
 import { createFileRoute } from "@tanstack/react-router"
-
 import {
   convertToModelMessages,
   experimental_generateImage as generateImage,
@@ -9,6 +7,7 @@ import {
   type UIMessage,
 } from "ai"
 import { z } from "zod"
+import { chatModel, imageModel } from "@/lib/openrouter"
 
 export const Route = createFileRoute("/api/ai/chat/image/generation")({
   server: {
@@ -47,7 +46,7 @@ export const Route = createFileRoute("/api/ai/chat/image/generation")({
         }))
 
         const result = streamText({
-          model: openai("gpt-4o"),
+          model: chatModel,
           messages: convertToModelMessages(filteredMessages),
           tools: {
             generateImage: tool({
@@ -57,7 +56,8 @@ export const Route = createFileRoute("/api/ai/chat/image/generation")({
               }),
               execute: async ({ prompt }) => {
                 const { image } = await generateImage({
-                  model: openai.image("gpt-image-1"),
+                  model: imageModel,
+                  // model: openai.image("gpt-image-1"),
                   prompt,
                 })
                 // in production, save this image to blob storage and return a URL

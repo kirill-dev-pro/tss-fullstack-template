@@ -6,7 +6,7 @@ import { auth } from "@/lib/auth/auth"
 export const Route = createFileRoute("/.well-known/oauth-authorization-server")({
   server: {
     handlers: {
-      GET: oAuthDiscoveryMetadata(auth),
+      GET: ({ request }) => oAuthDiscoveryMetadata(auth)(request),
     },
   },
 })

@@ -6,24 +6,17 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 
 // Types - Using AI SDK v5 types
-interface Attachment {
+type Attachment = {
   contentType?: string
   url: string
   name?: string
 }
 
-interface ToolInvocationType {
+type ToolInvocationType = {
   toolName: string
   toolCallId: string
   state: string
-  result?: Array<{
-    name: string
-  }>
-}
-
-interface MessagePart {
-  type: string
-  toolInvocation: ToolInvocationType
+  result?: { name: string }[]
 }
 
 // Using AI SDK v5 UIMessage type
@@ -154,8 +147,6 @@ export function Chat({ api }: { api?: string }) {
       api: api || "/api/ai/chat/rag",
     }),
   })
-
-  console.log({ messages })
 
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const messagesEndRef = useRef<HTMLDivElement>(null)

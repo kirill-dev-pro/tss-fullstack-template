@@ -1,9 +1,9 @@
-import { openai } from "@ai-sdk/openai"
 import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters"
 import { embed, embedMany } from "ai"
 import { cosineDistance, desc, gt, sql } from "drizzle-orm"
 import { db } from "@/lib/db"
 import { embeddings } from "@/lib/db/schema/embeddings"
+import { embeddingModel } from "@/lib/openrouter"
 
 const splitter = new RecursiveCharacterTextSplitter({
   chunkSize: 8000,
@@ -16,15 +16,13 @@ export const generateChunksBySplitter = async (input: string): Promise<string[]>
   return chunks
 }
 
-const embeddingModel = openai.embedding("text-embedding-ada-002")
-
 export const generateEmbeddings = async (value: string): Promise<Array<{ embedding: number[]; content: string }>> => {
   const chunks = await generateChunksBySplitter(value)
-  const { embeddings } = await embedMany({
+  const { embeddings: embeddingResults } = await embedMany({
     model: embeddingModel,
     values: chunks,
   })
-  return embeddings.map((e, i) => ({ content: chunks[i], embedding: e }))
+  return embeddingResults.map((e, i) => ({ content: chunks[i], embedding: e }))
 }
 
 export const generateEmbedding = async (value: string): Promise<number[]> => {
