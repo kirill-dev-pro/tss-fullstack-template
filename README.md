@@ -35,7 +35,6 @@ This project provides a solid foundation for building modern web applications us
 
 <img width="1599" height="1112" alt="image" src="https://github.com/user-attachments/assets/3e0d9de1-e7c4-4f0e-93f9-1cca421fc424" />
 
-
 ## Database with Neon
 
 This boilerplate uses [Neon](https://neon.com/) as the primary database solution, providing a modern serverless PostgreSQL experience that's perfect for full-stack applications.
@@ -217,19 +216,17 @@ Visit `/dashboard/tanstack-db-example` to see TanStack DB in action with a react
 
 ```tsx
 // One collection, three reactive views
-const { data: allTodos } = useLiveQuery((q) =>
-  q.from({ todo: todoCollection }),
-);
+const { data: allTodos } = useLiveQuery((q) => q.from({ todo: todoCollection }))
 const { data: completed } = useLiveQuery((q) =>
   q
     .from({ todo: todoCollection })
     .where(({ todo }) => eq(todo.completed, true)),
-);
+)
 const { data: pending } = useLiveQuery((q) =>
   q
     .from({ todo: todoCollection })
     .where(({ todo }) => eq(todo.completed, false)),
-);
+)
 ```
 
 #### ⚡ **Automatic Reactivity**
@@ -286,13 +283,13 @@ const todoCollection = createCollection(
   queryCollectionOptions<Todo>({
     queryKey: ['todos'],
     queryFn: async () => {
-      const data = await todos.refetch();
-      return data.data ?? [];
+      const data = await todos.refetch()
+      return data.data ?? []
     },
     queryClient,
     getKey: (item) => item.id,
   }),
-);
+)
 ```
 
 ### Performance Benefits
@@ -383,8 +380,8 @@ const yourNewTool = async ({ param }: { param: string }) => {
   // Your tool logic here
   return {
     content: [{ type: 'text', text: `Result: ${param}` }],
-  };
-};
+  }
+}
 ```
 
 2. **Add the tool to the tools array**:
@@ -400,7 +397,7 @@ export const tools = [
       param: z.string(),
     }),
   },
-];
+]
 ```
 
 3. **Restart your development server** and the AI assistant to pick up the new tool.

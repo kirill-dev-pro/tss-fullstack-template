@@ -1,15 +1,28 @@
-import { Bell, Mail, Smartphone, Volume2 } from "lucide-react"
-import { useState } from "react"
-import { Badge } from "@/components/ui/badge"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
-import { Switch } from "@/components/ui/switch"
+import { Bell, Mail, Smartphone, Volume2 } from 'lucide-react'
+import { useState } from 'react'
+
+import { Badge } from '@/components/ui/badge'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Separator } from '@/components/ui/separator'
+import { Switch } from '@/components/ui/switch'
 
 export function NotificationSettings() {
   const [settings, setSettings] = useState({
-    emailFrequency: "realtime",
+    emailFrequency: 'realtime',
     emailNotifications: {
       securityAlerts: true,
       productUpdates: false,
@@ -68,13 +81,17 @@ export function NotificationSettings() {
             <Mail className="h-5 w-5" />
             Email Notifications
           </CardTitle>
-          <CardDescription>Choose what updates you want to receive via email.</CardDescription>
+          <CardDescription>
+            Choose what updates you want to receive via email.
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
-            <Label className="font-medium text-sm">Email Frequency</Label>
+            <Label className="text-sm font-medium">Email Frequency</Label>
             <Select
-              onValueChange={(value) => setSettings({ ...settings, emailFrequency: value })}
+              onValueChange={(value) =>
+                setSettings({ ...settings, emailFrequency: value })
+              }
               value={settings.emailFrequency}
             >
               <SelectTrigger>
@@ -87,11 +104,15 @@ export function NotificationSettings() {
                 <SelectItem value="never">Never</SelectItem>
               </SelectContent>
             </Select>
-            <p className="text-muted-foreground text-xs">
-              {settings.emailFrequency === "realtime" && "Receive emails immediately when events occur"}
-              {settings.emailFrequency === "daily" && "Receive a daily summary of activity"}
-              {settings.emailFrequency === "weekly" && "Receive a weekly summary of activity"}
-              {settings.emailFrequency === "never" && "No email notifications will be sent"}
+            <p className="text-xs text-muted-foreground">
+              {settings.emailFrequency === 'realtime' &&
+                'Receive emails immediately when events occur'}
+              {settings.emailFrequency === 'daily' &&
+                'Receive a daily summary of activity'}
+              {settings.emailFrequency === 'weekly' &&
+                'Receive a weekly summary of activity'}
+              {settings.emailFrequency === 'never' &&
+                'No email notifications will be sent'}
             </p>
           </div>
 
@@ -100,8 +121,10 @@ export function NotificationSettings() {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <Label className="font-medium text-sm">Security Alerts</Label>
-                <p className="text-muted-foreground text-sm">Get notified about login attempts and security changes</p>
+                <Label className="text-sm font-medium">Security Alerts</Label>
+                <p className="text-sm text-muted-foreground">
+                  Get notified about login attempts and security changes
+                </p>
               </div>
               <div className="flex items-center gap-2">
                 <Badge className="text-xs" variant="outline">
@@ -109,7 +132,9 @@ export function NotificationSettings() {
                 </Badge>
                 <Switch
                   checked={settings.emailNotifications.securityAlerts}
-                  onCheckedChange={(checked) => handleEmailNotificationChange("securityAlerts", checked)}
+                  onCheckedChange={(checked) =>
+                    handleEmailNotificationChange('securityAlerts', checked)
+                  }
                 />
               </div>
             </div>
@@ -118,12 +143,16 @@ export function NotificationSettings() {
 
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <Label className="font-medium text-sm">Product Updates</Label>
-                <p className="text-muted-foreground text-sm">News about product features and enhancements</p>
+                <Label className="text-sm font-medium">Product Updates</Label>
+                <p className="text-sm text-muted-foreground">
+                  News about product features and enhancements
+                </p>
               </div>
               <Switch
                 checked={settings.emailNotifications.productUpdates}
-                onCheckedChange={(checked) => handleEmailNotificationChange("productUpdates", checked)}
+                onCheckedChange={(checked) =>
+                  handleEmailNotificationChange('productUpdates', checked)
+                }
               />
             </div>
 
@@ -131,12 +160,16 @@ export function NotificationSettings() {
 
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <Label className="font-medium text-sm">Marketing Emails</Label>
-                <p className="text-muted-foreground text-sm">Tips, tutorials, and promotional content</p>
+                <Label className="text-sm font-medium">Marketing Emails</Label>
+                <p className="text-sm text-muted-foreground">
+                  Tips, tutorials, and promotional content
+                </p>
               </div>
               <Switch
                 checked={settings.emailNotifications.marketingEmails}
-                onCheckedChange={(checked) => handleEmailNotificationChange("marketingEmails", checked)}
+                onCheckedChange={(checked) =>
+                  handleEmailNotificationChange('marketingEmails', checked)
+                }
               />
             </div>
 
@@ -144,12 +177,16 @@ export function NotificationSettings() {
 
             <div className="flex items-center justify-between">
               <div className="space-y-1">
-                <Label className="font-medium text-sm">Community Updates</Label>
-                <p className="text-muted-foreground text-sm">Updates from the community and user-generated content</p>
+                <Label className="text-sm font-medium">Community Updates</Label>
+                <p className="text-sm text-muted-foreground">
+                  Updates from the community and user-generated content
+                </p>
               </div>
               <Switch
                 checked={settings.emailNotifications.communityUpdates}
-                onCheckedChange={(checked) => handleEmailNotificationChange("communityUpdates", checked)}
+                onCheckedChange={(checked) =>
+                  handleEmailNotificationChange('communityUpdates', checked)
+                }
               />
             </div>
           </div>
@@ -163,17 +200,23 @@ export function NotificationSettings() {
             <Smartphone className="h-5 w-5" />
             Push Notifications
           </CardTitle>
-          <CardDescription>Manage your mobile and browser push notifications.</CardDescription>
+          <CardDescription>
+            Manage your mobile and browser push notifications.
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <Label className="font-medium text-sm">Direct Messages</Label>
-              <p className="text-muted-foreground text-sm">Get notified when someone sends you a message</p>
+              <Label className="text-sm font-medium">Direct Messages</Label>
+              <p className="text-sm text-muted-foreground">
+                Get notified when someone sends you a message
+              </p>
             </div>
             <Switch
               checked={settings.pushNotifications.directMessages}
-              onCheckedChange={(checked) => handlePushNotificationChange("directMessages", checked)}
+              onCheckedChange={(checked) =>
+                handlePushNotificationChange('directMessages', checked)
+              }
             />
           </div>
 
@@ -181,12 +224,16 @@ export function NotificationSettings() {
 
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <Label className="font-medium text-sm">Comments</Label>
-              <p className="text-muted-foreground text-sm">Get notified when someone comments on your posts</p>
+              <Label className="text-sm font-medium">Comments</Label>
+              <p className="text-sm text-muted-foreground">
+                Get notified when someone comments on your posts
+              </p>
             </div>
             <Switch
               checked={settings.pushNotifications.comments}
-              onCheckedChange={(checked) => handlePushNotificationChange("comments", checked)}
+              onCheckedChange={(checked) =>
+                handlePushNotificationChange('comments', checked)
+              }
             />
           </div>
 
@@ -194,12 +241,16 @@ export function NotificationSettings() {
 
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <Label className="font-medium text-sm">Mentions</Label>
-              <p className="text-muted-foreground text-sm">Get notified when someone mentions you</p>
+              <Label className="text-sm font-medium">Mentions</Label>
+              <p className="text-sm text-muted-foreground">
+                Get notified when someone mentions you
+              </p>
             </div>
             <Switch
               checked={settings.pushNotifications.mentions}
-              onCheckedChange={(checked) => handlePushNotificationChange("mentions", checked)}
+              onCheckedChange={(checked) =>
+                handlePushNotificationChange('mentions', checked)
+              }
             />
           </div>
 
@@ -207,12 +258,16 @@ export function NotificationSettings() {
 
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <Label className="font-medium text-sm">Likes & Reactions</Label>
-              <p className="text-muted-foreground text-sm">Get notified when someone likes or reacts to your content</p>
+              <Label className="text-sm font-medium">Likes & Reactions</Label>
+              <p className="text-sm text-muted-foreground">
+                Get notified when someone likes or reacts to your content
+              </p>
             </div>
             <Switch
               checked={settings.pushNotifications.likes}
-              onCheckedChange={(checked) => handlePushNotificationChange("likes", checked)}
+              onCheckedChange={(checked) =>
+                handlePushNotificationChange('likes', checked)
+              }
             />
           </div>
         </CardContent>
@@ -225,17 +280,25 @@ export function NotificationSettings() {
             <Bell className="h-5 w-5" />
             Desktop Notifications
           </CardTitle>
-          <CardDescription>Configure desktop notification preferences.</CardDescription>
+          <CardDescription>
+            Configure desktop notification preferences.
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <Label className="font-medium text-sm">Enable Desktop Notifications</Label>
-              <p className="text-muted-foreground text-sm">Allow notifications to appear on your desktop</p>
+              <Label className="text-sm font-medium">
+                Enable Desktop Notifications
+              </Label>
+              <p className="text-sm text-muted-foreground">
+                Allow notifications to appear on your desktop
+              </p>
             </div>
             <Switch
               checked={settings.desktopNotifications.enabled}
-              onCheckedChange={(checked) => handleDesktopNotificationChange("enabled", checked)}
+              onCheckedChange={(checked) =>
+                handleDesktopNotificationChange('enabled', checked)
+              }
             />
           </div>
 
@@ -243,16 +306,20 @@ export function NotificationSettings() {
 
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <Label className="flex items-center gap-2 font-medium text-sm">
+              <Label className="flex items-center gap-2 text-sm font-medium">
                 <Volume2 className="h-4 w-4" />
                 Notification Sounds
               </Label>
-              <p className="text-muted-foreground text-sm">Play a sound when receiving notifications</p>
+              <p className="text-sm text-muted-foreground">
+                Play a sound when receiving notifications
+              </p>
             </div>
             <Switch
               checked={settings.desktopNotifications.sound}
               disabled={!settings.desktopNotifications.enabled}
-              onCheckedChange={(checked) => handleDesktopNotificationChange("sound", checked)}
+              onCheckedChange={(checked) =>
+                handleDesktopNotificationChange('sound', checked)
+              }
             />
           </div>
 
@@ -260,13 +327,19 @@ export function NotificationSettings() {
 
           <div className="flex items-center justify-between">
             <div className="space-y-1">
-              <Label className="font-medium text-sm">Show Message Previews</Label>
-              <p className="text-muted-foreground text-sm">Show content preview in notification popups</p>
+              <Label className="text-sm font-medium">
+                Show Message Previews
+              </Label>
+              <p className="text-sm text-muted-foreground">
+                Show content preview in notification popups
+              </p>
             </div>
             <Switch
               checked={settings.desktopNotifications.showPreviews}
               disabled={!settings.desktopNotifications.enabled}
-              onCheckedChange={(checked) => handleDesktopNotificationChange("showPreviews", checked)}
+              onCheckedChange={(checked) =>
+                handleDesktopNotificationChange('showPreviews', checked)
+              }
             />
           </div>
         </CardContent>
@@ -276,40 +349,62 @@ export function NotificationSettings() {
       <Card>
         <CardHeader>
           <CardTitle>Notification Summary</CardTitle>
-          <CardDescription>Overview of your current notification settings.</CardDescription>
+          <CardDescription>
+            Overview of your current notification settings.
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium text-sm">Email</span>
+                <span className="text-sm font-medium">Email</span>
               </div>
-              <Badge variant={settings.emailFrequency === "never" ? "secondary" : "default"}>
-                {settings.emailFrequency === "realtime" && "Real-time"}
-                {settings.emailFrequency === "daily" && "Daily"}
-                {settings.emailFrequency === "weekly" && "Weekly"}
-                {settings.emailFrequency === "never" && "Disabled"}
+              <Badge
+                variant={
+                  settings.emailFrequency === 'never' ? 'secondary' : 'default'
+                }
+              >
+                {settings.emailFrequency === 'realtime' && 'Real-time'}
+                {settings.emailFrequency === 'daily' && 'Daily'}
+                {settings.emailFrequency === 'weekly' && 'Weekly'}
+                {settings.emailFrequency === 'never' && 'Disabled'}
               </Badge>
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <Smartphone className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium text-sm">Push</span>
+                <span className="text-sm font-medium">Push</span>
               </div>
-              <Badge variant={Object.values(settings.pushNotifications).some(Boolean) ? "default" : "secondary"}>
-                {Object.values(settings.pushNotifications).filter(Boolean).length} active
+              <Badge
+                variant={
+                  Object.values(settings.pushNotifications).some(Boolean)
+                    ? 'default'
+                    : 'secondary'
+                }
+              >
+                {
+                  Object.values(settings.pushNotifications).filter(Boolean)
+                    .length
+                }{' '}
+                active
               </Badge>
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center gap-2">
                 <Bell className="h-4 w-4 text-muted-foreground" />
-                <span className="font-medium text-sm">Desktop</span>
+                <span className="text-sm font-medium">Desktop</span>
               </div>
-              <Badge variant={settings.desktopNotifications.enabled ? "default" : "secondary"}>
-                {settings.desktopNotifications.enabled ? "Enabled" : "Disabled"}
+              <Badge
+                variant={
+                  settings.desktopNotifications.enabled
+                    ? 'default'
+                    : 'secondary'
+                }
+              >
+                {settings.desktopNotifications.enabled ? 'Enabled' : 'Disabled'}
               </Badge>
             </div>
           </div>

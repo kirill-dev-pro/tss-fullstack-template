@@ -1,13 +1,14 @@
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useRouter } from "@tanstack/react-router"
-import { Edit, X } from "lucide-react"
-import { useState } from "react"
-import { useForm } from "react-hook-form"
-import { useTranslation } from "react-i18next"
-import { toast } from "sonner"
-import * as z from "zod"
-import { Button } from "@/components/ui/button"
-import { ButtonGroup } from "@/components/ui/button-group"
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useRouter } from '@tanstack/react-router'
+import { Edit, X } from 'lucide-react'
+import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { useTranslation } from 'react-i18next'
+import { toast } from 'sonner'
+import * as z from 'zod'
+
+import { Button } from '@/components/ui/button'
+import { ButtonGroup } from '@/components/ui/button-group'
 import {
   Dialog,
   DialogContent,
@@ -16,17 +17,23 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
-import { Field, FieldContent, FieldError, FieldLabel, FieldSet } from "@/components/ui/field"
-import { Input } from "@/components/ui/input"
-import { InputGroup, InputGroupInput } from "@/components/ui/input-group"
-import { Spinner } from "@/components/ui/spinner"
-import { useSession } from "@/features/auth/auth-hooks"
-import { authClient } from "@/lib/auth/auth-client"
-import { convertImageToBase64 } from "@/lib/utils"
+} from '@/components/ui/dialog'
+import {
+  Field,
+  FieldContent,
+  FieldError,
+  FieldLabel,
+  FieldSet,
+} from '@/components/ui/field'
+import { Input } from '@/components/ui/input'
+import { InputGroup, InputGroupInput } from '@/components/ui/input-group'
+import { Spinner } from '@/components/ui/spinner'
+import { useSession } from '@/features/auth/auth-hooks'
+import { authClient } from '@/lib/auth/auth-client'
+import { convertImageToBase64 } from '@/lib/utils'
 
 const changeUserSchema = z.object({
-  name: z.string().min(2, "Name must be at least 2 characters").optional(),
+  name: z.string().min(2, 'Name must be at least 2 characters').optional(),
   image: z.instanceof(File).optional(),
 })
 
@@ -40,7 +47,7 @@ export function ChangeUser() {
   const form = useForm({
     resolver: zodResolver(changeUserSchema),
     defaultValues: {
-      name: "",
+      name: '',
       image: undefined as File | undefined,
     },
   })
@@ -60,7 +67,7 @@ export function ChangeUser() {
         name: data.name ? data.name : undefined,
         fetchOptions: {
           onSuccess: () => {
-            toast.success("User updated successfully")
+            toast.success('User updated successfully')
           },
           onError: (error) => {
             toast.error(error.error.message)
@@ -72,14 +79,14 @@ export function ChangeUser() {
       setImagePreview(null)
       setOpen(false)
     } catch (error) {
-      toast.error("An error occurred while updating user")
+      toast.error('An error occurred while updating user')
     }
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      setValue("image", file)
+      setValue('image', file)
       const reader = new FileReader()
       reader.onloadend = () => {
         setImagePreview(reader.result as string)
@@ -89,7 +96,7 @@ export function ChangeUser() {
   }
 
   const clearImage = () => {
-    setValue("image", undefined)
+    setValue('image', undefined)
     setImagePreview(null)
   }
   return (
@@ -97,30 +104,39 @@ export function ChangeUser() {
       <DialogTrigger asChild>
         <Button className="gap-2" size="sm" variant="secondary">
           <Edit size={13} />
-          {t("EDIT_USER")}
+          {t('EDIT_USER')}
         </Button>
       </DialogTrigger>
       <DialogContent className="w-11/12 sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>{t("EDIT_USER")}</DialogTitle>
-          <DialogDescription>{t("EDIT_USER_DESC")}</DialogDescription>
+          <DialogTitle>{t('EDIT_USER')}</DialogTitle>
+          <DialogDescription>{t('EDIT_USER_DESC')}</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <FieldSet>
             <Field>
-              <FieldLabel htmlFor="name">{t("FULL_NAME")}</FieldLabel>
+              <FieldLabel htmlFor="name">{t('FULL_NAME')}</FieldLabel>
               <InputGroup>
-                <InputGroupInput id="name" placeholder={data?.user.name} type="text" {...register("name")} />
+                <InputGroupInput
+                  id="name"
+                  placeholder={data?.user.name}
+                  type="text"
+                  {...register('name')}
+                />
               </InputGroup>
               <FieldError errors={errors.name} />
             </Field>
 
             <Field>
-              <FieldLabel>{t("PROFILE_IMAGE")}</FieldLabel>
+              <FieldLabel>{t('PROFILE_IMAGE')}</FieldLabel>
               <FieldContent>
                 {imagePreview && (
                   <div className="relative h-16 w-16 overflow-hidden rounded-sm">
-                    <img alt="Profile preview" className="h-full w-full object-cover" src={imagePreview} />
+                    <img
+                      alt="Profile preview"
+                      className="h-full w-full object-cover"
+                      src={imagePreview}
+                    />
                   </div>
                 )}
                 <div className="flex w-full items-center gap-2">
@@ -131,7 +147,9 @@ export function ChangeUser() {
                     onChange={handleImageChange}
                     type="file"
                   />
-                  {imagePreview && <X className="cursor-pointer" onClick={clearImage} />}
+                  {imagePreview && (
+                    <X className="cursor-pointer" onClick={clearImage} />
+                  )}
                 </div>
               </FieldContent>
             </Field>
@@ -139,8 +157,12 @@ export function ChangeUser() {
         </form>
         <DialogFooter>
           <ButtonGroup>
-            <Button disabled={isSubmitting} onClick={handleSubmit(onSubmit)} type="submit">
-              {isSubmitting ? <Spinner size="sm" /> : t("UPDATE")}
+            <Button
+              disabled={isSubmitting}
+              onClick={handleSubmit(onSubmit)}
+              type="submit"
+            >
+              {isSubmitting ? <Spinner size="sm" /> : t('UPDATE')}
             </Button>
           </ButtonGroup>
         </DialogFooter>

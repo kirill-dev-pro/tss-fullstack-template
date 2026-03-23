@@ -1,21 +1,28 @@
-import { useForm } from "@tanstack/react-form"
-import { useRouter } from "@tanstack/react-router"
-import { toast } from "sonner"
-import * as z from "zod"
-import { PasswordField } from "@/components/form/password-field"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { authClient } from "@/lib/auth/auth-client"
-import { useTranslation } from "@/lib/intl/react"
+import { useForm } from '@tanstack/react-form'
+import { useRouter } from '@tanstack/react-router'
+import { toast } from 'sonner'
+import * as z from 'zod'
+
+import { PasswordField } from '@/components/form/password-field'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { authClient } from '@/lib/auth/auth-client'
+import { useTranslation } from '@/lib/intl/react'
 
 const resetPasswordSchema = z
   .object({
-    password: z.string().min(8, "Password must be at least 8 characters"),
+    password: z.string().min(8, 'Password must be at least 8 characters'),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "The two passwords do not match.",
-    path: ["confirmPassword"],
+    message: 'The two passwords do not match.',
+    path: ['confirmPassword'],
   })
 
 export default function ResetPasswordForm() {
@@ -24,8 +31,8 @@ export default function ResetPasswordForm() {
 
   const form = useForm({
     defaultValues: {
-      password: "",
-      confirmPassword: "",
+      password: '',
+      confirmPassword: '',
     },
     validators: {
       onChange: ({ value }) => {
@@ -40,15 +47,15 @@ export default function ResetPasswordForm() {
       try {
         const res = await authClient.resetPassword({
           newPassword: value.password,
-          token: new URLSearchParams(window.location.search).get("token")!,
+          token: new URLSearchParams(window.location.search).get('token')!,
         })
         if (res.error) {
           toast.error(res.error.message)
         } else {
-          router.navigate({ to: "/login" })
+          router.navigate({ to: '/login' })
         }
       } catch (error) {
-        toast.error("An error occurred during password reset")
+        toast.error('An error occurred during password reset')
       }
     },
   })
@@ -56,8 +63,8 @@ export default function ResetPasswordForm() {
     <div className="flex min-h-[calc(100vh-10rem)] flex-col items-center justify-center">
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle>{t("RESET_PASSWORD")}</CardTitle>
-          <CardDescription>{t("RESET_PASSWORD_DESC")}</CardDescription>
+          <CardTitle>{t('RESET_PASSWORD')}</CardTitle>
+          <CardDescription>{t('RESET_PASSWORD_DESC')}</CardDescription>
         </CardHeader>
         <CardContent>
           <form
@@ -71,7 +78,11 @@ export default function ResetPasswordForm() {
               <div className="flex flex-col space-y-1.5">
                 <form.Field
                   children={(field) => (
-                    <PasswordField field={field} label={t("NEW_PASSWORD")} placeholder={t("PASSWORD")} />
+                    <PasswordField
+                      field={field}
+                      label={t('NEW_PASSWORD')}
+                      placeholder={t('PASSWORD')}
+                    />
                   )}
                   name="password"
                 />
@@ -79,7 +90,11 @@ export default function ResetPasswordForm() {
               <div className="flex flex-col space-y-1.5">
                 <form.Field
                   children={(field) => (
-                    <PasswordField field={field} label={t("CONFIRM_NEW_PASSWORD")} placeholder={t("PASSWORD")} />
+                    <PasswordField
+                      field={field}
+                      label={t('CONFIRM_NEW_PASSWORD')}
+                      placeholder={t('PASSWORD')}
+                    />
                   )}
                   name="confirmPassword"
                 />
@@ -87,8 +102,12 @@ export default function ResetPasswordForm() {
             </div>
             <form.Subscribe
               children={([canSubmit, isSubmitting]) => (
-                <Button className="mt-4 w-full" disabled={!canSubmit || isSubmitting} type="submit">
-                  {isSubmitting ? t("RESETTING") : t("RESET_PASSWORD_BUTTON")}
+                <Button
+                  className="mt-4 w-full"
+                  disabled={!canSubmit || isSubmitting}
+                  type="submit"
+                >
+                  {isSubmitting ? t('RESETTING') : t('RESET_PASSWORD_BUTTON')}
                 </Button>
               )}
               selector={(state) => [state.canSubmit, state.isSubmitting]}

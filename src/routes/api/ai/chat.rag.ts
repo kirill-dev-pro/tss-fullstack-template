@@ -1,25 +1,26 @@
-import { createOpenRouter } from "@openrouter/ai-sdk-provider"
-import { createFileRoute } from "@tanstack/react-router"
-import { convertToModelMessages, stepCountIs, streamText, tool } from "ai"
-import { z } from "zod"
-import { findRelevantContent } from "@/features/ai/embedding"
-import { createResource } from "@/features/resource/create"
-import { env } from "@/lib/env"
+import { createOpenRouter } from '@openrouter/ai-sdk-provider'
+import { createFileRoute } from '@tanstack/react-router'
+import { convertToModelMessages, stepCountIs, streamText, tool } from 'ai'
+import { z } from 'zod'
+
+import { findRelevantContent } from '@/features/ai/embedding'
+import { createResource } from '@/features/resource/create'
+import { env } from '@/lib/env'
 
 const openrouter = createOpenRouter({
   apiKey: env.OPENROUTER_API_KEY,
 })
 
-export const Route = createFileRoute("/api/ai/chat/rag")({
+export const Route = createFileRoute('/api/ai/chat/rag')({
   server: {
     handlers: {
       POST: async ({ request }) => {
         const { messages } = await request.json()
 
         const result = streamText({
-          model: openrouter("deepseek/deepseek-r1-0528-qwen3-8b:free"),
+          model: openrouter('deepseek/deepseek-r1-0528-qwen3-8b:free'),
           onError: (error) => {
-            console.log("error", error)
+            console.log('error', error)
           },
           stopWhen: stepCountIs(3),
           messages: convertToModelMessages(messages),
@@ -31,14 +32,19 @@ export const Route = createFileRoute("/api/ai/chat/rag")({
               description: `add a resource to your knowledge base.
                   If the user provides a random piece of knowledge unprompted or a file, use this tool without asking for confirmation.`,
               inputSchema: z.object({
-                content: z.string().describe("the content or resource to add to the knowledge base"),
+                content: z
+                  .string()
+                  .describe(
+                    'the content or resource to add to the knowledge base',
+                  ),
               }),
               execute: async ({ content }) => createResource({ content }),
             }),
             getInformation: tool({
-              description: "get information from your knowledge base to answer questions.",
+              description:
+                'get information from your knowledge base to answer questions.',
               inputSchema: z.object({
-                question: z.string().describe("the users question"),
+                question: z.string().describe('the users question'),
               }),
               execute: async ({ question }) => findRelevantContent(question),
             }),

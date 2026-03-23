@@ -1,5 +1,5 @@
-import { ChevronsUpDown, Plus } from "lucide-react"
-import * as React from "react"
+import { ChevronsUpDown, Plus } from 'lucide-react'
+import * as React from 'react'
 
 import {
   DropdownMenu,
@@ -9,8 +9,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar"
+} from '@/components/ui/dropdown-menu'
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from '@/components/ui/sidebar'
 
 export function OrganizationSwitcher({
   organizations,
@@ -22,7 +27,9 @@ export function OrganizationSwitcher({
   }[]
 }) {
   const { isMobile } = useSidebar()
-  const [activeOrganization, setActiveOrganization] = React.useState(organizations[0])
+  const [activeOrganization, setActiveOrganization] = React.useState(
+    organizations[0],
+  )
 
   if (!activeOrganization) {
     return null
@@ -41,8 +48,12 @@ export function OrganizationSwitcher({
                 <activeOrganization.logo className="size-4" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{activeOrganization.name}</span>
-                <span className="truncate text-xs">{activeOrganization.plan}</span>
+                <span className="truncate font-medium">
+                  {activeOrganization.name}
+                </span>
+                <span className="truncate text-xs">
+                  {activeOrganization.plan}
+                </span>
               </div>
               <ChevronsUpDown className="ml-auto" />
             </SidebarMenuButton>
@@ -50,10 +61,12 @@ export function OrganizationSwitcher({
           <DropdownMenuContent
             align="start"
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
+            side={isMobile ? 'bottom' : 'right'}
             sideOffset={4}
           >
-            <DropdownMenuLabel className="text-muted-foreground text-xs">Teams</DropdownMenuLabel>
+            <DropdownMenuLabel className="text-xs text-muted-foreground">
+              Teams
+            </DropdownMenuLabel>
             {organizations.map((organization, index) => (
               <DropdownMenuItem
                 className="gap-2 p-2"

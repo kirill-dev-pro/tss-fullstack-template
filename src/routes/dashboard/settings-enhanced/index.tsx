@@ -1,32 +1,45 @@
-import { createFileRoute } from "@tanstack/react-router"
-import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { AppearanceSettings } from "@/features/user/appearance-settings"
-import { EnhancedUserProfile } from "@/features/user/enhanced-user-profile"
-import { NotificationSettings } from "@/features/user/notification-settings"
-import { SecuritySettings } from "@/features/user/security-settings"
+import { createFileRoute } from '@tanstack/react-router'
+import { useState } from 'react'
 
-export const Route = createFileRoute("/dashboard/settings-enhanced/")({
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Separator } from '@/components/ui/separator'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { AppearanceSettings } from '@/features/user/appearance-settings'
+import { EnhancedUserProfile } from '@/features/user/enhanced-user-profile'
+import { NotificationSettings } from '@/features/user/notification-settings'
+import { SecuritySettings } from '@/features/user/security-settings'
+
+export const Route = createFileRoute('/dashboard/settings-enhanced/')({
   component: EnhancedSettingsPage,
 })
 
 function EnhancedSettingsPage() {
-  const [activeTab, setActiveTab] = useState("profile")
+  const [activeTab, setActiveTab] = useState('profile')
 
   return (
     <div className="container mx-auto space-y-6 py-6">
       {/* Header */}
       <div className="space-y-2">
-        <h1 className="font-bold text-3xl tracking-tight">Settings</h1>
-        <p className="text-muted-foreground">Manage your account settings and set e-mail preferences.</p>
+        <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
+        <p className="text-muted-foreground">
+          Manage your account settings and set e-mail preferences.
+        </p>
       </div>
 
       <Separator />
 
       {/* Settings Tabs */}
-      <Tabs className="space-y-6" onValueChange={setActiveTab} value={activeTab}>
+      <Tabs
+        className="space-y-6"
+        onValueChange={setActiveTab}
+        value={activeTab}
+      >
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="profile">Profile</TabsTrigger>
           <TabsTrigger value="account">Account</TabsTrigger>
@@ -38,7 +51,9 @@ function EnhancedSettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Profile</CardTitle>
-              <CardDescription>This is how others will see you on the site.</CardDescription>
+              <CardDescription>
+                This is how others will see you on the site.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <EnhancedUserProfile />
@@ -50,7 +65,9 @@ function EnhancedSettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Account Security</CardTitle>
-              <CardDescription>Manage your account security and authentication settings.</CardDescription>
+              <CardDescription>
+                Manage your account security and authentication settings.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <SecuritySettings />
@@ -63,7 +80,8 @@ function EnhancedSettingsPage() {
             <CardHeader>
               <CardTitle>Appearance</CardTitle>
               <CardDescription>
-                Customize the appearance of the app. Automatically switch between day and night themes.
+                Customize the appearance of the app. Automatically switch
+                between day and night themes.
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -76,7 +94,9 @@ function EnhancedSettingsPage() {
           <Card>
             <CardHeader>
               <CardTitle>Notifications</CardTitle>
-              <CardDescription>Configure how you receive notifications.</CardDescription>
+              <CardDescription>
+                Configure how you receive notifications.
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <NotificationSettings />

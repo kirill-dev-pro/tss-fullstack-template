@@ -14,12 +14,13 @@ import {
   UserPlus,
   Users,
   UserX,
-} from "lucide-react"
-import { useState } from "react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+} from 'lucide-react'
+import { useState } from 'react'
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Dialog,
   DialogContent,
@@ -27,7 +28,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from '@/components/ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -35,12 +36,25 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { UserDetailsDrawer } from "@/features/admin/user-details-drawer"
+} from '@/components/ui/dropdown-menu'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+import { UserDetailsDrawer } from '@/features/admin/user-details-drawer'
 import {
   useBanUser,
   useCreateUser,
@@ -51,8 +65,8 @@ import {
   useSetUserRole,
   useUnbanUser,
   useUsers,
-} from "@/features/user/user-hooks"
-import { authClient } from "@/lib/auth/auth-client"
+} from '@/features/user/user-hooks'
+import { authClient } from '@/lib/auth/auth-client'
 import {
   canBanUsers,
   canCreateUsers,
@@ -61,7 +75,7 @@ import {
   canManageUsers,
   canSetUserRoles,
   type UserRole,
-} from "@/lib/auth/permissions"
+} from '@/lib/auth/permissions'
 
 interface User {
   id: string
@@ -77,7 +91,10 @@ interface User {
 function getStatusBadge(user: User) {
   if (user.banned) {
     return (
-      <Badge className="border-red-200 bg-red-50 font-medium text-red-700" variant="outline">
+      <Badge
+        className="border-red-200 bg-red-50 font-medium text-red-700"
+        variant="outline"
+      >
         <Ban className="mr-1 h-3 w-3" />
         Banned
       </Badge>
@@ -85,14 +102,20 @@ function getStatusBadge(user: User) {
   }
   if (user.emailVerified) {
     return (
-      <Badge className="border-emerald-200 bg-emerald-50 font-medium text-emerald-700" variant="outline">
+      <Badge
+        className="border-emerald-200 bg-emerald-50 font-medium text-emerald-700"
+        variant="outline"
+      >
         <CheckCircle className="mr-1 h-3 w-3" />
         Active
       </Badge>
     )
   }
   return (
-    <Badge className="border-amber-200 bg-amber-50 font-medium text-amber-700" variant="outline">
+    <Badge
+      className="border-amber-200 bg-amber-50 font-medium text-amber-700"
+      variant="outline"
+    >
       Pending
     </Badge>
   )
@@ -100,30 +123,42 @@ function getStatusBadge(user: User) {
 
 function getRoleBadge(role: string) {
   switch (role) {
-    case "superadmin":
+    case 'superadmin':
       return (
-        <Badge className="border-purple-200 bg-purple-50 font-medium text-purple-700" variant="outline">
+        <Badge
+          className="border-purple-200 bg-purple-50 font-medium text-purple-700"
+          variant="outline"
+        >
           <Shield className="mr-1 h-3 w-3" />
           Super Admin
         </Badge>
       )
-    case "admin":
+    case 'admin':
       return (
-        <Badge className="border-indigo-200 bg-indigo-50 font-medium text-indigo-700" variant="outline">
+        <Badge
+          className="border-indigo-200 bg-indigo-50 font-medium text-indigo-700"
+          variant="outline"
+        >
           <ShieldCheck className="mr-1 h-3 w-3" />
           Admin
         </Badge>
       )
-    case "user":
+    case 'user':
       return (
-        <Badge className="border-slate-200 bg-slate-50 font-medium text-slate-600" variant="outline">
+        <Badge
+          className="border-slate-200 bg-slate-50 font-medium text-slate-600"
+          variant="outline"
+        >
           <UserCheck className="mr-1 h-3 w-3" />
           User
         </Badge>
       )
     default:
       return (
-        <Badge className="border-slate-200 bg-slate-50 font-medium text-slate-600" variant="outline">
+        <Badge
+          className="border-slate-200 bg-slate-50 font-medium text-slate-600"
+          variant="outline"
+        >
           {role}
         </Badge>
       )
@@ -133,10 +168,10 @@ function getRoleBadge(role: string) {
 function CreateUserDialog() {
   const [open, setOpen] = useState(false)
   const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    role: "user",
+    name: '',
+    email: '',
+    password: '',
+    role: 'user',
   })
 
   const { mutate: createUser, isPending } = useCreateUser()
@@ -146,7 +181,7 @@ function CreateUserDialog() {
     createUser(formData, {
       onSuccess: () => {
         setOpen(false)
-        setFormData({ name: "", email: "", password: "", role: "user" })
+        setFormData({ name: '', email: '', password: '', role: 'user' })
       },
     })
   }
@@ -162,14 +197,18 @@ function CreateUserDialog() {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>Create New User</DialogTitle>
-          <DialogDescription>Create a new user account with the specified details.</DialogDescription>
+          <DialogDescription>
+            Create a new user account with the specified details.
+          </DialogDescription>
         </DialogHeader>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>
             <Input
               id="name"
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
               required
               value={formData.name}
             />
@@ -178,7 +217,9 @@ function CreateUserDialog() {
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
               required
               type="email"
               value={formData.email}
@@ -188,7 +229,9 @@ function CreateUserDialog() {
             <Label htmlFor="password">Password</Label>
             <Input
               id="password"
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
               required
               type="password"
               value={formData.password}
@@ -196,7 +239,12 @@ function CreateUserDialog() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="role">Role</Label>
-            <Select onValueChange={(value) => setFormData({ ...formData, role: value })} value={formData.role}>
+            <Select
+              onValueChange={(value) =>
+                setFormData({ ...formData, role: value })
+              }
+              value={formData.role}
+            >
               <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
@@ -208,11 +256,15 @@ function CreateUserDialog() {
             </Select>
           </div>
           <div className="flex justify-end space-x-2">
-            <Button onClick={() => setOpen(false)} type="button" variant="outline">
+            <Button
+              onClick={() => setOpen(false)}
+              type="button"
+              variant="outline"
+            >
               Cancel
             </Button>
             <Button disabled={isPending} type="submit">
-              {isPending ? "Creating..." : "Create User"}
+              {isPending ? 'Creating...' : 'Create User'}
             </Button>
           </div>
         </form>
@@ -224,9 +276,9 @@ function CreateUserDialog() {
 export function AdminUsersPage() {
   const { data: session } = authClient.useSession()
   const { data: users, isLoading, refetch } = useUsers()
-  const [searchTerm, setSearchTerm] = useState("")
-  const [statusFilter, setStatusFilter] = useState("all")
-  const [roleFilter, setRoleFilter] = useState("all")
+  const [searchTerm, setSearchTerm] = useState('')
+  const [statusFilter, setStatusFilter] = useState('all')
+  const [roleFilter, setRoleFilter] = useState('all')
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
 
@@ -238,15 +290,19 @@ export function AdminUsersPage() {
   const { mutate: revokeUserSessions } = useRevokeUserSessions()
   const { mutate: resetPassword } = useResetUserPassword()
 
-  const currentUserRole = (session?.user?.role as UserRole) || "user"
+  const currentUserRole = (session?.user?.role as UserRole) || 'user'
 
   if (!canManageUsers(currentUserRole)) {
     return (
       <div className="flex min-h-[400px] items-center justify-center">
         <div className="text-center">
           <Shield className="mx-auto mb-4 h-12 w-12 text-muted-foreground" />
-          <h3 className="font-semibold text-lg text-muted-foreground">Access Denied</h3>
-          <p className="text-muted-foreground text-sm">You don't have permission to access admin features.</p>
+          <h3 className="text-lg font-semibold text-muted-foreground">
+            Access Denied
+          </h3>
+          <p className="text-sm text-muted-foreground">
+            You don't have permission to access admin features.
+          </p>
         </div>
       </div>
     )
@@ -255,9 +311,9 @@ export function AdminUsersPage() {
   const normalizedUsers: User[] =
     users?.map((user) => ({
       id: user.id,
-      name: user.name || "Unknown",
+      name: user.name || 'Unknown',
       email: user.email,
-      role: user.role || "user",
+      role: user.role || 'user',
       emailVerified: user.emailVerified,
       banned: user.banned,
       createdAt: user.createdAt ? new Date(user.createdAt) : new Date(),
@@ -270,52 +326,56 @@ export function AdminUsersPage() {
       user.email.toLowerCase().includes(searchTerm.toLowerCase())
 
     const matchesStatus =
-      statusFilter === "all" ||
-      (statusFilter === "active" && user.emailVerified && !user.banned) ||
-      (statusFilter === "pending" && !user.emailVerified && !user.banned) ||
-      (statusFilter === "banned" && user.banned)
+      statusFilter === 'all' ||
+      (statusFilter === 'active' && user.emailVerified && !user.banned) ||
+      (statusFilter === 'pending' && !user.emailVerified && !user.banned) ||
+      (statusFilter === 'banned' && user.banned)
 
-    const matchesRole = roleFilter === "all" || user.role === roleFilter
+    const matchesRole = roleFilter === 'all' || user.role === roleFilter
 
     return matchesSearch && matchesStatus && matchesRole
   })
 
-  const handleUserAction = (action: string, userId: string, userRole?: string) => {
+  const handleUserAction = (
+    action: string,
+    userId: string,
+    userRole?: string,
+  ) => {
     const user = normalizedUsers.find((u) => u.id === userId)
 
     switch (action) {
-      case "view":
+      case 'view':
         if (user) {
           setSelectedUser(user)
           setDrawerOpen(true)
         }
         break
-      case "ban":
+      case 'ban':
         if (canBanUsers(currentUserRole)) {
           banUser({ userId })
         }
         break
-      case "unban":
+      case 'unban':
         if (canBanUsers(currentUserRole)) {
           unbanUser({ userId })
         }
         break
-      case "delete":
+      case 'delete':
         if (canDeleteUsers(currentUserRole)) {
           deleteUser({ userId })
         }
         break
-      case "setRole":
+      case 'setRole':
         if (canSetUserRoles(currentUserRole) && userRole) {
           setUserRole({ userId, role: userRole })
         }
         break
-      case "impersonate":
+      case 'impersonate':
         if (canImpersonateUsers(currentUserRole)) {
           impersonateUser({ userId })
         }
         break
-      case "revokeSession":
+      case 'revokeSession':
         if (canManageUsers(currentUserRole)) {
           revokeUserSessions({ userId })
         }
@@ -326,9 +386,12 @@ export function AdminUsersPage() {
   const stats = {
     total: normalizedUsers.length,
     active: normalizedUsers.filter((u) => u.emailVerified && !u.banned).length,
-    pending: normalizedUsers.filter((u) => !(u.emailVerified || u.banned)).length,
+    pending: normalizedUsers.filter((u) => !(u.emailVerified || u.banned))
+      .length,
     banned: normalizedUsers.filter((u) => u.banned).length,
-    admins: normalizedUsers.filter((u) => u.role === "admin" || u.role === "superadmin").length,
+    admins: normalizedUsers.filter(
+      (u) => u.role === 'admin' || u.role === 'superadmin',
+    ).length,
   }
 
   return (
@@ -336,8 +399,10 @@ export function AdminUsersPage() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-bold text-3xl tracking-tight">User Management</h1>
-          <p className="text-muted-foreground">Manage users, roles, and permissions</p>
+          <h1 className="text-3xl font-bold tracking-tight">User Management</h1>
+          <p className="text-muted-foreground">
+            Manage users, roles, and permissions
+          </p>
         </div>
         <div className="flex items-center gap-2">
           <Button onClick={() => refetch()} size="sm" variant="outline">
@@ -356,47 +421,55 @@ export function AdminUsersPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="font-medium text-sm">Total Users</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="font-bold text-2xl">{stats.total}</div>
+            <div className="text-2xl font-bold">{stats.total}</div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="font-medium text-sm">Active</CardTitle>
+            <CardTitle className="text-sm font-medium">Active</CardTitle>
             <CheckCircle className="h-4 w-4 text-emerald-500" />
           </CardHeader>
           <CardContent>
-            <div className="font-bold text-2xl text-emerald-600">{stats.active}</div>
+            <div className="text-2xl font-bold text-emerald-600">
+              {stats.active}
+            </div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="font-medium text-sm">Pending</CardTitle>
+            <CardTitle className="text-sm font-medium">Pending</CardTitle>
             <UserCheck className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent>
-            <div className="font-bold text-2xl text-amber-600">{stats.pending}</div>
+            <div className="text-2xl font-bold text-amber-600">
+              {stats.pending}
+            </div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="font-medium text-sm">Banned</CardTitle>
+            <CardTitle className="text-sm font-medium">Banned</CardTitle>
             <Ban className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
-            <div className="font-bold text-2xl text-red-600">{stats.banned}</div>
+            <div className="text-2xl font-bold text-red-600">
+              {stats.banned}
+            </div>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="font-medium text-sm">Admins</CardTitle>
+            <CardTitle className="text-sm font-medium">Admins</CardTitle>
             <Shield className="h-4 w-4 text-purple-500" />
           </CardHeader>
           <CardContent>
-            <div className="font-bold text-2xl text-purple-600">{stats.admins}</div>
+            <div className="text-2xl font-bold text-purple-600">
+              {stats.admins}
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -469,7 +542,10 @@ export function AdminUsersPage() {
                 </TableRow>
               ) : filteredUsers.length === 0 ? (
                 <TableRow>
-                  <TableCell className="py-8 text-center text-muted-foreground" colSpan={5}>
+                  <TableCell
+                    className="py-8 text-center text-muted-foreground"
+                    colSpan={5}
+                  >
                     No users found
                   </TableCell>
                 </TableRow>
@@ -482,21 +558,25 @@ export function AdminUsersPage() {
                           <AvatarImage alt={user.name} src={user.image} />
                           <AvatarFallback>
                             {user.name
-                              .split(" ")
+                              .split(' ')
                               .map((n) => n[0])
-                              .join("")}
+                              .join('')}
                           </AvatarFallback>
                         </Avatar>
                         <div>
                           <div className="font-medium">{user.name}</div>
-                          <div className="text-muted-foreground text-sm">{user.email}</div>
+                          <div className="text-sm text-muted-foreground">
+                            {user.email}
+                          </div>
                         </div>
                       </div>
                     </TableCell>
                     <TableCell>{getStatusBadge(user)}</TableCell>
                     <TableCell>{getRoleBadge(user.role)}</TableCell>
                     <TableCell>
-                      <div className="text-sm">{user.createdAt.toLocaleDateString()}</div>
+                      <div className="text-sm">
+                        {user.createdAt.toLocaleDateString()}
+                      </div>
                     </TableCell>
                     <TableCell>
                       <DropdownMenu>
@@ -508,18 +588,28 @@ export function AdminUsersPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem onClick={() => handleUserAction("view", user.id)}>
+                          <DropdownMenuItem
+                            onClick={() => handleUserAction('view', user.id)}
+                          >
                             <Eye className="mr-2 h-4 w-4" />
                             View Details
                           </DropdownMenuItem>
-                          <DropdownMenuItem onClick={() => handleUserAction("revokeSession", user.id)}>
+                          <DropdownMenuItem
+                            onClick={() =>
+                              handleUserAction('revokeSession', user.id)
+                            }
+                          >
                             <RefreshCw className="mr-2 h-4 w-4" />
                             Revoke Sessions
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
 
                           {canSetUserRoles(currentUserRole) && (
-                            <DropdownMenuItem onClick={() => handleUserAction("setRole", user.id, "admin")}>
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleUserAction('setRole', user.id, 'admin')
+                              }
+                            >
                               <ShieldCheck className="mr-2 h-4 w-4" />
                               Make Admin
                             </DropdownMenuItem>
@@ -529,19 +619,29 @@ export function AdminUsersPage() {
 
                           {canBanUsers(currentUserRole) &&
                             (user.banned ? (
-                              <DropdownMenuItem onClick={() => handleUserAction("unban", user.id)}>
+                              <DropdownMenuItem
+                                onClick={() =>
+                                  handleUserAction('unban', user.id)
+                                }
+                              >
                                 <CheckCircle className="mr-2 h-4 w-4" />
                                 Unban User
                               </DropdownMenuItem>
                             ) : (
-                              <DropdownMenuItem onClick={() => handleUserAction("ban", user.id)}>
+                              <DropdownMenuItem
+                                onClick={() => handleUserAction('ban', user.id)}
+                              >
                                 <UserX className="mr-2 h-4 w-4" />
                                 Ban User
                               </DropdownMenuItem>
                             ))}
 
                           {canImpersonateUsers(currentUserRole) && (
-                            <DropdownMenuItem onClick={() => handleUserAction("impersonate", user.id)}>
+                            <DropdownMenuItem
+                              onClick={() =>
+                                handleUserAction('impersonate', user.id)
+                              }
+                            >
                               <Eye className="mr-2 h-4 w-4" />
                               Impersonate
                             </DropdownMenuItem>
@@ -550,7 +650,9 @@ export function AdminUsersPage() {
                           {canDeleteUsers(currentUserRole) && (
                             <DropdownMenuItem
                               className="text-destructive"
-                              onClick={() => handleUserAction("delete", user.id)}
+                              onClick={() =>
+                                handleUserAction('delete', user.id)
+                              }
                             >
                               <Trash2 className="mr-2 h-4 w-4" />
                               Delete User

@@ -1,7 +1,8 @@
-"use client"
+'use client'
 
-import React from "react"
-import { useSession } from "@/features/auth/auth-hooks"
+import React from 'react'
+
+import { useSession } from '@/features/auth/auth-hooks'
 // Import the statement type to get dynamic resource and action types
 import {
   canBanUsers,
@@ -15,7 +16,7 @@ import {
   hasPermission,
   statement,
   type UserRole,
-} from "@/lib/auth/permissions"
+} from '@/lib/auth/permissions'
 
 // Dynamic types derived from your actual permissions configuration
 type ResourceType = keyof typeof statement
@@ -77,7 +78,9 @@ export interface ProtectProps {
 }
 
 // Helper function to create authorization context
-function createAuthContext(session: BetterAuthSession | null): AuthorizationContext {
+function createAuthContext(
+  session: BetterAuthSession | null,
+): AuthorizationContext {
   const user = session?.user || null
 
   return {
@@ -86,7 +89,7 @@ function createAuthContext(session: BetterAuthSession | null): AuthorizationCont
           id: user.id,
           email: user.email,
           name: user.name,
-          role: (user.role || "user") as UserRole,
+          role: (user.role || 'user') as UserRole,
         }
       : null,
     session,
@@ -99,13 +102,13 @@ function checkPermissionAuthorization(
   permission: {
     resource: ResourceType
     action: ActionType
-  }
+  },
 ): boolean {
   if (!user) {
     return false
   }
 
-  const userRole = (user.role || "user") as UserRole
+  const userRole = (user.role || 'user') as UserRole
   return hasPermission(userRole, permission.resource, permission.action)
 }
 
@@ -220,14 +223,18 @@ export function useAuth() {
     permissionCheck: {
       resource: ResourceType
       action: ActionType
-    }
+    },
   ): boolean => {
     if (!sessionUser?.role) {
       return false
     }
 
     const userRole = sessionUser.role as UserRole
-    return hasPermission(userRole, permissionCheck.resource, permissionCheck.action)
+    return hasPermission(
+      userRole,
+      permissionCheck.resource,
+      permissionCheck.action,
+    )
   }
 
   const checkCondition = (condition: ConditionFunction): boolean => {
@@ -240,56 +247,56 @@ export function useAuth() {
     if (!user) {
       return false
     }
-    return canManageUsers((user.role || "user") as UserRole)
+    return canManageUsers((user.role || 'user') as UserRole)
   }
 
   const canBanUsersCheck = (): boolean => {
     if (!user) {
       return false
     }
-    return canBanUsers((user.role || "user") as UserRole)
+    return canBanUsers((user.role || 'user') as UserRole)
   }
 
   const canDeleteUsersCheck = (): boolean => {
     if (!user) {
       return false
     }
-    return canDeleteUsers((user.role || "user") as UserRole)
+    return canDeleteUsers((user.role || 'user') as UserRole)
   }
 
   const canImpersonateUsersCheck = (): boolean => {
     if (!user) {
       return false
     }
-    return canImpersonateUsers((user.role || "user") as UserRole)
+    return canImpersonateUsers((user.role || 'user') as UserRole)
   }
 
   const canSetUserRolesCheck = (): boolean => {
     if (!user) {
       return false
     }
-    return canSetUserRoles((user.role || "user") as UserRole)
+    return canSetUserRoles((user.role || 'user') as UserRole)
   }
 
   const canCreateUsersCheck = (): boolean => {
     if (!user) {
       return false
     }
-    return canCreateUsers((user.role || "user") as UserRole)
+    return canCreateUsers((user.role || 'user') as UserRole)
   }
 
   const canManageOrganizationsCheck = (): boolean => {
     if (!user) {
       return false
     }
-    return canManageOrganizations((user.role || "user") as UserRole)
+    return canManageOrganizations((user.role || 'user') as UserRole)
   }
 
   const canManageBillingCheck = (): boolean => {
     if (!user) {
       return false
     }
-    return canManageBilling((user.role || "user") as UserRole)
+    return canManageBilling((user.role || 'user') as UserRole)
   }
 
   return {
@@ -300,14 +307,15 @@ export function useAuth() {
           id: user.id,
           email: user.email,
           name: user.name,
-          role: (user.role || "user") as UserRole,
+          role: (user.role || 'user') as UserRole,
         }
       : null,
     session,
 
     // Core authorization functions
     hasRole: checkRole,
-    hasPermission: (resource: ResourceType, action: ActionType) => checkPermissionHelper(user, { resource, action }),
+    hasPermission: (resource: ResourceType, action: ActionType) =>
+      checkPermissionHelper(user, { resource, action }),
     checkCondition,
 
     // Convenience permission functions

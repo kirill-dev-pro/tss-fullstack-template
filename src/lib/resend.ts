@@ -1,9 +1,19 @@
-import { render } from "@react-email/render"
-import type { ReactElement } from "react"
-import { Resend } from "resend"
-import { env } from "@/lib/env"
+import type { ReactElement } from 'react'
 
-export async function sendEmail({ subject, template, to }: { subject: string; template: ReactElement; to: string }) {
+import { render } from '@react-email/render'
+import { Resend } from 'resend'
+
+import { env } from '@/lib/env'
+
+export async function sendEmail({
+  subject,
+  template,
+  to,
+}: {
+  subject: string
+  template: ReactElement
+  to: string
+}) {
   if (!env.RESEND_API_KEY) {
     console.log(`[sendEmail] to: ${to}, subject: ${subject}`)
     console.log(await render(template))
@@ -16,7 +26,7 @@ export async function sendEmail({ subject, template, to }: { subject: string; te
     const html = await render(template)
 
     const { data } = await resend.emails.send({
-      from: "noreply@example.com", // TODO: Configure in env
+      from: 'noreply@example.com', // TODO: Configure in env
       html,
       subject,
       to,
@@ -24,7 +34,7 @@ export async function sendEmail({ subject, template, to }: { subject: string; te
 
     return data
   } catch (error) {
-    console.error("error", error)
+    console.error('error', error)
     throw error
   }
 }

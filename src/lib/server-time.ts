@@ -1,4 +1,4 @@
-import { createServerFn } from "@tanstack/react-start"
+import { createServerFn } from '@tanstack/react-start'
 
 export const getServerTime = createServerFn().handler(async () => {
   // Wait for 1 second

@@ -1,13 +1,14 @@
-import type { ClassValue } from "clsx"
-import { clsx } from "clsx"
-import { customAlphabet } from "nanoid"
-import { twMerge } from "tailwind-merge"
-import { v7 } from "uuid"
+import type { ClassValue } from 'clsx'
+
+import { clsx } from 'clsx'
+import { customAlphabet } from 'nanoid'
+import { twMerge } from 'tailwind-merge'
+import { v7 } from 'uuid'
 
 export function cn(...inputs: Array<ClassValue>) {
   return twMerge(clsx(inputs))
 }
-export const nanoid = customAlphabet("abcdefghijklmnopqrstuvwxyz0123456789")
+export const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789')
 
 export const uuid = () => v7()
 

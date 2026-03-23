@@ -1,11 +1,12 @@
-import { Link } from "@tanstack/react-router"
-import { Folder, Forward, type LucideIcon, Trash2 } from "lucide-react"
+import { Link } from '@tanstack/react-router'
+import { Folder, Forward, type LucideIcon, Trash2 } from 'lucide-react'
+
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu"
+} from '@/components/ui/dropdown-menu'
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -13,7 +14,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar'
 
 export function NavItems({
   items,
@@ -42,9 +43,9 @@ export function NavItems({
             </SidebarMenuButton>
             <DropdownMenu>
               <DropdownMenuContent
-                align={isMobile ? "end" : "start"}
+                align={isMobile ? 'end' : 'start'}
                 className="w-48 rounded-lg"
-                side={isMobile ? "bottom" : "right"}
+                side={isMobile ? 'bottom' : 'right'}
               >
                 <DropdownMenuItem>
                   <Folder className="text-muted-foreground" />

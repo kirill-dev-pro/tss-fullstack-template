@@ -1,9 +1,10 @@
-import { type UIMessage, useChat } from "@ai-sdk/react"
-import { DefaultChatTransport } from "ai"
-import { ArrowUpIcon, StopCircleIcon } from "lucide-react"
-import { memo, useEffect, useRef, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
+import { type UIMessage, useChat } from '@ai-sdk/react'
+import { DefaultChatTransport } from 'ai'
+import { ArrowUpIcon, StopCircleIcon } from 'lucide-react'
+import { memo, useEffect, useRef, useState } from 'react'
+
+import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
 
 // Types - Using AI SDK v5 types
 type Attachment = {
@@ -23,14 +24,26 @@ type ToolInvocationType = {
 type MessageType = UIMessage
 
 // Message Components
-const MessageHeader = ({ role }: { role: string }) => <div className="font-bold">{role}</div>
+const MessageHeader = ({ role }: { role: string }) => (
+  <div className="font-bold">{role}</div>
+)
 
-const ToolInvocation = ({ toolInvocation }: { toolInvocation: ToolInvocationType }) => {
-  if (toolInvocation.toolName === "addResource" && toolInvocation.state === "call") {
+const ToolInvocation = ({
+  toolInvocation,
+}: {
+  toolInvocation: ToolInvocationType
+}) => {
+  if (
+    toolInvocation.toolName === 'addResource' &&
+    toolInvocation.state === 'call'
+  ) {
     return <p key={toolInvocation.toolCallId}>Calling addResource tool</p>
   }
 
-  if (toolInvocation.toolName === "getInformation" && toolInvocation.state === "call") {
+  if (
+    toolInvocation.toolName === 'getInformation' &&
+    toolInvocation.state === 'call'
+  ) {
     return (
       <div className="animate-pulse" key={toolInvocation.toolCallId}>
         Calling getInformation tool
@@ -38,7 +51,7 @@ const ToolInvocation = ({ toolInvocation }: { toolInvocation: ToolInvocationType
     )
   }
 
-  if (toolInvocation.toolName === "generateImage") {
+  if (toolInvocation.toolName === 'generateImage') {
     return (
       <div className="animate-pulse" key={toolInvocation.toolCallId}>
         Calling generateImage tool
@@ -46,8 +59,11 @@ const ToolInvocation = ({ toolInvocation }: { toolInvocation: ToolInvocationType
     )
   }
 
-  if (toolInvocation.toolName === "getInformation" && toolInvocation.state === "result") {
-    const result = toolInvocation.result?.[0]?.name.replaceAll("\n", "")
+  if (
+    toolInvocation.toolName === 'getInformation' &&
+    toolInvocation.state === 'result'
+  ) {
+    const result = toolInvocation.result?.[0]?.name.replaceAll('\n', '')
     return (
       <div key={toolInvocation.toolCallId}>
         {toolInvocation.toolName} tool result: {result}
@@ -65,31 +81,45 @@ const Message = ({ message }: { message: MessageType }) => {
         <div className="font-bold">{message.role}</div>
         <div>
           {message.parts.map((part, index) => {
-            if (part.type === "text") {
+            if (part.type === 'text') {
               return <p key={index}>{part.text}</p>
             }
 
             // Handle new v5 tool patterns - tools are prefixed with 'tool-'
-            if (part.type.startsWith("tool-")) {
+            if (part.type.startsWith('tool-')) {
               const toolPart = part as any // Type assertion for tool part
               const { toolCallId, state } = toolPart
-              const toolName = part.type.replace("tool-", "")
+              const toolName = part.type.replace('tool-', '')
 
               // Tool is completed and has output
-              if (state === "output-available" && toolPart.output) {
-                if (toolName === "getInformation") {
+              if (state === 'output-available' && toolPart.output) {
+                if (toolName === 'getInformation') {
                   return (
-                    <div className="my-2 rounded-lg border border-blue-200 bg-blue-50 p-3" key={toolCallId}>
-                      <div className="font-medium text-blue-800">Information Retrieved:</div>
-                      <div className="text-blue-700">{JSON.stringify(toolPart.output, null, 2)}</div>
+                    <div
+                      className="my-2 rounded-lg border border-blue-200 bg-blue-50 p-3"
+                      key={toolCallId}
+                    >
+                      <div className="font-medium text-blue-800">
+                        Information Retrieved:
+                      </div>
+                      <div className="text-blue-700">
+                        {JSON.stringify(toolPart.output, null, 2)}
+                      </div>
                     </div>
                   )
                 }
 
                 return (
-                  <div className="my-2 rounded-lg border border-green-200 bg-green-50 p-3" key={toolCallId}>
-                    <div className="font-medium text-green-800">{toolName} completed:</div>
-                    <pre className="text-green-700 text-sm">{JSON.stringify(toolPart.output, null, 2)}</pre>
+                  <div
+                    className="my-2 rounded-lg border border-green-200 bg-green-50 p-3"
+                    key={toolCallId}
+                  >
+                    <div className="font-medium text-green-800">
+                      {toolName} completed:
+                    </div>
+                    <pre className="text-sm text-green-700">
+                      {JSON.stringify(toolPart.output, null, 2)}
+                    </pre>
                   </div>
                 )
               }
@@ -101,11 +131,14 @@ const Message = ({ message }: { message: MessageType }) => {
                   key={toolCallId || index}
                 >
                   <div className="flex items-center space-x-2">
-                    <div className="h-4 w-4 animate-spin rounded-full border-yellow-500 border-b-2" />
+                    <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-yellow-500" />
                     <span className="text-yellow-700">
-                      {state === "input-streaming" && `Preparing ${toolName}...`}
-                      {state === "input-available" && `Executing ${toolName}...`}
-                      {state === "output-available" && `Processing ${toolName}...`}
+                      {state === 'input-streaming' &&
+                        `Preparing ${toolName}...`}
+                      {state === 'input-available' &&
+                        `Executing ${toolName}...`}
+                      {state === 'output-available' &&
+                        `Processing ${toolName}...`}
                     </span>
                   </div>
                 </div>
@@ -113,7 +146,7 @@ const Message = ({ message }: { message: MessageType }) => {
             }
 
             // Handle step indicators
-            if (part.type === "step-start") {
+            if (part.type === 'step-start') {
               return null // Don't render step indicators for cleaner UI
             }
 
@@ -141,10 +174,10 @@ const MessageList = ({
 )
 
 export function Chat({ api }: { api?: string }) {
-  const [input, setInput] = useState("")
+  const [input, setInput] = useState('')
   const { messages, sendMessage, status, stop } = useChat({
     transport: new DefaultChatTransport({
-      api: api || "/api/ai/chat/rag",
+      api: api || '/api/ai/chat/rag',
     }),
   })
 
@@ -153,7 +186,7 @@ export function Chat({ api }: { api?: string }) {
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
     }
   }
 
@@ -164,7 +197,7 @@ export function Chat({ api }: { api?: string }) {
 
   // Scroll when status changes
   useEffect(() => {
-    if (status === "streaming") {
+    if (status === 'streaming') {
       scrollToBottom()
     }
   }, [status])
@@ -173,7 +206,7 @@ export function Chat({ api }: { api?: string }) {
     e.preventDefault()
     if (input.trim()) {
       sendMessage({ text: input })
-      setInput("")
+      setInput('')
     }
   }
 
@@ -183,9 +216,15 @@ export function Chat({ api }: { api?: string }) {
 
   return (
     <div className="relative flex w-full flex-col items-center justify-center gap-4">
-      <MessageList messages={messages as MessageType[]} messagesEndRef={messagesEndRef} />
+      <MessageList
+        messages={messages as MessageType[]}
+        messagesEndRef={messagesEndRef}
+      />
 
-      <form className="relative flex w-full max-w-xl flex-col items-center justify-center" onSubmit={handleSubmit}>
+      <form
+        className="relative flex w-full max-w-xl flex-col items-center justify-center"
+        onSubmit={handleSubmit}
+      >
         <div className="fixed bottom-0 z-10 mb-8 w-full max-w-lg bg-background">
           <div className="relative flex flex-row items-center justify-between">
             <Textarea
@@ -194,7 +233,7 @@ export function Chat({ api }: { api?: string }) {
               data-testid="multimodal-input"
               onChange={handleInputChange}
               onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
+                if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault()
                   if (input.trim()) {
                     handleSubmit(e)
@@ -207,10 +246,14 @@ export function Chat({ api }: { api?: string }) {
               value={input}
             />
             <div className="absolute right-2">
-              {status === "streaming" ? (
+              {status === 'streaming' ? (
                 <StopButton stop={stop} />
               ) : (
-                <SendButton input={input} submitForm={handleSubmit} uploadQueue={[]} />
+                <SendButton
+                  input={input}
+                  submitForm={handleSubmit}
+                  uploadQueue={[]}
+                />
               )}
             </div>
           </div>
@@ -262,7 +305,8 @@ function PureSendButton({
 }
 
 const SendButton = memo(PureSendButton, (prevProps, nextProps) => {
-  if (prevProps.uploadQueue.length !== nextProps.uploadQueue.length) return false
+  if (prevProps.uploadQueue.length !== nextProps.uploadQueue.length)
+    return false
   if (prevProps.input !== nextProps.input) return false
   return true
 })

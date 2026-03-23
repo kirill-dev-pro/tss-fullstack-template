@@ -1,14 +1,15 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { useRouter } from "@tanstack/react-router"
-import { authClient } from "@/lib/auth/auth-client"
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useRouter } from '@tanstack/react-router'
+
+import { authClient } from '@/lib/auth/auth-client'
 
 const organizationQueryKeys = {
-  all: ["organizations"] as const,
-  list: () => [...organizationQueryKeys.all, "list"] as const,
-  active: () => [...organizationQueryKeys.all, "active"] as const,
-  full: () => [...organizationQueryKeys.all, "full"] as const,
-  invitations: () => [...organizationQueryKeys.all, "invitations"] as const,
-  members: () => [...organizationQueryKeys.all, "members"] as const,
+  all: ['organizations'] as const,
+  list: () => [...organizationQueryKeys.all, 'list'] as const,
+  active: () => [...organizationQueryKeys.all, 'active'] as const,
+  full: () => [...organizationQueryKeys.all, 'full'] as const,
+  invitations: () => [...organizationQueryKeys.all, 'invitations'] as const,
+  members: () => [...organizationQueryKeys.all, 'members'] as const,
 }
 
 export const useOrganizations = () => {
@@ -29,7 +30,7 @@ export const useFullOrganization = () =>
       return data
     },
     retry: (failureCount, error: Error) => {
-      if (error?.message?.includes("forbidden")) {
+      if (error?.message?.includes('forbidden')) {
         return false
       }
       return failureCount < 2
@@ -40,13 +41,19 @@ export const useSetActiveOrganization = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({ organizationId }: { organizationId: string | null }) => {
+    mutationFn: async ({
+      organizationId,
+    }: {
+      organizationId: string | null
+    }) => {
       const result = await authClient.organization.setActive({
         organizationId,
       })
 
       if (result.error) {
-        throw new Error(result.error.message || "Failed to set active organization")
+        throw new Error(
+          result.error.message || 'Failed to set active organization',
+        )
       }
 
       return result
@@ -54,10 +61,10 @@ export const useSetActiveOrganization = () => {
     onSuccess: () => {
       // Invalidate and refetch organization data
       queryClient.invalidateQueries({ queryKey: organizationQueryKeys.all })
-      queryClient.invalidateQueries({ queryKey: ["sessions"] })
+      queryClient.invalidateQueries({ queryKey: ['sessions'] })
     },
     onError: (error: Error) => {
-      console.error("Set active organization error:", error)
+      console.error('Set active organization error:', error)
     },
   })
 }
@@ -66,7 +73,15 @@ export const useCreateOrganization = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({ name, slug, logo }: { name: string; slug: string; logo?: string }) => {
+    mutationFn: async ({
+      name,
+      slug,
+      logo,
+    }: {
+      name: string
+      slug: string
+      logo?: string
+    }) => {
       const result = await authClient.organization.create({
         name,
         slug,
@@ -74,7 +89,7 @@ export const useCreateOrganization = () => {
       })
 
       if (result.error) {
-        throw new Error(result.error.message || "Failed to create organization")
+        throw new Error(result.error.message || 'Failed to create organization')
       }
 
       return result
@@ -83,7 +98,7 @@ export const useCreateOrganization = () => {
       queryClient.invalidateQueries({ queryKey: organizationQueryKeys.all })
     },
     onError: (error: Error) => {
-      console.error("Create organization error:", error)
+      console.error('Create organization error:', error)
     },
   })
 }
@@ -97,7 +112,7 @@ export const useInviteMember = () => {
       role,
     }: {
       email: string
-      role: "admin" | "member" | "owner" | ("admin" | "member" | "owner")[]
+      role: 'admin' | 'member' | 'owner' | ('admin' | 'member' | 'owner')[]
     }) => {
       const result = await authClient.organization.inviteMember({
         email,
@@ -105,7 +120,7 @@ export const useInviteMember = () => {
       })
 
       if (result.error) {
-        throw new Error(result.error.message || "Failed to invite member")
+        throw new Error(result.error.message || 'Failed to invite member')
       }
 
       return result
@@ -120,7 +135,7 @@ export const useInviteMember = () => {
       queryClient.invalidateQueries({ queryKey: organizationQueryKeys.full() })
     },
     onError: (error: Error) => {
-      console.error("Invite member error:", error)
+      console.error('Invite member error:', error)
     },
   })
 }
@@ -135,7 +150,7 @@ export const useRemoveMember = () => {
       })
 
       if (result.error) {
-        throw new Error(result.error.message || "Failed to remove member")
+        throw new Error(result.error.message || 'Failed to remove member')
       }
 
       return result
@@ -147,7 +162,7 @@ export const useRemoveMember = () => {
       queryClient.invalidateQueries({ queryKey: organizationQueryKeys.full() })
     },
     onError: (error: Error) => {
-      console.error("Remove member error:", error)
+      console.error('Remove member error:', error)
     },
   })
 }
@@ -162,7 +177,7 @@ export const useCancelInvitation = () => {
       })
 
       if (result.error) {
-        throw new Error(result.error.message || "Failed to cancel invitation")
+        throw new Error(result.error.message || 'Failed to cancel invitation')
       }
 
       return result
@@ -174,7 +189,7 @@ export const useCancelInvitation = () => {
       queryClient.invalidateQueries({ queryKey: organizationQueryKeys.full() })
     },
     onError: (error: Error) => {
-      console.error("Cancel invitation error:", error)
+      console.error('Cancel invitation error:', error)
     },
   })
 }
@@ -190,18 +205,18 @@ export const useAcceptInvitation = () => {
       })
 
       if (result.error) {
-        throw new Error(result.error.message || "Failed to accept invitation")
+        throw new Error(result.error.message || 'Failed to accept invitation')
       }
 
       return result
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: organizationQueryKeys.all })
-      queryClient.invalidateQueries({ queryKey: ["sessions"] })
-      router.navigate({ to: "/dashboard" })
+      queryClient.invalidateQueries({ queryKey: ['sessions'] })
+      router.navigate({ to: '/dashboard' })
     },
     onError: (error: Error) => {
-      console.error("Accept invitation error:", error)
+      console.error('Accept invitation error:', error)
     },
   })
 }
@@ -217,7 +232,7 @@ export const useRejectInvitation = () => {
       })
 
       if (result.error) {
-        throw new Error(result.error.message || "Failed to reject invitation")
+        throw new Error(result.error.message || 'Failed to reject invitation')
       }
 
       return result
@@ -226,10 +241,10 @@ export const useRejectInvitation = () => {
       queryClient.invalidateQueries({
         queryKey: organizationQueryKeys.invitations(),
       })
-      router.navigate({ to: "/dashboard" })
+      router.navigate({ to: '/dashboard' })
     },
     onError: (error: Error) => {
-      console.error("Reject invitation error:", error)
+      console.error('Reject invitation error:', error)
     },
   })
 }
@@ -245,13 +260,13 @@ export const useGetInvitation = (invitationId: string) =>
       })
 
       if (data.error) {
-        throw new Error(data.error.message || "Failed to get invitation")
+        throw new Error(data.error.message || 'Failed to get invitation')
       }
 
       return data
     },
     retry: (failureCount, error: Error) => {
-      if (error?.message?.includes("not found")) {
+      if (error?.message?.includes('not found')) {
         return false
       }
       return failureCount < 2

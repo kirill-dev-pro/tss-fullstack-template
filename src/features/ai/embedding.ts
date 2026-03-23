@@ -1,22 +1,27 @@
-import { RecursiveCharacterTextSplitter } from "@langchain/textsplitters"
-import { embed, embedMany } from "ai"
-import { cosineDistance, desc, gt, sql } from "drizzle-orm"
-import { db } from "@/lib/db"
-import { embeddings } from "@/lib/db/schema/embeddings"
-import { embeddingModel } from "@/lib/openrouter"
+import { RecursiveCharacterTextSplitter } from '@langchain/textsplitters'
+import { embed, embedMany } from 'ai'
+import { cosineDistance, desc, gt, sql } from 'drizzle-orm'
+
+import { db } from '@/lib/db'
+import { embeddings } from '@/lib/db/schema/embeddings'
+import { embeddingModel } from '@/lib/openrouter'
 
 const splitter = new RecursiveCharacterTextSplitter({
   chunkSize: 8000,
   chunkOverlap: 20,
-  separators: ["\n\n", "\n", "."],
+  separators: ['\n\n', '\n', '.'],
 })
 
-export const generateChunksBySplitter = async (input: string): Promise<string[]> => {
+export const generateChunksBySplitter = async (
+  input: string,
+): Promise<string[]> => {
   const chunks = await splitter.splitText(input)
   return chunks
 }
 
-export const generateEmbeddings = async (value: string): Promise<Array<{ embedding: number[]; content: string }>> => {
+export const generateEmbeddings = async (
+  value: string,
+): Promise<Array<{ embedding: number[]; content: string }>> => {
   const chunks = await generateChunksBySplitter(value)
   const { embeddings: embeddingResults } = await embedMany({
     model: embeddingModel,
@@ -26,7 +31,7 @@ export const generateEmbeddings = async (value: string): Promise<Array<{ embeddi
 }
 
 export const generateEmbedding = async (value: string): Promise<number[]> => {
-  const input = value.replaceAll("\\n", " ")
+  const input = value.replaceAll('\\n', ' ')
   const { embedding } = await embed({
     model: embeddingModel,
     value: input,

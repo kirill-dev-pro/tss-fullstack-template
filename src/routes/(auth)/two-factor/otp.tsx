@@ -1,8 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router"
-import OtpForm from "@/features/auth/otp"
-import { useTranslation } from "@/lib/intl/react"
+import { createFileRoute, Link } from '@tanstack/react-router'
 
-export const Route = createFileRoute("/(auth)/two-factor/otp")({
+import OtpForm from '@/features/auth/otp'
+import { useTranslation } from '@/lib/intl/react'
+
+export const Route = createFileRoute('/(auth)/two-factor/otp')({
   component: RouteComponent,
 })
 
@@ -11,13 +12,13 @@ function RouteComponent() {
 
   return (
     <div className="flex flex-col items-center p-2 md:p-6">
-      <div className="w-full max-w-md rounded-lg bg-elevated p-4 md:p-8">
+      <div className="bg-elevated w-full max-w-md rounded-lg p-4 md:p-8">
         <OtpForm />
 
         <div className="mt-4 text-center">
-          {t("DONT_HAVE_ACCOUNT")}{" "}
+          {t('DONT_HAVE_ACCOUNT')}{' '}
           <Link className="underline" to="/login">
-            {t("LOGIN")}
+            {t('LOGIN')}
           </Link>
           !
         </div>

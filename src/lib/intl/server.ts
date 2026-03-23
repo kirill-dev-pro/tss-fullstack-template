@@ -1,4 +1,4 @@
-import i18next, { type Language } from "./i18n"
+import i18next, { type Language } from './i18n'
 
 export async function getI18n(lng: Language) {
   // TODO: check if lng is supported

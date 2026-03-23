@@ -1,14 +1,23 @@
-/** biome-ignore-all lint/style/noMagicNumbers: Magic number for port */
-import { QueryCache, QueryClient } from "@tanstack/react-query"
+import type { TRPCCombinedDataTransformer } from '@trpc/server'
 
-import { createIsomorphicFn, createServerFn } from "@tanstack/react-start"
-import { getRequest } from "@tanstack/react-start/server"
-import { createTRPCClient, httpBatchLink, httpLink, isNonJsonSerializable, loggerLink, splitLink } from "@trpc/client"
-import type { TRPCCombinedDataTransformer } from "@trpc/server"
-import { createTRPCOptionsProxy } from "@trpc/tanstack-react-query"
-import superjson, { SuperJSON } from "superjson"
-import { TRPCProvider } from "@/lib/trpc/react"
-import type { TRPCRouter } from "@/server/router"
+/** biome-ignore-all lint/style/noMagicNumbers: Magic number for port */
+import { QueryCache, QueryClient } from '@tanstack/react-query'
+import { createIsomorphicFn, createServerFn } from '@tanstack/react-start'
+import { getRequest } from '@tanstack/react-start/server'
+import {
+  createTRPCClient,
+  httpBatchLink,
+  httpLink,
+  isNonJsonSerializable,
+  loggerLink,
+  splitLink,
+} from '@trpc/client'
+import { createTRPCOptionsProxy } from '@trpc/tanstack-react-query'
+import superjson, { SuperJSON } from 'superjson'
+
+import type { TRPCRouter } from '@/server/router'
+
+import { TRPCProvider } from '@/lib/trpc/react'
 
 export const transformer: TRPCCombinedDataTransformer = {
   input: {
@@ -28,7 +37,7 @@ export const transformer: TRPCCombinedDataTransformer = {
   output: SuperJSON,
 }
 
-const getRequestHeaders = createServerFn({ method: "GET" }).handler(() => {
+const getRequestHeaders = createServerFn({ method: 'GET' }).handler(() => {
   const request = getRequest()
   const headers = new Headers(request?.headers)
 
@@ -41,8 +50,8 @@ const headers = createIsomorphicFn()
 
 function getUrl() {
   const base = (() => {
-    if (typeof window !== "undefined") {
-      return ""
+    if (typeof window !== 'undefined') {
+      return ''
     }
     return `http://localhost:${process.env.PORT ?? 3000}`
   })()
@@ -53,7 +62,8 @@ export const trpcClient = createTRPCClient<TRPCRouter>({
   links: [
     loggerLink({
       enabled: (op) =>
-        process.env.NODE_ENV === "development" || (op.direction === "down" && op.result instanceof Error),
+        process.env.NODE_ENV === 'development' ||
+        (op.direction === 'down' && op.result instanceof Error),
     }),
     splitLink({
       condition: (op) => isNonJsonSerializable(op.input),
@@ -63,7 +73,7 @@ export const trpcClient = createTRPCClient<TRPCRouter>({
         fetch(url, options) {
           return fetch(url, {
             ...options,
-            credentials: "include",
+            credentials: 'include',
           })
         },
         headers,
@@ -75,7 +85,7 @@ export const trpcClient = createTRPCClient<TRPCRouter>({
         fetch(url, options) {
           return fetch(url, {
             ...options,
-            credentials: "include",
+            credentials: 'include',
           })
         },
       }),
@@ -92,7 +102,11 @@ export const createQueryClient = () =>
     queryCache: new QueryCache(),
   })
 
-export const createServerHelpers = ({ queryClient }: { queryClient: QueryClient }) => {
+export const createServerHelpers = ({
+  queryClient,
+}: {
+  queryClient: QueryClient
+}) => {
   const serverHelpers = createTRPCOptionsProxy({
     client: trpcClient,
     queryClient,
@@ -100,7 +114,13 @@ export const createServerHelpers = ({ queryClient }: { queryClient: QueryClient 
   return serverHelpers
 }
 
-export function Provider({ children, queryClient }: { children: React.ReactNode; queryClient: QueryClient }) {
+export function Provider({
+  children,
+  queryClient,
+}: {
+  children: React.ReactNode
+  queryClient: QueryClient
+}) {
   return (
     <TRPCProvider queryClient={queryClient} trpcClient={trpcClient}>
       {children}

@@ -1,4 +1,4 @@
-import { zfd } from "zod-form-data"
+import { zfd } from 'zod-form-data'
 
 export const uploadFileSchema = zfd.formData({
   file: zfd.file(),

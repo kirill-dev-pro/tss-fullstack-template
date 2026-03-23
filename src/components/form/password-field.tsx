@@ -1,10 +1,12 @@
-import type { AnyFieldApi } from "@tanstack/react-form"
-import { EyeIcon, EyeOffIcon } from "lucide-react"
-import { useState } from "react"
-import FormFieldInfo from "@/components/form-field-info"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import type { AnyFieldApi } from '@tanstack/react-form'
+
+import { EyeIcon, EyeOffIcon } from 'lucide-react'
+import { useState } from 'react'
+
+import FormFieldInfo from '@/components/form-field-info'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 interface PasswordFieldProps {
   field: AnyFieldApi
@@ -12,7 +14,11 @@ interface PasswordFieldProps {
   placeholder?: string
 }
 
-export function PasswordField({ field, label, placeholder }: PasswordFieldProps) {
+export function PasswordField({
+  field,
+  label,
+  placeholder,
+}: PasswordFieldProps) {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
   return (
@@ -27,7 +33,7 @@ export function PasswordField({ field, label, placeholder }: PasswordFieldProps)
           onBlur={field.handleBlur}
           onChange={(e) => field.handleChange(e.target.value)}
           placeholder={placeholder}
-          type={isPasswordVisible ? "text" : "password"}
+          type={isPasswordVisible ? 'text' : 'password'}
           value={field.state.value}
         />
         <Button

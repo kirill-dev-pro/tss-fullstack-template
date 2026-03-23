@@ -1,14 +1,24 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router"
-import { CheckIcon, XIcon } from "lucide-react"
-import { useEffect, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/skeleton"
-import { InvitationError } from "@/features/organization/invitation-error"
-import { authClient } from "@/lib/auth/auth-client"
-import { useTranslation } from "@/lib/intl/react"
+import { createFileRoute, useRouter } from '@tanstack/react-router'
+import { CheckIcon, XIcon } from 'lucide-react'
+import { useEffect, useState } from 'react'
 
-export const Route = createFileRoute("/(auth)/accept-invitation/$invitationId/")({
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
+import { InvitationError } from '@/features/organization/invitation-error'
+import { authClient } from '@/lib/auth/auth-client'
+import { useTranslation } from '@/lib/intl/react'
+
+export const Route = createFileRoute(
+  '/(auth)/accept-invitation/$invitationId/',
+)({
   component: RouteComponent,
 })
 
@@ -16,7 +26,9 @@ function RouteComponent() {
   const { t } = useTranslation()
   const params = Route.useParams()
   const router = useRouter()
-  const [invitationStatus, setInvitationStatus] = useState<"pending" | "accepted" | "rejected">("pending")
+  const [invitationStatus, setInvitationStatus] = useState<
+    'pending' | 'accepted' | 'rejected'
+  >('pending')
 
   const handleAccept = async () => {
     await authClient.organization
@@ -25,10 +37,10 @@ function RouteComponent() {
       })
       .then((res) => {
         if (res.error) {
-          setError(res.error.message || "An error occurred")
+          setError(res.error.message || 'An error occurred')
         } else {
-          setInvitationStatus("accepted")
-          router.navigate({ to: "/dashboard" })
+          setInvitationStatus('accepted')
+          router.navigate({ to: '/dashboard' })
         }
       })
   }
@@ -40,9 +52,9 @@ function RouteComponent() {
       })
       .then((res) => {
         if (res.error) {
-          setError(res.error.message || "An error occurred")
+          setError(res.error.message || 'An error occurred')
         } else {
-          setInvitationStatus("rejected")
+          setInvitationStatus('rejected')
         }
       })
   }
@@ -52,7 +64,7 @@ function RouteComponent() {
     organizationSlug: string
     inviterEmail: string
     id: string
-    status: "pending" | "accepted" | "rejected" | "canceled"
+    status: 'pending' | 'accepted' | 'rejected' | 'canceled'
     email: string
     expiresAt: Date
     organizationId: string
@@ -71,7 +83,7 @@ function RouteComponent() {
       })
       .then((res) => {
         if (res.error) {
-          setError(res.error.message || "An error occurred")
+          setError(res.error.message || 'An error occurred')
         } else {
           setInvitation(res.data)
         }
@@ -84,50 +96,53 @@ function RouteComponent() {
       {invitation ? (
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle>{t("ORG_INVITATION")}</CardTitle>
-            <CardDescription>{t("ORG_INVITATION_DESC")}</CardDescription>
+            <CardTitle>{t('ORG_INVITATION')}</CardTitle>
+            <CardDescription>{t('ORG_INVITATION_DESC')}</CardDescription>
           </CardHeader>
           <CardContent>
-            {invitationStatus === "pending" && (
+            {invitationStatus === 'pending' && (
               <div className="space-y-4">
                 <p>
-                  <strong>{invitation?.inviterEmail}</strong> {t("INVITED_BY")}{" "}
+                  <strong>{invitation?.inviterEmail}</strong> {t('INVITED_BY')}{' '}
                   <strong>{invitation?.organizationName}</strong>.
                 </p>
                 <p>
-                  {t("INVITATION_SENT_TO")} <strong>{invitation?.email}</strong>.
+                  {t('INVITATION_SENT_TO')} <strong>{invitation?.email}</strong>
+                  .
                 </p>
               </div>
             )}
-            {invitationStatus === "accepted" && (
+            {invitationStatus === 'accepted' && (
               <div className="space-y-4">
                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
                   <CheckIcon className="h-8 w-8 text-green-600" />
                 </div>
-                <h2 className="text-center font-bold text-2xl">
-                  {t("WELCOME_TO")} {invitation?.organizationName}!
+                <h2 className="text-center text-2xl font-bold">
+                  {t('WELCOME_TO')} {invitation?.organizationName}!
                 </h2>
-                <p className="text-center">{t("JOIN_SUCCESS")}</p>
+                <p className="text-center">{t('JOIN_SUCCESS')}</p>
               </div>
             )}
-            {invitationStatus === "rejected" && (
+            {invitationStatus === 'rejected' && (
               <div className="space-y-4">
                 <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
                   <XIcon className="h-8 w-8 text-red-600" />
                 </div>
-                <h2 className="text-center font-bold text-2xl">{t("INVITATION_DECLINED")}</h2>
+                <h2 className="text-center text-2xl font-bold">
+                  {t('INVITATION_DECLINED')}
+                </h2>
                 <p className="text-center">
-                  {t("DECLINED_MESSAGE")} {invitation?.organizationName}.
+                  {t('DECLINED_MESSAGE')} {invitation?.organizationName}.
                 </p>
               </div>
             )}
           </CardContent>
-          {invitationStatus === "pending" && (
+          {invitationStatus === 'pending' && (
             <CardFooter className="flex justify-between">
               <Button onClick={handleReject} variant="outline">
-                {t("DECLINE")}
+                {t('DECLINE')}
               </Button>
-              <Button onClick={handleAccept}>{t("ACCEPT_INVITATION")}</Button>
+              <Button onClick={handleAccept}>{t('ACCEPT_INVITATION')}</Button>
             </CardFooter>
           )}
         </Card>

@@ -1,8 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router"
-import ResetPasswordForm from "@/features/auth/reset-password"
-import { useTranslation } from "@/lib/intl/react"
+import { createFileRoute, Link } from '@tanstack/react-router'
 
-export const Route = createFileRoute("/(auth)/reset-password")({
+import ResetPasswordForm from '@/features/auth/reset-password'
+import { useTranslation } from '@/lib/intl/react'
+
+export const Route = createFileRoute('/(auth)/reset-password')({
   component: RouteComponent,
 })
 
@@ -14,9 +15,9 @@ function RouteComponent() {
       <ResetPasswordForm />
 
       <div className="mt-4 text-center">
-        {t("DONT_HAVE_ACCOUNT")}{" "}
+        {t('DONT_HAVE_ACCOUNT')}{' '}
         <Link className="underline" to="/login">
-          {t("LOGIN")}
+          {t('LOGIN')}
         </Link>
         !
       </div>

@@ -1,20 +1,20 @@
-import postgresPlugin from "@neondatabase/vite-plugin-postgres"
-import { sentryVitePlugin } from "@sentry/vite-plugin"
-import tailwindcss from "@tailwindcss/vite"
-import { devtools } from "@tanstack/devtools-vite"
-import { nitroV2Plugin } from "@tanstack/nitro-v2-vite-plugin"
-import { tanstackStart } from "@tanstack/react-start/plugin/vite"
-import viteReact from "@vitejs/plugin-react"
-import dotenv from "dotenv"
-import { defineConfig } from "vite"
-import viteTsConfigPaths from "vite-tsconfig-paths"
+import postgresPlugin from '@neondatabase/vite-plugin-postgres'
+import { sentryVitePlugin } from '@sentry/vite-plugin'
+import tailwindcss from '@tailwindcss/vite'
+import { devtools } from '@tanstack/devtools-vite'
+import { nitroV2Plugin } from '@tanstack/nitro-v2-vite-plugin'
+import { tanstackStart } from '@tanstack/react-start/plugin/vite'
+import viteReact from '@vitejs/plugin-react'
+import dotenv from 'dotenv'
+import { defineConfig } from 'vite'
+import viteTsConfigPaths from 'vite-tsconfig-paths'
 
 dotenv.config()
 
 export default defineConfig({
   optimizeDeps: {
-    entries: ["src/**/*.tsx", "src/**/*.ts"],
-    exclude: ["pdfjs", "pdf-parse"],
+    entries: ['src/**/*.tsx', 'src/**/*.ts'],
+    exclude: ['pdfjs', 'pdf-parse'],
   },
   server: {
     port: 3000,
@@ -22,7 +22,7 @@ export default defineConfig({
   plugins: [
     devtools(),
     viteTsConfigPaths({
-      projects: ["./tsconfig.json"],
+      projects: ['./tsconfig.json'],
     }),
     postgresPlugin({
       // env: ".env.local", // Path to your .env file (default: ".env")
@@ -31,13 +31,13 @@ export default defineConfig({
     tailwindcss(),
     tanstackStart({
       router: {
-        routeToken: "layout",
+        routeToken: 'layout',
       },
-      srcDirectory: "src",
-      start: { entry: "./start.tsx" },
-      server: { entry: "./server.ts" },
+      srcDirectory: 'src',
+      start: { entry: './start.tsx' },
+      server: { entry: './server.ts' },
     }),
-    nitroV2Plugin({ preset: "vercel" }),
+    nitroV2Plugin({ preset: 'vercel' }),
     viteReact(),
     sentryVitePlugin({
       org: process.env.VITE_SENTRY_ORG,

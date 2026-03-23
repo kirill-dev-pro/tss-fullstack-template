@@ -1,5 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router"
-
+import { createFileRoute, Link } from '@tanstack/react-router'
 import {
   Activity,
   ArrowRight,
@@ -19,133 +18,138 @@ import {
   UserCheck,
   Users,
   Wrench,
-} from "lucide-react"
+} from 'lucide-react'
+import { useState } from 'react'
 
-import { useState } from "react"
+import { ModeToggle } from '@/components/theme-toggle'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 
-import { ModeToggle } from "@/components/theme-toggle"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-
-export const Route = createFileRoute("/(public)/")({
+export const Route = createFileRoute('/(public)/')({
   component: LandingPage,
 })
 
 const techStack = [
   {
-    category: "Frontend Framework",
+    category: 'Frontend Framework',
     icon: LayoutDashboard,
-    description: "Modern React foundation with server-side rendering.",
+    description: 'Modern React foundation with server-side rendering.',
     libs: [
-      { name: "TanStack Start", href: "https://tanstack.com/start/v1" },
-      { name: "React 19", href: "https://react.dev/" },
-      { name: "Vite", href: "https://vitejs.dev/" },
-      { name: "Vinxi", href: "https://vinxi.dev/" },
+      { name: 'TanStack Start', href: 'https://tanstack.com/start/v1' },
+      { name: 'React 19', href: 'https://react.dev/' },
+      { name: 'Vite', href: 'https://vitejs.dev/' },
+      { name: 'Vinxi', href: 'https://vinxi.dev/' },
     ],
   },
   {
-    category: "Routing",
+    category: 'Routing',
     icon: ArrowRight,
-    description: "Type-safe routing for seamless navigation.",
-    libs: [{ name: "TanStack Router", href: "https://tanstack.com/router/v1" }],
+    description: 'Type-safe routing for seamless navigation.',
+    libs: [{ name: 'TanStack Router', href: 'https://tanstack.com/router/v1' }],
   },
   {
-    category: "Backend & API",
+    category: 'Backend & API',
     icon: Code,
-    description: "End-to-end typesafe APIs for robust backend communication.",
-    libs: [{ name: "tRPC", href: "https://trpc.io/" }],
+    description: 'End-to-end typesafe APIs for robust backend communication.',
+    libs: [{ name: 'tRPC', href: 'https://trpc.io/' }],
   },
   {
-    category: "Database & ORM",
+    category: 'Database & ORM',
     icon: Database,
-    description: "Type-safe SQL database interactions.",
+    description: 'Type-safe SQL database interactions.',
     libs: [
-      { name: "Drizzle ORM", href: "https://orm.drizzle.team/" },
-      { name: "PostgreSQL (Neon Ready)", href: "https://neon.com/" },
+      { name: 'Drizzle ORM', href: 'https://orm.drizzle.team/' },
+      { name: 'PostgreSQL (Neon Ready)', href: 'https://neon.com/' },
     ],
   },
   {
-    category: "UI & Styling",
+    category: 'UI & Styling',
     icon: Paintbrush,
-    description: "Beautiful, accessible components and utility-first CSS.",
+    description: 'Beautiful, accessible components and utility-first CSS.',
     libs: [
-      { name: "shadcn/ui", href: "https://ui.shadcn.com/" },
-      { name: "Tailwind CSS", href: "https://tailwindcss.com/" },
-      { name: "Lucide Icons", href: "https://lucide.dev/" },
+      { name: 'shadcn/ui', href: 'https://ui.shadcn.com/' },
+      { name: 'Tailwind CSS', href: 'https://tailwindcss.com/' },
+      { name: 'Lucide Icons', href: 'https://lucide.dev/' },
     ],
   },
   {
-    category: "State Management",
+    category: 'State Management',
     icon: Box,
-    description: "Powerful server state and local state management.",
+    description: 'Powerful server state and local state management.',
     libs: [
-      { name: "TanStack Query", href: "https://tanstack.com/query/v5" },
-      { name: "TanStack Store", href: "https://tanstack.com/store/v0" },
+      { name: 'TanStack Query', href: 'https://tanstack.com/query/v5' },
+      { name: 'TanStack Store', href: 'https://tanstack.com/store/v0' },
     ],
   },
   {
-    category: "Forms",
+    category: 'Forms',
     icon: CheckCircle,
-    description: "Flexible and type-safe form handling.",
+    description: 'Flexible and type-safe form handling.',
     libs: [
-      { name: "React Hook Form", href: "https://react-hook-form.com/" },
-      { name: "TanStack Form", href: "https://tanstack.com/form/v1" },
-      { name: "Zod", href: "https://zod.dev/" },
+      { name: 'React Hook Form', href: 'https://react-hook-form.com/' },
+      { name: 'TanStack Form', href: 'https://tanstack.com/form/v1' },
+      { name: 'Zod', href: 'https://zod.dev/' },
     ],
   },
   {
-    category: "Authentication",
+    category: 'Authentication',
     icon: Shield,
-    description: "Secure and easy-to-implement authentication.",
+    description: 'Secure and easy-to-implement authentication.',
     libs: [
       {
-        name: "Better Auth",
-        href: "https://github.com/BetterTyped/better-auth",
+        name: 'Better Auth',
+        href: 'https://github.com/BetterTyped/better-auth',
       },
     ],
   },
   {
-    category: "Tooling & DX",
+    category: 'Tooling & DX',
     icon: Wrench,
-    description: "Enhanced developer experience and code quality tools.",
+    description: 'Enhanced developer experience and code quality tools.',
     libs: [
-      { name: "Biome", href: "https://biomejs.dev/" },
-      { name: "Vitest", href: "https://vitest.dev/" },
-      { name: "T3 Env", href: "https://github.com/t3-oss/t3-env" },
-      { name: "TypeScript", href: "https://www.typescriptlang.org/" },
+      { name: 'Biome', href: 'https://biomejs.dev/' },
+      { name: 'Vitest', href: 'https://vitest.dev/' },
+      { name: 'T3 Env', href: 'https://github.com/t3-oss/t3-env' },
+      { name: 'TypeScript', href: 'https://www.typescriptlang.org/' },
     ],
   },
   {
-    category: "AI Integration",
+    category: 'AI Integration',
     icon: Sparkles,
-    description: "Ready for building AI-powered features.",
+    description: 'Ready for building AI-powered features.',
     libs: [
-      { name: "@ai-sdk/react", href: "https://sdk.vercel.ai/" },
-      { name: "ai", href: "https://sdk.vercel.ai/" },
+      { name: '@ai-sdk/react', href: 'https://sdk.vercel.ai/' },
+      { name: 'ai', href: 'https://sdk.vercel.ai/' },
     ],
   },
   {
-    category: "Email Sending",
+    category: 'Email Sending',
     icon: Mail,
-    description: "Reliable transactional email delivery and templating.",
+    description: 'Reliable transactional email delivery and templating.',
     libs: [
-      { name: "Resend", href: "https://resend.com/" },
-      { name: "React Email", href: "https://react.email/" },
+      { name: 'Resend', href: 'https://resend.com/' },
+      { name: 'React Email', href: 'https://react.email/' },
     ],
   },
   {
-    category: "Monitoring",
+    category: 'Monitoring',
     icon: Activity,
-    description: "Application monitoring and error tracking.",
-    libs: [{ name: "Sentry", href: "https://sentry.io/" }],
+    description: 'Application monitoring and error tracking.',
+    libs: [{ name: 'Sentry', href: 'https://sentry.io/' }],
   },
   {
-    category: "Internationalization",
+    category: 'Internationalization',
     icon: Users,
-    description: "Support for multiple languages.",
-    libs: [{ name: "i18next", href: "https://www.i18next.com/" }],
+    description: 'Support for multiple languages.',
+    libs: [{ name: 'i18next', href: 'https://www.i18next.com/' }],
   },
 ]
 
@@ -158,13 +162,13 @@ function LandingPage() {
         <div className="flex h-16 w-full items-center justify-between px-4">
           <div className="flex items-center gap-2">
             <TerminalSquare className="h-6 w-6 text-primary" />
-            <span className="font-bold text-lg">Boilerplate</span>
+            <span className="text-lg font-bold">Boilerplate</span>
           </div>
 
           <nav className="hidden items-center justify-center md:flex">
             <ModeToggle />
             <a
-              className="flex items-center gap-1 font-medium text-muted-foreground text-sm transition-colors hover:text-foreground"
+              className="flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               href="https://github.com/carlosziegler/fullstack-start-template"
               rel="noopener noreferrer"
               target="_blank"
@@ -172,7 +176,7 @@ function LandingPage() {
               <Github className="h-4 w-4" /> GitHub
             </a>
             <Link
-              className="ml-8 font-medium text-muted-foreground text-sm transition-colors hover:text-foreground"
+              className="ml-8 text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
               to="/login"
             >
               Login
@@ -192,12 +196,16 @@ function LandingPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <TerminalSquare className="h-6 w-6 text-primary" />
-                      <span className="font-bold text-lg">Boilerplate</span>
+                      <span className="text-lg font-bold">Boilerplate</span>
                     </div>
                   </div>
                   <nav className="flex flex-col gap-4">
                     <ModeToggle />
-                    <Button asChild className="w-full justify-start" variant="ghost">
+                    <Button
+                      asChild
+                      className="w-full justify-start"
+                      variant="ghost"
+                    >
                       <a
                         className="flex items-center gap-2"
                         href="https://github.com/YOUR_REPO_LINK"
@@ -208,8 +216,16 @@ function LandingPage() {
                         <Github className="h-4 w-4" /> GitHub
                       </a>
                     </Button>
-                    <Button asChild className="w-full justify-start" variant="ghost">
-                      <Link className="flex items-center gap-2" onClick={() => setMobileMenuOpen(false)} to="/login">
+                    <Button
+                      asChild
+                      className="w-full justify-start"
+                      variant="ghost"
+                    >
+                      <Link
+                        className="flex items-center gap-2"
+                        onClick={() => setMobileMenuOpen(false)}
+                        to="/login"
+                      >
                         Login
                       </Link>
                     </Button>
@@ -223,24 +239,32 @@ function LandingPage() {
 
       <main className="flex-1 px-4 py-12 md:py-16 lg:py-20">
         <div className="mb-12 text-center md:mb-16">
-          <h1 className="mb-4 bg-gradient-to-r from-primary via-violet-500 to-secondary bg-clip-text font-bold text-3xl text-transparent tracking-tight sm:text-4xl md:text-5xl lg:text-6xl">
+          <h1 className="mb-4 bg-gradient-to-r from-primary via-violet-500 to-secondary bg-clip-text text-3xl font-bold tracking-tight text-transparent sm:text-4xl md:text-5xl lg:text-6xl">
             Modern Full-Stack Boilerplate
           </h1>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground md:text-xl">
-            Jumpstart your next project with this feature-rich boilerplate, built with a modern, type-safe stack focused
-            on developer experience.
+            Jumpstart your next project with this feature-rich boilerplate,
+            built with a modern, type-safe stack focused on developer
+            experience.
           </p>
         </div>
 
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {techStack.map((tech) => (
-            <Card className="flex flex-col transition-shadow duration-200 hover:shadow-lg" key={tech.category}>
+            <Card
+              className="flex flex-col transition-shadow duration-200 hover:shadow-lg"
+              key={tech.category}
+            >
               <CardHeader className="flex flex-row items-center gap-3 pb-4">
                 <tech.icon className="h-6 w-6 text-primary" />
-                <CardTitle className="font-semibold text-lg">{tech.category}</CardTitle>
+                <CardTitle className="text-lg font-semibold">
+                  {tech.category}
+                </CardTitle>
               </CardHeader>
               <CardContent className="flex-1">
-                <CardDescription className="mb-4">{tech.description}</CardDescription>
+                <CardDescription className="mb-4">
+                  {tech.description}
+                </CardDescription>
                 <div className="flex flex-wrap gap-2">
                   {tech.libs.map((lib) => (
                     <Badge key={lib.name} variant="secondary">
@@ -251,7 +275,8 @@ function LandingPage() {
                           rel="noopener noreferrer"
                           target="_blank"
                         >
-                          {lib.name} <BookOpen className="h-3 w-3 text-muted-foreground" />
+                          {lib.name}{' '}
+                          <BookOpen className="h-3 w-3 text-muted-foreground" />
                         </a>
                       ) : (
                         lib.name
@@ -266,11 +291,12 @@ function LandingPage() {
 
         <section className="mt-16 md:mt-24">
           <div className="mb-12 text-center md:mb-16">
-            <h2 className="mb-4 font-bold text-3xl tracking-tight sm:text-4xl md:text-5xl">
+            <h2 className="mb-4 text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl">
               Robust Authentication Included
             </h2>
             <p className="mx-auto max-w-2xl text-lg text-muted-foreground md:text-xl">
-              Secure user management features ready out-of-the-box, powered by Better Auth.
+              Secure user management features ready out-of-the-box, powered by
+              Better Auth.
             </p>
           </div>
 
@@ -334,8 +360,9 @@ function LandingPage() {
       </main>
 
       <footer className="mt-16 border-t">
-        <div className="container py-6 text-center text-muted-foreground text-sm">
-          Built with Modern Tech. &copy; {new Date().getFullYear()} Your Company/Name.
+        <div className="container py-6 text-center text-sm text-muted-foreground">
+          Built with Modern Tech. &copy; {new Date().getFullYear()} Your
+          Company/Name.
         </div>
       </footer>
     </div>

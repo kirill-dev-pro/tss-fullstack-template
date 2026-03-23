@@ -1,38 +1,43 @@
-import { useChat } from "@ai-sdk/react"
-import { DefaultChatTransport } from "ai"
-import { ArrowUpIcon, StopCircleIcon } from "lucide-react"
-import { memo, useEffect, useRef, useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
+import { useChat } from '@ai-sdk/react'
+import { DefaultChatTransport } from 'ai'
+import { ArrowUpIcon, StopCircleIcon } from 'lucide-react'
+import { memo, useEffect, useRef, useState } from 'react'
+
+import { Button } from '@/components/ui/button'
+import { Textarea } from '@/components/ui/textarea'
 
 // Suggestion card component
-function ChatWelcome({ onSelectSuggestion }: { onSelectSuggestion: (suggestion: string) => void }) {
+function ChatWelcome({
+  onSelectSuggestion,
+}: {
+  onSelectSuggestion: (suggestion: string) => void
+}) {
   const suggestions = [
     {
-      title: "App Features",
-      description: "Learn how to use the AI features",
-      prompt: "How do I use the AI features in this app?",
+      title: 'App Features',
+      description: 'Learn how to use the AI features',
+      prompt: 'How do I use the AI features in this app?',
     },
     {
-      title: "Generate Images",
-      description: "Create AI-generated artwork",
-      prompt: "Can you generate an image of a mountain landscape?",
+      title: 'Generate Images',
+      description: 'Create AI-generated artwork',
+      prompt: 'Can you generate an image of a mountain landscape?',
     },
     {
-      title: "Creative Writing",
-      description: "Get help with writing tasks",
-      prompt: "Write me a short poem about technology",
+      title: 'Creative Writing',
+      description: 'Get help with writing tasks',
+      prompt: 'Write me a short poem about technology',
     },
     {
-      title: "AI Trends",
-      description: "Explore current AI developments",
-      prompt: "What are the latest AI trends in 2024?",
+      title: 'AI Trends',
+      description: 'Explore current AI developments',
+      prompt: 'What are the latest AI trends in 2024?',
     },
   ]
 
   return (
     <div className="mt-12 flex flex-col items-center justify-center space-y-6">
-      <h3 className="font-medium text-xl">How can I help you today?</h3>
+      <h3 className="text-xl font-medium">How can I help you today?</h3>
       <div className="grid w-full max-w-lg grid-cols-2 gap-3">
         {suggestions.map((suggestion) => (
           <button
@@ -42,7 +47,7 @@ function ChatWelcome({ onSelectSuggestion }: { onSelectSuggestion: (suggestion: 
             type="button"
           >
             <p className="font-medium">{suggestion.title}</p>
-            <p className="text-gray-500 text-sm">{suggestion.description}</p>
+            <p className="text-sm text-gray-500">{suggestion.description}</p>
           </button>
         ))}
       </div>
@@ -51,10 +56,10 @@ function ChatWelcome({ onSelectSuggestion }: { onSelectSuggestion: (suggestion: 
 }
 
 export function Chat() {
-  const [input, setInput] = useState("")
+  const [input, setInput] = useState('')
   const { messages, sendMessage, status, stop } = useChat({
     transport: new DefaultChatTransport({
-      api: "/api/ai/chat/image/generation",
+      api: '/api/ai/chat/image/generation',
     }),
   })
 
@@ -68,7 +73,7 @@ export function Chat() {
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
       setTimeout(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
       }, 100)
     }
   }
@@ -80,7 +85,7 @@ export function Chat() {
 
   // Scroll when status changes
   useEffect(() => {
-    if (status === "streaming") {
+    if (status === 'streaming') {
       scrollToBottom()
     }
   }, [status])
@@ -89,7 +94,7 @@ export function Chat() {
     e.preventDefault()
     if (input.trim()) {
       sendMessage({ text: input })
-      setInput("")
+      setInput('')
     }
   }
 
@@ -107,25 +112,28 @@ export function Chat() {
                 <div className="font-bold">{m.role}</div>
                 <div>
                   {m.parts.map((part, index) => {
-                    console.log("🔑 Part", part)
+                    console.log('🔑 Part', part)
 
-                    if (part.type === "text") {
+                    if (part.type === 'text') {
                       return <p key={index}>{part.text}</p>
                     }
 
                     // Handle new v5 tool pattern - tools are prefixed with 'tool-'
-                    if (part.type === "tool-generateImage") {
+                    if (part.type === 'tool-generateImage') {
                       const toolPart = part as any // Type assertion for tool part
                       const { toolCallId, state } = toolPart
 
                       // Tool is completed and has output
-                      if (state === "output-available" && toolPart.output) {
-                        const output = toolPart.output as { image: string; prompt?: string }
+                      if (state === 'output-available' && toolPart.output) {
+                        const output = toolPart.output as {
+                          image: string
+                          prompt?: string
+                        }
                         const input = toolPart.input as { prompt?: string }
 
                         return (
                           <img
-                            alt={input?.prompt || "Generated image"}
+                            alt={input?.prompt || 'Generated image'}
                             className="rounded-lg shadow-lg"
                             height={400}
                             key={toolCallId}
@@ -138,13 +146,19 @@ export function Chat() {
 
                       // Tool is still processing (input streaming, input available, etc.)
                       return (
-                        <div className="animate-pulse rounded-lg bg-gray-100 p-4" key={toolCallId}>
+                        <div
+                          className="animate-pulse rounded-lg bg-gray-100 p-4"
+                          key={toolCallId}
+                        >
                           <div className="flex items-center space-x-2">
-                            <div className="h-4 w-4 animate-spin rounded-full border-blue-500 border-b-2" />
+                            <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-blue-500" />
                             <span className="text-gray-600">
-                              {state === "input-streaming" && "Preparing image generation..."}
-                              {state === "input-available" && "Starting image generation..."}
-                              {state === "output-available" && "Generating image..."}
+                              {state === 'input-streaming' &&
+                                'Preparing image generation...'}
+                              {state === 'input-available' &&
+                                'Starting image generation...'}
+                              {state === 'output-available' &&
+                                'Generating image...'}
                             </span>
                           </div>
                         </div>
@@ -152,7 +166,7 @@ export function Chat() {
                     }
 
                     // Handle step indicators
-                    if (part.type === "step-start") {
+                    if (part.type === 'step-start') {
                       return null // Don't render step indicators for cleaner UI
                     }
 
@@ -168,7 +182,10 @@ export function Chat() {
         <div ref={messagesEndRef} />
       </div>
 
-      <form className="relative flex w-full max-w-xl flex-col items-center justify-center" onSubmit={handleSubmit}>
+      <form
+        className="relative flex w-full max-w-xl flex-col items-center justify-center"
+        onSubmit={handleSubmit}
+      >
         <div className="fixed bottom-0 z-10 mb-8 w-full max-w-lg bg-background">
           <div className="relative flex flex-row items-center justify-between">
             <Textarea
@@ -177,7 +194,7 @@ export function Chat() {
               data-testid="multimodal-input"
               onChange={handleInputChange}
               onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
+                if (e.key === 'Enter' && !e.shiftKey) {
                   e.preventDefault()
                   if (input.trim()) {
                     handleSubmit(e)
@@ -190,10 +207,14 @@ export function Chat() {
               value={input}
             />
             <div className="absolute right-2">
-              {status === "streaming" ? (
+              {status === 'streaming' ? (
                 <StopButton stop={stop} />
               ) : (
-                <SendButton input={input} submitForm={handleSubmit} uploadQueue={[]} />
+                <SendButton
+                  input={input}
+                  submitForm={handleSubmit}
+                  uploadQueue={[]}
+                />
               )}
             </div>
           </div>

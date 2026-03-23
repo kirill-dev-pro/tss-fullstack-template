@@ -1,15 +1,16 @@
-import { createFileRoute } from "@tanstack/react-router"
+import { createFileRoute } from '@tanstack/react-router'
 import {
   convertToModelMessages,
   experimental_generateImage as generateImage,
   streamText,
   tool,
   type UIMessage,
-} from "ai"
-import { z } from "zod"
-import { chatModel, imageModel } from "@/lib/openrouter"
+} from 'ai'
+import { z } from 'zod'
 
-export const Route = createFileRoute("/api/ai/chat/image/generation")({
+import { chatModel, imageModel } from '@/lib/openrouter'
+
+export const Route = createFileRoute('/api/ai/chat/image/generation')({
   server: {
     handlers: {
       POST: async ({ request }) => {
@@ -20,12 +21,16 @@ export const Route = createFileRoute("/api/ai/chat/image/generation")({
           ...message,
           parts: message.parts.map((part) => {
             // Keep text parts as-is
-            if (part.type === "text") return part
+            if (part.type === 'text') return part
 
             // For tool parts, filter out large data
-            if (part.type.startsWith("tool-")) {
+            if (part.type.startsWith('tool-')) {
               // If it's an image generation tool result, remove the base64 data but keep the structure
-              if (part.type === "tool-generateImage" && "output" in part && part.output) {
+              if (
+                part.type === 'tool-generateImage' &&
+                'output' in part &&
+                part.output
+              ) {
                 const toolPart = part as any
                 return {
                   ...toolPart,
@@ -50,9 +55,11 @@ export const Route = createFileRoute("/api/ai/chat/image/generation")({
           messages: convertToModelMessages(filteredMessages),
           tools: {
             generateImage: tool({
-              description: "Generate an image",
+              description: 'Generate an image',
               inputSchema: z.object({
-                prompt: z.string().describe("The prompt to generate the image from"),
+                prompt: z
+                  .string()
+                  .describe('The prompt to generate the image from'),
               }),
               execute: async ({ prompt }) => {
                 const { image } = await generateImage({

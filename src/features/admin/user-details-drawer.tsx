@@ -1,33 +1,67 @@
-import { format } from "date-fns"
-import { Calendar, Check, Copy, Shield, ShieldCheck, User, UserCheck, X } from "lucide-react"
-import { useState } from "react"
-import { toast } from "sonner"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Separator } from "@/components/ui/separator"
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Textarea } from "@/components/ui/textarea"
+import { format } from 'date-fns'
+import {
+  Calendar,
+  Check,
+  Copy,
+  Shield,
+  ShieldCheck,
+  User,
+  UserCheck,
+  X,
+} from 'lucide-react'
+import { useState } from 'react'
+import { toast } from 'sonner'
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { Separator } from '@/components/ui/separator'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Textarea } from '@/components/ui/textarea'
 import {
   useBanUser,
   useResetUserPassword,
   useRevokeUserSessions,
   useSetUserRole,
   useUnbanUser,
-} from "@/features/user/user-hooks"
+} from '@/features/user/user-hooks'
 import {
   canBanUsers,
   canImpersonateUsers,
   canSetUserRoles,
   getAssignableRoles,
   type UserRole,
-} from "@/lib/auth/permissions"
+} from '@/lib/auth/permissions'
 
 interface User {
   id: string
@@ -49,30 +83,42 @@ interface UserDetailsDrawerProps {
 
 function getRoleBadge(role: string) {
   switch (role) {
-    case "superadmin":
+    case 'superadmin':
       return (
-        <Badge className="border-purple-200 bg-purple-50 font-medium text-purple-700" variant="outline">
+        <Badge
+          className="border-purple-200 bg-purple-50 font-medium text-purple-700"
+          variant="outline"
+        >
           <Shield className="mr-1 h-3 w-3" />
           Super Admin
         </Badge>
       )
-    case "admin":
+    case 'admin':
       return (
-        <Badge className="border-indigo-200 bg-indigo-50 font-medium text-indigo-700" variant="outline">
+        <Badge
+          className="border-indigo-200 bg-indigo-50 font-medium text-indigo-700"
+          variant="outline"
+        >
           <ShieldCheck className="mr-1 h-3 w-3" />
           Admin
         </Badge>
       )
-    case "user":
+    case 'user':
       return (
-        <Badge className="border-slate-200 bg-slate-50 font-medium text-slate-600" variant="outline">
+        <Badge
+          className="border-slate-200 bg-slate-50 font-medium text-slate-600"
+          variant="outline"
+        >
           <UserCheck className="mr-1 h-3 w-3" />
           User
         </Badge>
       )
     default:
       return (
-        <Badge className="border-slate-200 bg-slate-50 font-medium text-slate-600" variant="outline">
+        <Badge
+          className="border-slate-200 bg-slate-50 font-medium text-slate-600"
+          variant="outline"
+        >
           {role}
         </Badge>
       )
@@ -82,7 +128,10 @@ function getRoleBadge(role: string) {
 function getStatusBadge(user: User) {
   if (user.banned) {
     return (
-      <Badge className="border-red-200 bg-red-50 font-medium text-red-700" variant="outline">
+      <Badge
+        className="border-red-200 bg-red-50 font-medium text-red-700"
+        variant="outline"
+      >
         <X className="mr-1 h-3 w-3" />
         Banned
       </Badge>
@@ -90,14 +139,20 @@ function getStatusBadge(user: User) {
   }
   if (user.emailVerified) {
     return (
-      <Badge className="border-emerald-200 bg-emerald-50 font-medium text-emerald-700" variant="outline">
+      <Badge
+        className="border-emerald-200 bg-emerald-50 font-medium text-emerald-700"
+        variant="outline"
+      >
         <Check className="mr-1 h-3 w-3" />
         Active
       </Badge>
     )
   }
   return (
-    <Badge className="border-amber-200 bg-amber-50 font-medium text-amber-700" variant="outline">
+    <Badge
+      className="border-amber-200 bg-amber-50 font-medium text-amber-700"
+      variant="outline"
+    >
       Pending
     </Badge>
   )
@@ -114,7 +169,7 @@ function ChangeRoleDialog({
   onOpenChange: (open: boolean) => void
   currentUserRole: UserRole
 }) {
-  const [selectedRole, setSelectedRole] = useState<string>(user?.role || "user")
+  const [selectedRole, setSelectedRole] = useState<string>(user?.role || 'user')
   const { mutate: setUserRole, isPending } = useSetUserRole()
 
   const assignableRoles = getAssignableRoles(currentUserRole)
@@ -126,24 +181,24 @@ function ChangeRoleDialog({
       { userId: user.id, role: selectedRole },
       {
         onSuccess: () => {
-          toast.success("User role updated successfully")
+          toast.success('User role updated successfully')
           onOpenChange(false)
         },
         onError: (error) => {
-          toast.error(error.message || "Failed to update user role")
+          toast.error(error.message || 'Failed to update user role')
         },
-      }
+      },
     )
   }
 
   const getRoleDisplayName = (role: UserRole) => {
     switch (role) {
-      case "user":
-        return "User"
-      case "admin":
-        return "Admin"
-      case "superadmin":
-        return "Super Admin"
+      case 'user':
+        return 'User'
+      case 'admin':
+        return 'Admin'
+      case 'superadmin':
+        return 'Super Admin'
       default:
         return role
     }
@@ -151,14 +206,14 @@ function ChangeRoleDialog({
 
   const getRoleDescription = (role: UserRole) => {
     switch (role) {
-      case "user":
-        return "Basic access with limited permissions"
-      case "admin":
-        return "Can manage users and organization settings"
-      case "superadmin":
-        return "Full system access including user deletion and impersonation"
+      case 'user':
+        return 'Basic access with limited permissions'
+      case 'admin':
+        return 'Can manage users and organization settings'
+      case 'superadmin':
+        return 'Full system access including user deletion and impersonation'
       default:
-        return ""
+        return ''
     }
   }
 
@@ -184,8 +239,12 @@ function ChangeRoleDialog({
                 {assignableRoles.map((role) => (
                   <SelectItem key={role} value={role}>
                     <div className="flex flex-col">
-                      <span className="font-medium">{getRoleDisplayName(role)}</span>
-                      <span className="text-muted-foreground text-xs">{getRoleDescription(role)}</span>
+                      <span className="font-medium">
+                        {getRoleDisplayName(role)}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        {getRoleDescription(role)}
+                      </span>
                     </div>
                   </SelectItem>
                 ))}
@@ -195,12 +254,14 @@ function ChangeRoleDialog({
 
           {selectedRole && selectedRole !== user.role && (
             <div className="rounded-lg bg-muted p-3">
-              <p className="mb-1 font-medium text-sm">
-                {selectedRole === "superadmin" && "Granting Super Admin access"}
-                {selectedRole === "admin" && "Granting Admin access"}
-                {selectedRole === "user" && "Removing admin privileges"}
+              <p className="mb-1 text-sm font-medium">
+                {selectedRole === 'superadmin' && 'Granting Super Admin access'}
+                {selectedRole === 'admin' && 'Granting Admin access'}
+                {selectedRole === 'user' && 'Removing admin privileges'}
               </p>
-              <p className="text-muted-foreground text-xs">{getRoleDescription(selectedRole as UserRole)}</p>
+              <p className="text-xs text-muted-foreground">
+                {getRoleDescription(selectedRole as UserRole)}
+              </p>
             </div>
           )}
 
@@ -208,8 +269,11 @@ function ChangeRoleDialog({
             <Button onClick={() => onOpenChange(false)} variant="outline">
               Cancel
             </Button>
-            <Button disabled={isPending || selectedRole === user.role} onClick={handleRoleChange}>
-              {isPending ? "Updating..." : "Update Role"}
+            <Button
+              disabled={isPending || selectedRole === user.role}
+              onClick={handleRoleChange}
+            >
+              {isPending ? 'Updating...' : 'Update Role'}
             </Button>
           </div>
         </div>
@@ -227,18 +291,18 @@ function ResetPasswordDialog({
   open: boolean
   onOpenChange: (open: boolean) => void
 }) {
-  const [password, setPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
+  const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const { mutate: resetPassword, isPending } = useResetUserPassword()
 
   const handleResetPassword = () => {
     if (!user) return
     if (password !== confirmPassword) {
-      toast.error("Passwords do not match")
+      toast.error('Passwords do not match')
       return
     }
     if (password.length < 8) {
-      toast.error("Password must be at least 8 characters")
+      toast.error('Password must be at least 8 characters')
       return
     }
 
@@ -246,15 +310,15 @@ function ResetPasswordDialog({
       { userId: user.id, password },
       {
         onSuccess: () => {
-          toast.success("Password reset successfully")
-          setPassword("")
-          setConfirmPassword("")
+          toast.success('Password reset successfully')
+          setPassword('')
+          setConfirmPassword('')
           onOpenChange(false)
         },
         onError: (error) => {
-          toast.error(error.message || "Failed to reset password")
+          toast.error(error.message || 'Failed to reset password')
         },
-      }
+      },
     )
   }
 
@@ -294,8 +358,11 @@ function ResetPasswordDialog({
             <Button onClick={() => onOpenChange(false)} variant="outline">
               Cancel
             </Button>
-            <Button disabled={isPending || !password || password !== confirmPassword} onClick={handleResetPassword}>
-              {isPending ? "Resetting..." : "Reset Password"}
+            <Button
+              disabled={isPending || !password || password !== confirmPassword}
+              onClick={handleResetPassword}
+            >
+              {isPending ? 'Resetting...' : 'Reset Password'}
             </Button>
           </div>
         </div>
@@ -313,7 +380,7 @@ function BanUserDialog({
   open: boolean
   onOpenChange: (open: boolean) => void
 }) {
-  const [reason, setReason] = useState("")
+  const [reason, setReason] = useState('')
   const { mutate: banUser, isPending } = useBanUser()
 
   const handleBanUser = () => {
@@ -323,14 +390,14 @@ function BanUserDialog({
       { userId: user.id },
       {
         onSuccess: () => {
-          toast.success("User banned successfully")
-          setReason("")
+          toast.success('User banned successfully')
+          setReason('')
           onOpenChange(false)
         },
         onError: (error) => {
-          toast.error(error.message || "Failed to ban user")
+          toast.error(error.message || 'Failed to ban user')
         },
-      }
+      },
     )
   }
 
@@ -360,8 +427,12 @@ function BanUserDialog({
             <Button onClick={() => onOpenChange(false)} variant="outline">
               Cancel
             </Button>
-            <Button disabled={isPending || !reason.trim()} onClick={handleBanUser} variant="destructive">
-              {isPending ? "Banning..." : "Ban User"}
+            <Button
+              disabled={isPending || !reason.trim()}
+              onClick={handleBanUser}
+              variant="destructive"
+            >
+              {isPending ? 'Banning...' : 'Ban User'}
             </Button>
           </div>
         </div>
@@ -370,25 +441,31 @@ function BanUserDialog({
   )
 }
 
-export function UserDetailsDrawer({ user, open, onOpenChange, currentUserRole }: UserDetailsDrawerProps) {
+export function UserDetailsDrawer({
+  user,
+  open,
+  onOpenChange,
+  currentUserRole,
+}: UserDetailsDrawerProps) {
   const [changeRoleOpen, setChangeRoleOpen] = useState(false)
   const [resetPasswordOpen, setResetPasswordOpen] = useState(false)
   const [banUserOpen, setBanUserOpen] = useState(false)
 
-  const { mutate: revokeUserSessions, isPending: isRevokingSessions } = useRevokeUserSessions()
+  const { mutate: revokeUserSessions, isPending: isRevokingSessions } =
+    useRevokeUserSessions()
   const { mutate: unbanUser, isPending: isUnbanning } = useUnbanUser()
 
   const copyUserId = () => {
     if (user) {
       navigator.clipboard.writeText(user.id)
-      toast.success("User ID copied to clipboard")
+      toast.success('User ID copied to clipboard')
     }
   }
 
   const copyUserEmail = () => {
     if (user) {
       navigator.clipboard.writeText(user.email)
-      toast.success("Email copied to clipboard")
+      toast.success('Email copied to clipboard')
     }
   }
 
@@ -398,12 +475,12 @@ export function UserDetailsDrawer({ user, open, onOpenChange, currentUserRole }:
       { userId: user.id },
       {
         onSuccess: () => {
-          toast.success("All user sessions revoked")
+          toast.success('All user sessions revoked')
         },
         onError: (error) => {
-          toast.error(error.message || "Failed to revoke sessions")
+          toast.error(error.message || 'Failed to revoke sessions')
         },
-      }
+      },
     )
   }
 
@@ -413,12 +490,12 @@ export function UserDetailsDrawer({ user, open, onOpenChange, currentUserRole }:
       { userId: user.id },
       {
         onSuccess: () => {
-          toast.success("User unbanned successfully")
+          toast.success('User unbanned successfully')
         },
         onError: (error) => {
-          toast.error(error.message || "Failed to unban user")
+          toast.error(error.message || 'Failed to unban user')
         },
-      }
+      },
     )
   }
 
@@ -430,7 +507,9 @@ export function UserDetailsDrawer({ user, open, onOpenChange, currentUserRole }:
         <SheetContent className="w-[600px] overflow-y-auto sm:w-[700px]">
           <SheetHeader>
             <SheetTitle>User Details</SheetTitle>
-            <SheetDescription>Comprehensive information and actions for {user.name}</SheetDescription>
+            <SheetDescription>
+              Comprehensive information and actions for {user.name}
+            </SheetDescription>
           </SheetHeader>
 
           <div className="mt-6 space-y-6">
@@ -450,25 +529,27 @@ export function UserDetailsDrawer({ user, open, onOpenChange, currentUserRole }:
                         <AvatarImage alt={user.name} src={user.image} />
                         <AvatarFallback>
                           {user.name
-                            .split(" ")
+                            .split(' ')
                             .map((n) => n[0])
-                            .join("")}
+                            .join('')}
                         </AvatarFallback>
                       </Avatar>
                       <div>
-                        <h3 className="font-semibold text-lg">{user.name}</h3>
-                        <p className="text-muted-foreground text-sm">{user.email}</p>
+                        <h3 className="text-lg font-semibold">{user.name}</h3>
+                        <p className="text-sm text-muted-foreground">
+                          {user.email}
+                        </p>
                       </div>
                     </CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <span className="font-medium text-sm">Status</span>
+                      <span className="text-sm font-medium">Status</span>
                       {getStatusBadge(user)}
                     </div>
 
                     <div className="flex items-center justify-between">
-                      <span className="font-medium text-sm">Role</span>
+                      <span className="text-sm font-medium">Role</span>
                       {getRoleBadge(user.role)}
                     </div>
 
@@ -478,8 +559,14 @@ export function UserDetailsDrawer({ user, open, onOpenChange, currentUserRole }:
                       <div className="space-y-1">
                         <p className="font-medium">User ID</p>
                         <div className="flex items-center gap-2">
-                          <code className="rounded bg-muted px-2 py-1 text-xs">{user.id.slice(0, 8)}...</code>
-                          <Button onClick={copyUserId} size="sm" variant="ghost">
+                          <code className="rounded bg-muted px-2 py-1 text-xs">
+                            {user.id.slice(0, 8)}...
+                          </code>
+                          <Button
+                            onClick={copyUserId}
+                            size="sm"
+                            variant="ghost"
+                          >
                             <Copy className="h-3 w-3" />
                           </Button>
                         </div>
@@ -489,15 +576,21 @@ export function UserDetailsDrawer({ user, open, onOpenChange, currentUserRole }:
                         <p className="font-medium">Member Since</p>
                         <p className="flex items-center gap-1 text-muted-foreground">
                           <Calendar className="h-3 w-3" />
-                          {format(user.createdAt, "MMM dd, yyyy")}
+                          {format(user.createdAt, 'MMM dd, yyyy')}
                         </p>
                       </div>
 
                       <div className="space-y-1">
                         <p className="font-medium">Email</p>
                         <div className="flex items-center gap-2">
-                          <span className="text-muted-foreground text-xs">{user.email}</span>
-                          <Button onClick={copyUserEmail} size="sm" variant="ghost">
+                          <span className="text-xs text-muted-foreground">
+                            {user.email}
+                          </span>
+                          <Button
+                            onClick={copyUserEmail}
+                            size="sm"
+                            variant="ghost"
+                          >
                             <Copy className="h-3 w-3" />
                           </Button>
                         </div>
@@ -528,7 +621,9 @@ export function UserDetailsDrawer({ user, open, onOpenChange, currentUserRole }:
                 <Card>
                   <CardHeader>
                     <CardTitle>Recent Activity</CardTitle>
-                    <CardDescription>User activity and session information</CardDescription>
+                    <CardDescription>
+                      User activity and session information
+                    </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="py-8 text-center text-muted-foreground">
@@ -543,14 +638,18 @@ export function UserDetailsDrawer({ user, open, onOpenChange, currentUserRole }:
                 <Card>
                   <CardHeader>
                     <CardTitle>Administrative Actions</CardTitle>
-                    <CardDescription>Manage this user's account and permissions</CardDescription>
+                    <CardDescription>
+                      Manage this user's account and permissions
+                    </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3">
                     {/* Session Management */}
                     <div className="flex items-center justify-between rounded-lg border p-3">
                       <div>
                         <h4 className="font-medium">Revoke All Sessions</h4>
-                        <p className="text-muted-foreground text-sm">Sign out user from all devices</p>
+                        <p className="text-sm text-muted-foreground">
+                          Sign out user from all devices
+                        </p>
                       </div>
                       <Button
                         disabled={isRevokingSessions}
@@ -558,7 +657,7 @@ export function UserDetailsDrawer({ user, open, onOpenChange, currentUserRole }:
                         size="sm"
                         variant="outline"
                       >
-                        {isRevokingSessions ? "Revoking..." : "Revoke"}
+                        {isRevokingSessions ? 'Revoking...' : 'Revoke'}
                       </Button>
                     </div>
 
@@ -567,9 +666,15 @@ export function UserDetailsDrawer({ user, open, onOpenChange, currentUserRole }:
                       <div className="flex items-center justify-between rounded-lg border p-3">
                         <div>
                           <h4 className="font-medium">Change Role</h4>
-                          <p className="text-muted-foreground text-sm">Modify user permissions and access level</p>
+                          <p className="text-sm text-muted-foreground">
+                            Modify user permissions and access level
+                          </p>
                         </div>
-                        <Button onClick={() => setChangeRoleOpen(true)} size="sm" variant="outline">
+                        <Button
+                          onClick={() => setChangeRoleOpen(true)}
+                          size="sm"
+                          variant="outline"
+                        >
                           Change Role
                         </Button>
                       </div>
@@ -579,9 +684,15 @@ export function UserDetailsDrawer({ user, open, onOpenChange, currentUserRole }:
                     <div className="flex items-center justify-between rounded-lg border p-3">
                       <div>
                         <h4 className="font-medium">Reset Password</h4>
-                        <p className="text-muted-foreground text-sm">Set a new password for this user</p>
+                        <p className="text-sm text-muted-foreground">
+                          Set a new password for this user
+                        </p>
                       </div>
-                      <Button onClick={() => setResetPasswordOpen(true)} size="sm" variant="outline">
+                      <Button
+                        onClick={() => setResetPasswordOpen(true)}
+                        size="sm"
+                        variant="outline"
+                      >
                         Reset Password
                       </Button>
                     </div>
@@ -590,19 +701,30 @@ export function UserDetailsDrawer({ user, open, onOpenChange, currentUserRole }:
                     {canBanUsers(currentUserRole) && (
                       <div className="flex items-center justify-between rounded-lg border p-3">
                         <div>
-                          <h4 className="font-medium">{user.banned ? "Unban User" : "Ban User"}</h4>
-                          <p className="text-muted-foreground text-sm">
+                          <h4 className="font-medium">
+                            {user.banned ? 'Unban User' : 'Ban User'}
+                          </h4>
+                          <p className="text-sm text-muted-foreground">
                             {user.banned
-                              ? "Restore user access to the platform"
-                              : "Restrict user access to the platform"}
+                              ? 'Restore user access to the platform'
+                              : 'Restrict user access to the platform'}
                           </p>
                         </div>
                         {user.banned ? (
-                          <Button disabled={isUnbanning} onClick={handleUnbanUser} size="sm" variant="outline">
-                            {isUnbanning ? "Unbanning..." : "Unban"}
+                          <Button
+                            disabled={isUnbanning}
+                            onClick={handleUnbanUser}
+                            size="sm"
+                            variant="outline"
+                          >
+                            {isUnbanning ? 'Unbanning...' : 'Unban'}
                           </Button>
                         ) : (
-                          <Button onClick={() => setBanUserOpen(true)} size="sm" variant="destructive">
+                          <Button
+                            onClick={() => setBanUserOpen(true)}
+                            size="sm"
+                            variant="destructive"
+                          >
                             Ban User
                           </Button>
                         )}
@@ -614,7 +736,9 @@ export function UserDetailsDrawer({ user, open, onOpenChange, currentUserRole }:
                       <div className="flex items-center justify-between rounded-lg border p-3">
                         <div>
                           <h4 className="font-medium">Impersonate User</h4>
-                          <p className="text-muted-foreground text-sm">Login as this user (super admin only)</p>
+                          <p className="text-sm text-muted-foreground">
+                            Login as this user (super admin only)
+                          </p>
                         </div>
                         <Button size="sm" variant="secondary">
                           Impersonate
@@ -636,8 +760,16 @@ export function UserDetailsDrawer({ user, open, onOpenChange, currentUserRole }:
         open={changeRoleOpen}
         user={user}
       />
-      <ResetPasswordDialog onOpenChange={setResetPasswordOpen} open={resetPasswordOpen} user={user} />
-      <BanUserDialog onOpenChange={setBanUserOpen} open={banUserOpen} user={user} />
+      <ResetPasswordDialog
+        onOpenChange={setResetPasswordOpen}
+        open={resetPasswordOpen}
+        user={user}
+      />
+      <BanUserDialog
+        onOpenChange={setBanUserOpen}
+        open={banUserOpen}
+        user={user}
+      />
     </>
   )
 }

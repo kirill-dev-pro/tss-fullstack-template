@@ -1,9 +1,10 @@
-import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf"
-import { TRPCError } from "@trpc/server/unstable-core-do-not-import"
-import { uploadFileSchema } from "@/features/files/file-upload.schema"
-import { createResource } from "@/features/resource/create"
-import { db } from "@/lib/db"
-import { protectedProcedure, router } from "@/lib/trpc/init"
+import { PDFLoader } from '@langchain/community/document_loaders/fs/pdf'
+import { TRPCError } from '@trpc/server/unstable-core-do-not-import'
+
+import { uploadFileSchema } from '@/features/files/file-upload.schema'
+import { createResource } from '@/features/resource/create'
+import { db } from '@/lib/db'
+import { protectedProcedure, router } from '@/lib/trpc/init'
 
 export const resourcesRouter = router({
   list: protectedProcedure.query(async () => {
@@ -20,13 +21,13 @@ export const resourcesRouter = router({
     // Use PDFLoader with the blob
     const loader = new PDFLoader(blob)
     const docs = await loader.load()
-    const content = docs.map((doc) => doc.pageContent).join("\n")
+    const content = docs.map((doc) => doc.pageContent).join('\n')
 
     const dbResource = await createResource({ content })
 
     if (dbResource.error) {
       throw new TRPCError({
-        code: "INTERNAL_SERVER_ERROR",
+        code: 'INTERNAL_SERVER_ERROR',
         message: dbResource.error,
       })
     }

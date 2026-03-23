@@ -6,9 +6,15 @@ import {
   organizationClient,
   passkeyClient,
   twoFactorClient,
-} from "better-auth/client/plugins"
-import { createAuthClient } from "better-auth/react"
-import { ac, admin as adminRole, superadmin as superAdminRole, user as userRole } from "./permissions"
+} from 'better-auth/client/plugins'
+import { createAuthClient } from 'better-auth/react'
+
+import {
+  ac,
+  admin as adminRole,
+  superadmin as superAdminRole,
+  user as userRole,
+} from './permissions'
 
 export const authClient = createAuthClient({
   // baseURL: env.VITE_SERVER_URL,

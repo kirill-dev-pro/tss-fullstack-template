@@ -1,6 +1,14 @@
-import { useRouter } from "@tanstack/react-router"
-import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from "lucide-react"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { useRouter } from '@tanstack/react-router'
+import {
+  BadgeCheck,
+  Bell,
+  ChevronsUpDown,
+  CreditCard,
+  LogOut,
+  Sparkles,
+} from 'lucide-react'
+
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,10 +17,15 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar"
-import { useLogout } from "@/features/auth/auth-hooks"
-import { authClient } from "@/lib/auth/auth-client"
+} from '@/components/ui/dropdown-menu'
+import {
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  useSidebar,
+} from '@/components/ui/sidebar'
+import { useLogout } from '@/features/auth/auth-hooks'
+import { authClient } from '@/lib/auth/auth-client'
 
 export function NavUser({
   user,
@@ -42,7 +55,9 @@ export function NavUser({
               size="lg"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                {data.user.image && <AvatarImage alt={data.user.name} src={data.user.image} />}
+                {data.user.image && (
+                  <AvatarImage alt={data.user.name} src={data.user.image} />
+                )}
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
@@ -55,13 +70,15 @@ export function NavUser({
           <DropdownMenuContent
             align="end"
             className="w-(--radix-dropdown-menu-trigger-width) min-w-56 rounded-lg"
-            side={isMobile ? "bottom" : "right"}
+            side={isMobile ? 'bottom' : 'right'}
             sideOffset={4}
           >
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  {data?.user.image && <AvatarImage alt={data.user.name} src={data.user.image} />}
+                  {data?.user.image && (
+                    <AvatarImage alt={data.user.name} src={data.user.image} />
+                  )}
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
@@ -79,7 +96,9 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem onClick={() => router.navigate({ to: "/dashboard/settings" })}>
+              <DropdownMenuItem
+                onClick={() => router.navigate({ to: '/dashboard/settings' })}
+              >
                 <BadgeCheck />
                 Settings
               </DropdownMenuItem>
