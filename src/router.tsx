@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/nursery/useConsistentTypeDefinitions: Type definitions for tasnstack */
 import {
   createRouter as createTanstackRouter,
   ErrorComponent,

@@ -184,7 +184,7 @@ export function EnhancedUserProfile() {
                 onClick={handleSubmit(onSubmit)}
                 size="sm"
               >
-                {isSubmitting ? <Spinner size="sm" /> : 'Save Changes'}
+                {isSubmitting ? <Spinner /> : 'Save Changes'}
               </Button>
               <Button onClick={handleCancel} size="sm" variant="outline">
                 Cancel

@@ -95,7 +95,7 @@ export default function Component() {
                   disabled={isSubmitting}
                   type="submit"
                 >
-                  {isSubmitting ? <Spinner size="sm" /> : t('VERIFY')}
+                  {isSubmitting ? <Spinner /> : t('VERIFY')}
                 </Button>
               </ButtonGroup>
             </form>

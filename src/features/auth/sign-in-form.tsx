@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/performance/noNamespaceImport: <explanation> */
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Link } from '@tanstack/react-router'
 import { AlertCircle, Key } from 'lucide-react'

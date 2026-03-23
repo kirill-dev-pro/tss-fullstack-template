@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { createMcpHandler } from '@vercel/mcp-adapter'
 
-import { tools } from '@/features/ai/mcp-tools'
+import { registerMcpTools, tools } from '@/features/ai/mcp-tools'
 import { auth } from '@/lib/auth/auth'
 
 const handler = async (req: Request) => {
@@ -21,30 +21,19 @@ const handler = async (req: Request) => {
 
   return createMcpHandler(
     async (server) => {
-      // biome-ignore lint/complexity/noForEach: <explanation>
-      tools.forEach((tool) => {
-        console.log('🌐 Registering tool', tool.name)
-        server.tool(
-          tool.name,
-          tool.description,
-          tool.inputSchema ? tool.inputSchema.shape : {},
-          tool.callback,
-        )
-      })
+      registerMcpTools(server)
     },
     {
       capabilities: {
-        tools: {
-          ...tools.reduce(
-            (acc, tool) => {
-              acc[tool.name] = {
-                description: tool.description,
-              }
-              return acc
-            },
-            {} as Record<string, { description: string }>,
-          ),
-        },
+        tools: tools.reduce(
+          (acc, tool) => {
+            acc[tool.name] = {
+              description: tool.description,
+            }
+            return acc
+          },
+          {} as Record<string, { description: string }>,
+        ),
       },
     },
     {

@@ -1,4 +1,3 @@
-/** biome-ignore-all lint/style/noMagicNumbers: Magic number for Sentry */
 import { trpcMiddleware as sentryTrpcMiddleware } from '@sentry/node'
 import { getCookie } from '@tanstack/react-start/server'
 import { initTRPC, TRPCError } from '@trpc/server'

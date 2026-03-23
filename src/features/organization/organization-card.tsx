@@ -75,10 +75,9 @@ export function OrganizationCard(props: {
   const removeMember = useRemoveMember()
   const cancelInvitation = useCancelInvitation()
 
-  const optimisticOrg =
-    // TODO: Fix this type
-    // @ts-expect-error
-    props.activeOrganization as typeof setActiveOrganization.data.data
+  const optimisticOrg = props.activeOrganization as NonNullable<
+    typeof setActiveOrganization.data
+  >['data']
 
   const [isRevoking, setIsRevoking] = useState<string[]>([])
   const inviteVariants = {
@@ -296,7 +295,7 @@ export function OrganizationCard(props: {
                           variant="destructive"
                         >
                           {isRevoking.includes(invitation.id) ? (
-                            <Spinner size="sm" />
+                            <Spinner />
                           ) : (
                             t('REVOKE')
                           )}
@@ -521,7 +520,7 @@ function CreateOrganizationDialog() {
               type="submit"
             >
               {createOrganization.isPending || isSubmitting ? (
-                <Spinner size="sm" />
+                <Spinner />
               ) : (
                 t('CREATE')
               )}
@@ -637,7 +636,7 @@ function InviteMemberDialog() {
               type="submit"
             >
               {inviteMember.isPending || isSubmitting ? (
-                <Spinner size="sm" />
+                <Spinner />
               ) : (
                 t('INVITE')
               )}

@@ -279,7 +279,7 @@ export default function UserCard(props: {
                 variant="secondary"
               >
                 {sendVerificationEmail.isPending ? (
-                  <Spinner size="sm" />
+                  <Spinner />
                 ) : (
                   t('RESEND_VERIFICATION')
                 )}
@@ -309,7 +309,7 @@ export default function UserCard(props: {
                     variant="outline"
                   >
                     {isTerminating === item.id ? (
-                      <Spinner size="sm" />
+                      <Spinner />
                     ) : item.id === session?.session?.id ? (
                       t('SIGN_OUT')
                     ) : (
@@ -387,7 +387,7 @@ export default function UserCard(props: {
                             type="submit"
                           >
                             {isSubmittingQrCode || getTotpUri.isPending ? (
-                              <Spinner size="sm" />
+                              <Spinner />
                             ) : (
                               t('SHOW_QR_CODE')
                             )}
@@ -490,7 +490,7 @@ export default function UserCard(props: {
                           disableTwoFactor.isPending ||
                           enableTwoFactor.isPending ||
                           verifyTotpForEnable.isPending ? (
-                            <Spinner size="sm" />
+                            <Spinner />
                           ) : session?.user.twoFactorEnabled ? (
                             t('DISABLE_2FA')
                           ) : (
@@ -527,7 +527,7 @@ export default function UserCard(props: {
         >
           <span className="text-sm">
             {logout.isPending ? (
-              <Spinner size="sm" />
+              <Spinner />
             ) : (
               <div className="flex items-center gap-2">
                 <LogOut size={16} />

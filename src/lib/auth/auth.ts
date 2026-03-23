@@ -1,3 +1,4 @@
+import { passkey } from '@better-auth/passkey'
 import { betterAuth } from 'better-auth'
 import { drizzleAdapter } from 'better-auth/adapters/drizzle'
 import {
@@ -8,9 +9,8 @@ import {
   organization,
 } from 'better-auth/plugins'
 import { emailOTP } from 'better-auth/plugins/email-otp'
-import { passkey } from 'better-auth/plugins/passkey'
 import { twoFactor } from 'better-auth/plugins/two-factor'
-import { reactStartCookies } from 'better-auth/react-start'
+import { tanstackStartCookies } from 'better-auth/tanstack-start'
 
 import ResetPasswordEmail from '@/components/emails/reset-password-email'
 import SendMagicLinkEmail from '@/components/emails/send-magic-link-email'
@@ -144,6 +144,6 @@ export const auth = betterAuth({
         })
       },
     }),
-    reactStartCookies(), // make sure this is the last plugin in the array
+    tanstackStartCookies(), // make sure this is the last plugin in the array
   ],
 })

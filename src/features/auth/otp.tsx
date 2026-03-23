@@ -122,7 +122,7 @@ export default function Component() {
                     disabled={isSubmitting || isValidated}
                     type="submit"
                   >
-                    {isSubmitting ? <Spinner size="sm" /> : t('VALIDATE_OTP')}
+                    {isSubmitting ? <Spinner /> : t('VALIDATE_OTP')}
                   </Button>
                 </ButtonGroup>
               </form>

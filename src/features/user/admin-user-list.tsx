@@ -167,31 +167,6 @@ function getRoleBadge(role: string) {
   }
 }
 
-function UserTableSkeleton() {
-  const skeletonItems = Array.from(
-    { length: 5 },
-    (_, i) => `skeleton-${Date.now()}-${i}`,
-  )
-
-  return (
-    <div className="space-y-4">
-      {skeletonItems.map((key) => (
-        <div className="flex items-center space-x-4 p-4" key={key}>
-          <Skeleton className="h-10 w-10 rounded-full" />
-          <div className="space-y-2">
-            <Skeleton className="h-4 w-[200px]" />
-            <Skeleton className="h-4 w-[160px]" />
-          </div>
-          <div className="ml-auto space-x-2">
-            <Skeleton className="h-6 w-16" />
-            <Skeleton className="h-6 w-20" />
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-}
-
 // Helper function to normalize user data for display
 function normalizeUserData(users: any[]): ExtendedUser[] {
   return users.map((user) => ({

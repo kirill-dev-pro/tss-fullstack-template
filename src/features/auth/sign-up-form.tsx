@@ -223,7 +223,7 @@ export function SignUpForm() {
 
           <ButtonGroup>
             <Button className="w-full" disabled={isSubmitting} type="submit">
-              {isSubmitting ? <Spinner size="sm" /> : t('CREATE_ACCOUNT')}
+              {isSubmitting ? <Spinner /> : t('CREATE_ACCOUNT')}
             </Button>
           </ButtonGroup>
         </form>

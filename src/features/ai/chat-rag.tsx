@@ -6,75 +6,7 @@ import { memo, useEffect, useRef, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Textarea } from '@/components/ui/textarea'
 
-// Types - Using AI SDK v5 types
-type Attachment = {
-  contentType?: string
-  url: string
-  name?: string
-}
-
-type ToolInvocationType = {
-  toolName: string
-  toolCallId: string
-  state: string
-  result?: { name: string }[]
-}
-
-// Using AI SDK v5 UIMessage type
-type MessageType = UIMessage
-
-// Message Components
-const MessageHeader = ({ role }: { role: string }) => (
-  <div className="font-bold">{role}</div>
-)
-
-const ToolInvocation = ({
-  toolInvocation,
-}: {
-  toolInvocation: ToolInvocationType
-}) => {
-  if (
-    toolInvocation.toolName === 'addResource' &&
-    toolInvocation.state === 'call'
-  ) {
-    return <p key={toolInvocation.toolCallId}>Calling addResource tool</p>
-  }
-
-  if (
-    toolInvocation.toolName === 'getInformation' &&
-    toolInvocation.state === 'call'
-  ) {
-    return (
-      <div className="animate-pulse" key={toolInvocation.toolCallId}>
-        Calling getInformation tool
-      </div>
-    )
-  }
-
-  if (toolInvocation.toolName === 'generateImage') {
-    return (
-      <div className="animate-pulse" key={toolInvocation.toolCallId}>
-        Calling generateImage tool
-      </div>
-    )
-  }
-
-  if (
-    toolInvocation.toolName === 'getInformation' &&
-    toolInvocation.state === 'result'
-  ) {
-    const result = toolInvocation.result?.[0]?.name.replaceAll('\n', '')
-    return (
-      <div key={toolInvocation.toolCallId}>
-        {toolInvocation.toolName} tool result: {result}
-      </div>
-    )
-  }
-
-  return null
-}
-
-const Message = ({ message }: { message: MessageType }) => {
+const Message = ({ message }: { message: UIMessage }) => {
   return (
     <div className="whitespace-pre-wrap">
       <div>
@@ -162,7 +94,7 @@ const MessageList = ({
   messages,
   messagesEndRef,
 }: {
-  messages: MessageType[]
+  messages: UIMessage[]
   messagesEndRef: React.RefObject<HTMLDivElement | null>
 }) => (
   <div className="mx-auto mb-20 w-full max-w-2xl space-y-4 overflow-y-auto">
@@ -216,10 +148,7 @@ export function Chat({ api }: { api?: string }) {
 
   return (
     <div className="relative flex w-full flex-col items-center justify-center gap-4">
-      <MessageList
-        messages={messages as MessageType[]}
-        messagesEndRef={messagesEndRef}
-      />
+      <MessageList messages={messages} messagesEndRef={messagesEndRef} />
 
       <form
         className="relative flex w-full max-w-xl flex-col items-center justify-center"

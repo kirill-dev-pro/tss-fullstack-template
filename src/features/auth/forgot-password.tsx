@@ -48,7 +48,7 @@ export default function ForgotPasswordForm() {
     try {
       await forgotPassword.mutateAsync({ email: data.email })
       setIsSubmitted(true)
-    } catch (err) {
+    } catch (_) {
       // Error handling is done via form validation
     }
   }
@@ -110,7 +110,7 @@ export default function ForgotPasswordForm() {
                 disabled={isSubmitting}
                 type="submit"
               >
-                {isSubmitting ? <Spinner size="sm" /> : t('SEND_RESET_LINK')}
+                {isSubmitting ? <Spinner /> : t('SEND_RESET_LINK')}
               </Button>
             </ButtonGroup>
           </form>

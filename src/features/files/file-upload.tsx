@@ -1,6 +1,3 @@
-/** biome-ignore-all lint/a11y/noNoninteractiveElementInteractions: stupid rule */
-/** biome-ignore-all lint/a11y/noStaticElementInteractions: stupid rule */
-
 import { useMutation } from '@tanstack/react-query'
 import { AnimatePresence, motion } from 'framer-motion'
 import { FileUp, Loader2, Plus } from 'lucide-react'

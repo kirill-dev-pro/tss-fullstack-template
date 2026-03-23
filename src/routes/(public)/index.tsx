@@ -46,7 +46,6 @@ const techStack = [
       { name: 'TanStack Start', href: 'https://tanstack.com/start/v1' },
       { name: 'React 19', href: 'https://react.dev/' },
       { name: 'Vite', href: 'https://vitejs.dev/' },
-      { name: 'Vinxi', href: 'https://vinxi.dev/' },
     ],
   },
   {
@@ -115,8 +114,8 @@ const techStack = [
     icon: Wrench,
     description: 'Enhanced developer experience and code quality tools.',
     libs: [
-      { name: 'Biome', href: 'https://biomejs.dev/' },
-      { name: 'Vitest', href: 'https://vitest.dev/' },
+      { name: 'Oxc', href: 'https://oxc.rs' },
+      { name: 'Docker', href: 'https://docker.com/' },
       { name: 'T3 Env', href: 'https://github.com/t3-oss/t3-env' },
       { name: 'TypeScript', href: 'https://www.typescriptlang.org/' },
     ],

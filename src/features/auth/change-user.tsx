@@ -78,7 +78,7 @@ export function ChangeUser() {
       router.invalidate()
       setImagePreview(null)
       setOpen(false)
-    } catch (error) {
+    } catch (_) {
       toast.error('An error occurred while updating user')
     }
   }
@@ -162,7 +162,7 @@ export function ChangeUser() {
               onClick={handleSubmit(onSubmit)}
               type="submit"
             >
-              {isSubmitting ? <Spinner size="sm" /> : t('UPDATE')}
+              {isSubmitting ? <Spinner /> : t('UPDATE')}
             </Button>
           </ButtonGroup>
         </DialogFooter>

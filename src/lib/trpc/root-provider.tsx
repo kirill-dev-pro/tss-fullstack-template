@@ -1,6 +1,5 @@
 import type { TRPCCombinedDataTransformer } from '@trpc/server'
 
-/** biome-ignore-all lint/style/noMagicNumbers: Magic number for port */
 import { QueryCache, QueryClient } from '@tanstack/react-query'
 import { createIsomorphicFn, createServerFn } from '@tanstack/react-start'
 import { getRequest } from '@tanstack/react-start/server'

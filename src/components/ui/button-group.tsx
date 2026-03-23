@@ -65,7 +65,7 @@ function ButtonGroupSeparator({
   return (
     <Separator
       className={cn(
-        'relative !m-0 self-stretch bg-input data-[orientation=vertical]:h-auto',
+        'relative m-0! self-stretch bg-input data-[orientation=vertical]:h-auto',
         className,
       )}
       data-slot="button-group-separator"

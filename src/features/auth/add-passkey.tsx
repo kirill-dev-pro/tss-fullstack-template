@@ -45,23 +45,22 @@ export function AddPasskey() {
   } = form
 
   const onSubmit = async (data: z.infer<typeof addPasskeySchema>) => {
-    try {
-      const res = await authClient.passkey.addPasskey({
-        name: data.passkeyName,
-      })
-      if (res?.error) {
-        toast.error(res?.error.message)
-      } else {
-        setIsOpen(false)
-        reset()
-        toast.success(
-          'Passkey added successfully. You can now use it to login.',
-        )
-      }
-    } catch (error) {
-      toast.error('An error occurred while adding passkey')
+    const { error } = await authClient.passkey.addPasskey({
+      name: data.passkeyName,
+    })
+    if (error) {
+      toast.error(
+        error.message
+          ? error.message.toString()
+          : 'An error occurred while adding passkey',
+      )
+    } else {
+      setIsOpen(false)
+      reset()
+      toast.success('Passkey added successfully. You can now use it to login.')
     }
   }
+
   return (
     <Dialog onOpenChange={setIsOpen} open={isOpen}>
       <DialogTrigger asChild>
@@ -99,7 +98,7 @@ export function AddPasskey() {
               type="submit"
             >
               {isSubmitting ? (
-                <Spinner size="sm" />
+                <Spinner />
               ) : (
                 <>
                   <Fingerprint className="mr-2 h-4 w-4" />

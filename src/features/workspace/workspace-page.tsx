@@ -188,7 +188,7 @@ function InviteMemberDialog() {
               type="submit"
             >
               {inviteMember.isPending || isSubmitting ? (
-                <Spinner size="sm" />
+                <Spinner />
               ) : (
                 'Send Invitation'
               )}
