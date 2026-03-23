@@ -78,7 +78,7 @@ export function ChangeUser() {
       router.invalidate()
       setImagePreview(null)
       setOpen(false)
-    } catch (_) {
+    } catch {
       toast.error('An error occurred while updating user')
     }
   }

@@ -54,7 +54,7 @@ export default function ResetPasswordForm() {
         } else {
           router.navigate({ to: '/login' })
         }
-      } catch (error) {
+      } catch {
         toast.error('An error occurred during password reset')
       }
     },

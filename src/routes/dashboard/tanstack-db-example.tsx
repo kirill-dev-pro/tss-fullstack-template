@@ -22,13 +22,6 @@ export const Route = createFileRoute('/dashboard/tanstack-db-example')({
   component: RouteComponent,
 })
 
-// Todo type based on Drizzle schema
-interface Todo {
-  id: number
-  text: string
-  completed: boolean
-}
-
 function RouteComponent() {
   return (
     <div className="flex w-full flex-col items-center justify-center">

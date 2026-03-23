@@ -66,7 +66,7 @@ export function SignUpForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
     setValue,
-    reset,
+    reset: _reset,
   } = form
 
   const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
@@ -86,7 +86,7 @@ export function SignUpForm() {
           },
         },
       })
-    } catch (error) {
+    } catch {
       toast.error('An error occurred during sign up')
     }
   }

@@ -70,8 +70,8 @@ export function OrganizationCard(props: {
   const { t } = useTranslation()
   const { data: organizations } = useOrganizations()
   const setActiveOrganization = useSetActiveOrganization()
-  const createOrganization = useCreateOrganization()
-  const inviteMember = useInviteMember()
+  const _createOrganization = useCreateOrganization()
+  const _inviteMember = useInviteMember()
   const removeMember = useRemoveMember()
   const cancelInvitation = useCancelInvitation()
 
@@ -163,7 +163,7 @@ export function OrganizationCard(props: {
       </CardHeader>
       <CardContent>
         <div className="flex flex-col gap-8 md:flex-row">
-          <div className="flex flex-grow flex-col gap-2">
+          <div className="flex grow flex-col gap-2">
             <p className="border-b-2 border-b-foreground/10 font-medium">
               {t('MEMBERS')}
             </p>
@@ -233,7 +233,7 @@ export function OrganizationCard(props: {
               )}
             </div>
           </div>
-          <div className="flex flex-grow flex-col gap-2">
+          <div className="flex grow flex-col gap-2">
             <p className="border-b-2 border-b-foreground/10 font-medium">
               {t('INVITES')}
             </p>
@@ -434,7 +434,7 @@ function CreateOrganizationDialog() {
           },
         },
       )
-    } catch (error) {
+    } catch {
       toast.error('An error occurred while creating organization')
     }
   }

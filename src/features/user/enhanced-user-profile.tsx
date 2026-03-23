@@ -108,7 +108,7 @@ export function EnhancedUserProfile() {
       console.log('Saving profile:', data)
       toast.success('Profile updated successfully')
       setIsEditing(false)
-    } catch (error) {
+    } catch {
       toast.error('Failed to update profile')
     }
   }

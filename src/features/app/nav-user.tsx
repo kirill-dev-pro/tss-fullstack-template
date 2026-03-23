@@ -28,7 +28,7 @@ import { useLogout } from '@/features/auth/auth-hooks'
 import { authClient } from '@/lib/auth/auth-client'
 
 export function NavUser({
-  user,
+  user: _user,
 }: {
   user: {
     name: string

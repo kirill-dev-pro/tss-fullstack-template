@@ -81,7 +81,7 @@ export function ListPasskeys() {
                   <TableCell className="text-right">
                     <Button
                       onClick={async () => {
-                        const res = await authClient.passkey.deletePasskey({
+                        const _res = await authClient.passkey.deletePasskey({
                           id: passkey.id,
                           fetchOptions: {
                             onRequest: () => {

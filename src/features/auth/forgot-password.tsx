@@ -48,7 +48,7 @@ export default function ForgotPasswordForm() {
     try {
       await forgotPassword.mutateAsync({ email: data.email })
       setIsSubmitted(true)
-    } catch (_) {
+    } catch {
       // Error handling is done via form validation
     }
   }

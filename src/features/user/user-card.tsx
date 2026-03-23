@@ -147,8 +147,8 @@ export default function UserCard(props: {
     reset: resetTwoFactor,
     watch,
   } = twoFactorForm
-  const watchOtp = watch('otp')
-  const watchPassword = watch('password')
+  const _watchOtp = watch('otp')
+  const _watchPassword = watch('password')
 
   const onSubmitTwoFactor = async (data: any) => {
     if (session?.user.twoFactorEnabled) {

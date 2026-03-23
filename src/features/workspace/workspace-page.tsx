@@ -79,7 +79,7 @@ import {
 import { authClient } from '@/lib/auth/auth-client'
 import { useTranslation } from '@/lib/intl/react'
 
-type ActiveOrganization = Awaited<
+type _ActiveOrganization = Awaited<
   ReturnType<typeof authClient.organization.getFullOrganization>
 >
 
@@ -91,7 +91,7 @@ const inviteMemberSchema = z.object({
 })
 
 function InviteMemberDialog() {
-  const { t } = useTranslation()
+  const { t: _t } = useTranslation()
   const [open, setOpen] = useState(false)
   const inviteMember = useInviteMember()
 
@@ -201,7 +201,7 @@ function InviteMemberDialog() {
 }
 
 export function WorkspacePage() {
-  const { t } = useTranslation()
+  const { t: _t } = useTranslation()
   const { data: session } = useSession()
   const { data: organizations } = useOrganizations()
   const { data: activeOrgData } =

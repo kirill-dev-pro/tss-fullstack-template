@@ -53,7 +53,7 @@ export default function Component() {
       if (res.data?.token) {
         setSuccess(true)
       }
-    } catch (error) {
+    } catch {
       // Error handling is done via form validation
     }
   }

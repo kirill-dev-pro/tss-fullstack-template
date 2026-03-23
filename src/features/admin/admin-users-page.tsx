@@ -288,7 +288,7 @@ export function AdminUsersPage() {
   const { mutate: setUserRole } = useSetUserRole()
   const { mutate: impersonateUser } = useImpersonateUser()
   const { mutate: revokeUserSessions } = useRevokeUserSessions()
-  const { mutate: resetPassword } = useResetUserPassword()
+  const { mutate: _resetPassword } = useResetUserPassword()
 
   const currentUserRole = (session?.user?.role as UserRole) || 'user'
 

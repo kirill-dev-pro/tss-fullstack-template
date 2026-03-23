@@ -72,7 +72,7 @@ export default function Component() {
         setIsError(true)
         setMessage(t('INVALID_OTP'))
       }
-    } catch (error) {
+    } catch {
       setIsError(true)
       setMessage(t('INVALID_OTP'))
     }

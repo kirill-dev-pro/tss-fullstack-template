@@ -68,7 +68,7 @@ export function ChangePassword() {
           form.reset()
           toast.success('Password changed successfully')
         }
-      } catch (error) {
+      } catch {
         toast.error('An error occurred while changing password')
       }
     },
