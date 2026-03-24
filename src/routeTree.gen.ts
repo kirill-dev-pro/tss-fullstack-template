@@ -33,6 +33,8 @@ import { Route as DashboardAdminUsersRouteImport } from './routes/dashboard/admi
 import { Route as ApiTrpcSplatRouteImport } from './routes/api/trpc/$'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiAiChatRouteImport } from './routes/api/ai/chat'
+import { Route as ApiAdminUsersTableRouteImport } from './routes/api/admin/users-table'
+import { Route as ApiAdminUsersExportRouteImport } from './routes/api/admin/users-export'
 import { Route as authTwoFactorOtpRouteImport } from './routes/(auth)/two-factor/otp'
 import { Route as authAcceptInvitationInvitationIdIndexRouteImport } from './routes/(auth)/accept-invitation/$invitationId/index'
 import { Route as ApiAiVercelChatRouteImport } from './routes/api/ai/vercel/chat'
@@ -163,6 +165,16 @@ const ApiAiChatRoute = ApiAiChatRouteImport.update({
   path: '/api/ai/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiAdminUsersTableRoute = ApiAdminUsersTableRouteImport.update({
+  id: '/api/admin/users-table',
+  path: '/api/admin/users-table',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiAdminUsersExportRoute = ApiAdminUsersExportRouteImport.update({
+  id: '/api/admin/users-export',
+  path: '/api/admin/users-export',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const authTwoFactorOtpRoute = authTwoFactorOtpRouteImport.update({
   id: '/two-factor/otp',
   path: '/two-factor/otp',
@@ -209,6 +221,8 @@ export interface FileRoutesByFullPath {
   '/': typeof publicIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/two-factor/otp': typeof authTwoFactorOtpRoute
+  '/api/admin/users-export': typeof ApiAdminUsersExportRoute
+  '/api/admin/users-table': typeof ApiAdminUsersTableRoute
   '/api/ai/chat': typeof ApiAiChatRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
@@ -239,6 +253,8 @@ export interface FileRoutesByTo {
   '/': typeof publicIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/two-factor/otp': typeof authTwoFactorOtpRoute
+  '/api/admin/users-export': typeof ApiAdminUsersExportRoute
+  '/api/admin/users-table': typeof ApiAdminUsersTableRoute
   '/api/ai/chat': typeof ApiAiChatRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
@@ -272,6 +288,8 @@ export interface FileRoutesById {
   '/(public)/': typeof publicIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/(auth)/two-factor/otp': typeof authTwoFactorOtpRoute
+  '/api/admin/users-export': typeof ApiAdminUsersExportRoute
+  '/api/admin/users-table': typeof ApiAdminUsersTableRoute
   '/api/ai/chat': typeof ApiAiChatRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
@@ -305,6 +323,8 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard/'
     | '/two-factor/otp'
+    | '/api/admin/users-export'
+    | '/api/admin/users-table'
     | '/api/ai/chat'
     | '/api/auth/$'
     | '/api/trpc/$'
@@ -335,6 +355,8 @@ export interface FileRouteTypes {
     | '/'
     | '/dashboard'
     | '/two-factor/otp'
+    | '/api/admin/users-export'
+    | '/api/admin/users-table'
     | '/api/ai/chat'
     | '/api/auth/$'
     | '/api/trpc/$'
@@ -367,6 +389,8 @@ export interface FileRouteTypes {
     | '/(public)/'
     | '/dashboard/'
     | '/(auth)/two-factor/otp'
+    | '/api/admin/users-export'
+    | '/api/admin/users-table'
     | '/api/ai/chat'
     | '/api/auth/$'
     | '/api/trpc/$'
@@ -391,6 +415,8 @@ export interface RootRouteChildren {
   DashboardLayoutRoute: typeof DashboardLayoutRouteWithChildren
   DotwellKnownOauthAuthorizationServerRoute: typeof DotwellKnownOauthAuthorizationServerRoute
   publicIndexRoute: typeof publicIndexRoute
+  ApiAdminUsersExportRoute: typeof ApiAdminUsersExportRoute
+  ApiAdminUsersTableRoute: typeof ApiAdminUsersTableRoute
   ApiAiChatRoute: typeof ApiAiChatRouteWithChildren
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiTrpcSplatRoute: typeof ApiTrpcSplatRoute
@@ -568,6 +594,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/admin/users-table': {
+      id: '/api/admin/users-table'
+      path: '/api/admin/users-table'
+      fullPath: '/api/admin/users-table'
+      preLoaderRoute: typeof ApiAdminUsersTableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/admin/users-export': {
+      id: '/api/admin/users-export'
+      path: '/api/admin/users-export'
+      fullPath: '/api/admin/users-export'
+      preLoaderRoute: typeof ApiAdminUsersExportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/(auth)/two-factor/otp': {
       id: '/(auth)/two-factor/otp'
       path: '/two-factor/otp'
@@ -692,6 +732,8 @@ const rootRouteChildren: RootRouteChildren = {
   DotwellKnownOauthAuthorizationServerRoute:
     DotwellKnownOauthAuthorizationServerRoute,
   publicIndexRoute: publicIndexRoute,
+  ApiAdminUsersExportRoute: ApiAdminUsersExportRoute,
+  ApiAdminUsersTableRoute: ApiAdminUsersTableRoute,
   ApiAiChatRoute: ApiAiChatRouteWithChildren,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiTrpcSplatRoute: ApiTrpcSplatRoute,

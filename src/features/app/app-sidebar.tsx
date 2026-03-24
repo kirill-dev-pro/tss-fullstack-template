@@ -126,7 +126,7 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
         <OrganizationSwitcher organizations={organizationData} />
       </SidebarHeader>
       <SidebarContent>
-        <NavItems items={allNavigationItems} label="" />
+        <NavItems items={allNavigationItems} label="TSS-TEMPLATE" />
       </SidebarContent>
       <SidebarFooter>{userData && <NavUser user={userData} />}</SidebarFooter>
       <SidebarRail />

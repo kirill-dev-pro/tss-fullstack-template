@@ -1,12 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
+  AtSign,
   BadgeCheck,
   Calendar,
   Camera,
-  Github,
+  Code2,
   Link as LinkIcon,
   MapPin,
-  Twitter,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -272,7 +272,7 @@ export function EnhancedUserProfile() {
                   <FieldLabel htmlFor="github">GitHub Username</FieldLabel>
                   <InputGroup>
                     <InputGroupAddon>
-                      <Github className="h-4 w-4" />
+                      <Code2 className="h-4 w-4" />
                     </InputGroupAddon>
                     <InputGroupInput
                       id="github"
@@ -287,7 +287,7 @@ export function EnhancedUserProfile() {
                   <FieldLabel htmlFor="twitter">Twitter Handle</FieldLabel>
                   <InputGroup>
                     <InputGroupAddon>
-                      <Twitter className="h-4 w-4" />
+                      <AtSign className="h-4 w-4" />
                     </InputGroupAddon>
                     <InputGroupInput
                       id="twitter"
@@ -433,7 +433,7 @@ export function EnhancedUserProfile() {
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    <Github className="mr-2 h-4 w-4" />
+                    <Code2 className="mr-2 h-4 w-4" />
                     GitHub
                   </a>
                 </Button>
@@ -445,7 +445,7 @@ export function EnhancedUserProfile() {
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    <Twitter className="mr-2 h-4 w-4" />
+                    <AtSign className="mr-2 h-4 w-4" />
                     Twitter
                   </a>
                 </Button>

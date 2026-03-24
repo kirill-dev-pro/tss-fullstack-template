@@ -1,8 +1,18 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import {
+  type QueryClient,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query'
 
 import type { UserRole } from '@/lib/auth/permissions'
 
+import { adminUsersTableQueryKeyPrefix } from '@/features/admin/admin-users-table-schema'
 import { authClient } from '@/lib/auth/auth-client'
+
+function invalidateAdminUsersTable(client: QueryClient) {
+  void client.invalidateQueries({ queryKey: [adminUsersTableQueryKeyPrefix] })
+}
 
 const userQueryKeys = {
   all: ['users'] as const,
@@ -98,6 +108,7 @@ export const useCreateUser = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: userQueryKeys.list() })
+      invalidateAdminUsersTable(queryClient)
     },
     onError: (error: Error) => {
       console.error('Create user error:', error)
@@ -122,6 +133,7 @@ export const useRemoveUser = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: userQueryKeys.list() })
+      invalidateAdminUsersTable(queryClient)
     },
     onError: (error: Error) => {
       console.error('Remove user error:', error)
@@ -146,6 +158,7 @@ export const useDeleteUser = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: userQueryKeys.list() })
+      invalidateAdminUsersTable(queryClient)
     },
     onError: (error: Error) => {
       console.error('Delete user error:', error)
@@ -157,7 +170,13 @@ export const useSetUserRole = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async ({ userId, role }: { userId: string; role: string }) => {
+    mutationFn: async ({
+      userId,
+      role,
+    }: {
+      userId: string
+      role: UserRole
+    }) => {
       const result = await authClient.admin.setRole({
         userId,
         role,
@@ -171,6 +190,7 @@ export const useSetUserRole = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: userQueryKeys.list() })
+      invalidateAdminUsersTable(queryClient)
     },
     onError: (error: Error) => {
       console.error('Set user role error:', error)
@@ -202,6 +222,7 @@ export const useResetUserPassword = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: userQueryKeys.list() })
+      invalidateAdminUsersTable(queryClient)
     },
     onError: (error: Error) => {
       console.error('Reset user password error:', error)
@@ -228,6 +249,7 @@ export const useRevokeUserSessions = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: userQueryKeys.sessions() })
+      invalidateAdminUsersTable(queryClient)
     },
     onError: (error: Error) => {
       console.error('Revoke user sessions error:', error)
@@ -270,6 +292,7 @@ export const useBanUser = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: userQueryKeys.list() })
+      invalidateAdminUsersTable(queryClient)
     },
     onError: (error: Error) => {
       console.error('Ban user error:', error)
@@ -294,6 +317,7 @@ export const useUnbanUser = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: userQueryKeys.list() })
+      invalidateAdminUsersTable(queryClient)
     },
     onError: (error: Error) => {
       console.error('Unban user error:', error)

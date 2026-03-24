@@ -1,21 +1,20 @@
-import type { ClassValue } from 'clsx'
-
-import { clsx } from 'clsx'
-import { customAlphabet } from 'nanoid'
+import { clsx, type ClassValue } from 'clsx'
 import { twMerge } from 'tailwind-merge'
-import { v7 } from 'uuid'
 
-export function cn(...inputs: Array<ClassValue>) {
+export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
-export const nanoid = customAlphabet('abcdefghijklmnopqrstuvwxyz0123456789')
 
-export const uuid = () => v7()
+/** Stable id for DB defaults (e.g. Drizzle `$defaultFn`). */
+export function uuid(): string {
+  return crypto.randomUUID()
+}
 
-export const convertImageToBase64 = async (file: File): Promise<string> =>
-  new Promise((resolve, reject) => {
+export function convertImageToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onloadend = () => resolve(reader.result as string)
     reader.onerror = reject
     reader.readAsDataURL(file)
   })
+}

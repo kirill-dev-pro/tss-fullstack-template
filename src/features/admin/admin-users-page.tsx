@@ -1,24 +1,17 @@
+import { useQueryClient } from '@tanstack/react-query'
 import {
   Ban,
   CheckCircle,
-  Download,
-  Eye,
-  Filter,
-  MoreHorizontal,
   RefreshCw,
-  Search,
   Shield,
-  ShieldCheck,
-  Trash2,
   UserCheck,
   UserPlus,
   Users,
-  UserX,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Badge } from '@/components/ui/badge'
+import type { InfiniteQueryMeta } from '@/lib/data-table'
+
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -29,14 +22,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
@@ -47,24 +32,21 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
+  type AdminUserRow,
+  AdminUsersDataTable,
+  AdminUsersExportButton,
+  adminUsersStatsFromMeta,
+} from '@/features/admin/admin-users-data-table'
+import { adminUsersTableQueryKeyPrefix } from '@/features/admin/admin-users-table-schema'
 import { UserDetailsDrawer } from '@/features/admin/user-details-drawer'
 import {
   useBanUser,
   useCreateUser,
   useDeleteUser,
   useImpersonateUser,
-  useResetUserPassword,
   useRevokeUserSessions,
   useSetUserRole,
   useUnbanUser,
-  useUsers,
 } from '@/features/user/user-hooks'
 import { authClient } from '@/lib/auth/auth-client'
 import {
@@ -77,7 +59,7 @@ import {
   type UserRole,
 } from '@/lib/auth/permissions'
 
-interface User {
+interface DrawerUser {
   id: string
   name: string
   email: string
@@ -88,86 +70,28 @@ interface User {
   image?: string
 }
 
-function getStatusBadge(user: User) {
-  if (user.banned) {
-    return (
-      <Badge
-        className="border-red-200 bg-red-50 font-medium text-red-700"
-        variant="outline"
-      >
-        <Ban className="mr-1 h-3 w-3" />
-        Banned
-      </Badge>
-    )
-  }
-  if (user.emailVerified) {
-    return (
-      <Badge
-        className="border-emerald-200 bg-emerald-50 font-medium text-emerald-700"
-        variant="outline"
-      >
-        <CheckCircle className="mr-1 h-3 w-3" />
-        Active
-      </Badge>
-    )
-  }
-  return (
-    <Badge
-      className="border-amber-200 bg-amber-50 font-medium text-amber-700"
-      variant="outline"
-    >
-      Pending
-    </Badge>
-  )
-}
-
-function getRoleBadge(role: string) {
-  switch (role) {
-    case 'superadmin':
-      return (
-        <Badge
-          className="border-purple-200 bg-purple-50 font-medium text-purple-700"
-          variant="outline"
-        >
-          <Shield className="mr-1 h-3 w-3" />
-          Super Admin
-        </Badge>
-      )
-    case 'admin':
-      return (
-        <Badge
-          className="border-indigo-200 bg-indigo-50 font-medium text-indigo-700"
-          variant="outline"
-        >
-          <ShieldCheck className="mr-1 h-3 w-3" />
-          Admin
-        </Badge>
-      )
-    case 'user':
-      return (
-        <Badge
-          className="border-slate-200 bg-slate-50 font-medium text-slate-600"
-          variant="outline"
-        >
-          <UserCheck className="mr-1 h-3 w-3" />
-          User
-        </Badge>
-      )
-    default:
-      return (
-        <Badge
-          className="border-slate-200 bg-slate-50 font-medium text-slate-600"
-          variant="outline"
-        >
-          {role}
-        </Badge>
-      )
+function toDrawerUser(row: AdminUserRow): DrawerUser {
+  return {
+    id: row.id,
+    name: row.name || 'Unknown',
+    email: row.email,
+    role: row.role || 'user',
+    emailVerified: row.emailVerified,
+    banned: row.banned ?? false,
+    createdAt:
+      row.createdAt instanceof Date ? row.createdAt : new Date(row.createdAt),
+    image: row.image ?? undefined,
   }
 }
 
 function CreateUserDialog() {
   const [open, setOpen] = useState(false)
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    name: string
+    email: string
+    password: string
+    role: UserRole
+  }>({
     name: '',
     email: '',
     password: '',
@@ -178,18 +102,31 @@ function CreateUserDialog() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    createUser(formData, {
-      onSuccess: () => {
-        setOpen(false)
-        setFormData({ name: '', email: '', password: '', role: 'user' })
+    createUser(
+      {
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role,
       },
-    })
+      {
+        onSuccess: () => {
+          setOpen(false)
+          setFormData({
+            name: '',
+            email: '',
+            password: '',
+            role: 'user',
+          })
+        },
+      },
+    )
   }
 
   return (
     <Dialog onOpenChange={setOpen} open={open}>
       <DialogTrigger asChild>
-        <Button size="sm">
+        <Button size="sm" type="button">
           <UserPlus className="mr-2 h-4 w-4" />
           Create User
         </Button>
@@ -241,7 +178,10 @@ function CreateUserDialog() {
             <Label htmlFor="role">Role</Label>
             <Select
               onValueChange={(value) =>
-                setFormData({ ...formData, role: value })
+                setFormData({
+                  ...formData,
+                  role: value as UserRole,
+                })
               }
               value={formData.role}
             >
@@ -275,11 +215,8 @@ function CreateUserDialog() {
 
 export function AdminUsersPage() {
   const { data: session } = authClient.useSession()
-  const { data: users, isLoading, refetch } = useUsers()
-  const [searchTerm, setSearchTerm] = useState('')
-  const [statusFilter, setStatusFilter] = useState('all')
-  const [roleFilter, setRoleFilter] = useState('all')
-  const [selectedUser, setSelectedUser] = useState<User | null>(null)
+  const [tableMeta, setTableMeta] = useState<InfiniteQueryMeta | undefined>()
+  const [selectedUser, setSelectedUser] = useState<DrawerUser | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   const { mutate: banUser } = useBanUser()
@@ -288,9 +225,67 @@ export function AdminUsersPage() {
   const { mutate: setUserRole } = useSetUserRole()
   const { mutate: impersonateUser } = useImpersonateUser()
   const { mutate: revokeUserSessions } = useRevokeUserSessions()
-  const { mutate: _resetPassword } = useResetUserPassword()
 
   const currentUserRole = (session?.user?.role as UserRole) || 'user'
+
+  const stats = useMemo(() => adminUsersStatsFromMeta(tableMeta), [tableMeta])
+
+  const handleUserAction = useCallback(
+    (action: string, userId: string, userRole?: string) => {
+      switch (action) {
+        case 'ban': {
+          if (canBanUsers(currentUserRole)) {
+            banUser({ userId })
+          }
+          break
+        }
+        case 'unban': {
+          if (canBanUsers(currentUserRole)) {
+            unbanUser({ userId })
+          }
+          break
+        }
+        case 'delete': {
+          if (canDeleteUsers(currentUserRole)) {
+            deleteUser({ userId })
+          }
+          break
+        }
+        case 'setRole': {
+          if (canSetUserRoles(currentUserRole) && userRole) {
+            setUserRole({ userId, role: userRole as UserRole })
+          }
+          break
+        }
+        case 'impersonate': {
+          if (canImpersonateUsers(currentUserRole)) {
+            impersonateUser({ userId })
+          }
+          break
+        }
+        case 'revokeSession': {
+          if (canManageUsers(currentUserRole)) {
+            revokeUserSessions({ userId })
+          }
+          break
+        }
+      }
+    },
+    [
+      banUser,
+      currentUserRole,
+      deleteUser,
+      impersonateUser,
+      revokeUserSessions,
+      setUserRole,
+      unbanUser,
+    ],
+  )
+
+  const onViewUser = useCallback((row: AdminUserRow) => {
+    setSelectedUser(toDrawerUser(row))
+    setDrawerOpen(true)
+  }, [])
 
   if (!canManageUsers(currentUserRole)) {
     return (
@@ -301,102 +296,17 @@ export function AdminUsersPage() {
             Access Denied
           </h3>
           <p className="text-sm text-muted-foreground">
-            You don't have permission to access admin features.
+            You don&apos;t have permission to access admin features.
           </p>
         </div>
       </div>
     )
   }
 
-  const normalizedUsers: User[] =
-    users?.map((user) => ({
-      id: user.id,
-      name: user.name || 'Unknown',
-      email: user.email,
-      role: user.role || 'user',
-      emailVerified: user.emailVerified,
-      banned: user.banned,
-      createdAt: user.createdAt ? new Date(user.createdAt) : new Date(),
-      image: user.image || undefined,
-    })) || []
-
-  const filteredUsers = normalizedUsers.filter((user) => {
-    const matchesSearch =
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase())
-
-    const matchesStatus =
-      statusFilter === 'all' ||
-      (statusFilter === 'active' && user.emailVerified && !user.banned) ||
-      (statusFilter === 'pending' && !user.emailVerified && !user.banned) ||
-      (statusFilter === 'banned' && user.banned)
-
-    const matchesRole = roleFilter === 'all' || user.role === roleFilter
-
-    return matchesSearch && matchesStatus && matchesRole
-  })
-
-  const handleUserAction = (
-    action: string,
-    userId: string,
-    userRole?: string,
-  ) => {
-    const user = normalizedUsers.find((u) => u.id === userId)
-
-    switch (action) {
-      case 'view':
-        if (user) {
-          setSelectedUser(user)
-          setDrawerOpen(true)
-        }
-        break
-      case 'ban':
-        if (canBanUsers(currentUserRole)) {
-          banUser({ userId })
-        }
-        break
-      case 'unban':
-        if (canBanUsers(currentUserRole)) {
-          unbanUser({ userId })
-        }
-        break
-      case 'delete':
-        if (canDeleteUsers(currentUserRole)) {
-          deleteUser({ userId })
-        }
-        break
-      case 'setRole':
-        if (canSetUserRoles(currentUserRole) && userRole) {
-          setUserRole({ userId, role: userRole })
-        }
-        break
-      case 'impersonate':
-        if (canImpersonateUsers(currentUserRole)) {
-          impersonateUser({ userId })
-        }
-        break
-      case 'revokeSession':
-        if (canManageUsers(currentUserRole)) {
-          revokeUserSessions({ userId })
-        }
-        break
-    }
-  }
-
-  const stats = {
-    total: normalizedUsers.length,
-    active: normalizedUsers.filter((u) => u.emailVerified && !u.banned).length,
-    pending: normalizedUsers.filter((u) => !(u.emailVerified || u.banned))
-      .length,
-    banned: normalizedUsers.filter((u) => u.banned).length,
-    admins: normalizedUsers.filter(
-      (u) => u.role === 'admin' || u.role === 'superadmin',
-    ).length,
-  }
+  const activeApprox = Math.max(0, stats.verified - stats.banned)
 
   return (
-    <div className="container mx-auto space-y-6 py-6">
-      {/* Header */}
+    <div className="w-full max-w-full min-w-0 space-y-6 py-2">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">User Management</h1>
@@ -404,20 +314,8 @@ export function AdminUsersPage() {
             Manage users, roles, and permissions
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Button onClick={() => refetch()} size="sm" variant="outline">
-            <RefreshCw className="mr-2 h-4 w-4" />
-            Refresh
-          </Button>
-          <Button size="sm" variant="outline">
-            <Download className="mr-2 h-4 w-4" />
-            Export
-          </Button>
-          {canCreateUsers(currentUserRole) && <CreateUserDialog />}
-        </div>
       </div>
 
-      {/* Stats Overview */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-5">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -435,7 +333,7 @@ export function AdminUsersPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-emerald-600">
-              {stats.active}
+              {activeApprox}
             </div>
           </CardContent>
         </Card>
@@ -474,202 +372,22 @@ export function AdminUsersPage() {
         </Card>
       </div>
 
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle>All Users</CardTitle>
-            <div className="flex items-center gap-4">
-              {/* Search */}
-              <div className="relative">
-                <Search className="absolute top-2.5 left-2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  className="w-[300px] pl-8"
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  placeholder="Search users..."
-                  value={searchTerm}
-                />
-              </div>
-
-              {/* Status Filter */}
-              <Select onValueChange={setStatusFilter} value={statusFilter}>
-                <SelectTrigger className="w-[130px]">
-                  <Filter className="mr-2 h-4 w-4" />
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Status</SelectItem>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="banned">Banned</SelectItem>
-                </SelectContent>
-              </Select>
-
-              {/* Role Filter */}
-              <Select onValueChange={setRoleFilter} value={roleFilter}>
-                <SelectTrigger className="w-[120px]">
-                  <SelectValue placeholder="Role" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Roles</SelectItem>
-                  <SelectItem value="superadmin">Super Admin</SelectItem>
-                  <SelectItem value="admin">Admin</SelectItem>
-                  <SelectItem value="user">User</SelectItem>
-                </SelectContent>
-              </Select>
+      <Card className="min-w-0 p-0">
+        <AdminUsersDataTable
+          currentUserRole={currentUserRole}
+          onTableMetaChange={setTableMeta}
+          onUserAction={handleUserAction}
+          onViewUser={onViewUser}
+          toolbarActions={
+            <div className="flex items-center gap-2">
+              <ToolbarRefresh />
+              <AdminUsersExportButton />
+              {canCreateUsers(currentUserRole) && <CreateUserDialog />}
             </div>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>User</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Created</TableHead>
-                <TableHead className="w-[70px]">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {isLoading ? (
-                <TableRow>
-                  <TableCell className="py-8 text-center" colSpan={5}>
-                    <div className="flex items-center justify-center">
-                      <RefreshCw className="mr-2 h-6 w-6 animate-spin" />
-                      Loading users...
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ) : filteredUsers.length === 0 ? (
-                <TableRow>
-                  <TableCell
-                    className="py-8 text-center text-muted-foreground"
-                    colSpan={5}
-                  >
-                    No users found
-                  </TableCell>
-                </TableRow>
-              ) : (
-                filteredUsers.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-8 w-8">
-                          <AvatarImage alt={user.name} src={user.image} />
-                          <AvatarFallback>
-                            {user.name
-                              .split(' ')
-                              .map((n) => n[0])
-                              .join('')}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div>
-                          <div className="font-medium">{user.name}</div>
-                          <div className="text-sm text-muted-foreground">
-                            {user.email}
-                          </div>
-                        </div>
-                      </div>
-                    </TableCell>
-                    <TableCell>{getStatusBadge(user)}</TableCell>
-                    <TableCell>{getRoleBadge(user.role)}</TableCell>
-                    <TableCell>
-                      <div className="text-sm">
-                        {user.createdAt.toLocaleDateString()}
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button className="h-8 w-8 p-0" variant="ghost">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                          <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem
-                            onClick={() => handleUserAction('view', user.id)}
-                          >
-                            <Eye className="mr-2 h-4 w-4" />
-                            View Details
-                          </DropdownMenuItem>
-                          <DropdownMenuItem
-                            onClick={() =>
-                              handleUserAction('revokeSession', user.id)
-                            }
-                          >
-                            <RefreshCw className="mr-2 h-4 w-4" />
-                            Revoke Sessions
-                          </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-
-                          {canSetUserRoles(currentUserRole) && (
-                            <DropdownMenuItem
-                              onClick={() =>
-                                handleUserAction('setRole', user.id, 'admin')
-                              }
-                            >
-                              <ShieldCheck className="mr-2 h-4 w-4" />
-                              Make Admin
-                            </DropdownMenuItem>
-                          )}
-
-                          <DropdownMenuSeparator />
-
-                          {canBanUsers(currentUserRole) &&
-                            (user.banned ? (
-                              <DropdownMenuItem
-                                onClick={() =>
-                                  handleUserAction('unban', user.id)
-                                }
-                              >
-                                <CheckCircle className="mr-2 h-4 w-4" />
-                                Unban User
-                              </DropdownMenuItem>
-                            ) : (
-                              <DropdownMenuItem
-                                onClick={() => handleUserAction('ban', user.id)}
-                              >
-                                <UserX className="mr-2 h-4 w-4" />
-                                Ban User
-                              </DropdownMenuItem>
-                            ))}
-
-                          {canImpersonateUsers(currentUserRole) && (
-                            <DropdownMenuItem
-                              onClick={() =>
-                                handleUserAction('impersonate', user.id)
-                              }
-                            >
-                              <Eye className="mr-2 h-4 w-4" />
-                              Impersonate
-                            </DropdownMenuItem>
-                          )}
-
-                          {canDeleteUsers(currentUserRole) && (
-                            <DropdownMenuItem
-                              className="text-destructive"
-                              onClick={() =>
-                                handleUserAction('delete', user.id)
-                              }
-                            >
-                              <Trash2 className="mr-2 h-4 w-4" />
-                              Delete User
-                            </DropdownMenuItem>
-                          )}
-                        </DropdownMenuContent>
-                      </DropdownMenu>
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </CardContent>
+          }
+        />
       </Card>
 
-      {/* User Details Drawer */}
       <UserDetailsDrawer
         currentUserRole={currentUserRole}
         onOpenChange={setDrawerOpen}
@@ -677,5 +395,24 @@ export function AdminUsersPage() {
         user={selectedUser}
       />
     </div>
+  )
+}
+
+function ToolbarRefresh() {
+  const queryClient = useQueryClient()
+  return (
+    <Button
+      onClick={() => {
+        void queryClient.invalidateQueries({
+          queryKey: [adminUsersTableQueryKeyPrefix],
+        })
+      }}
+      size="sm"
+      type="button"
+      variant="outline"
+    >
+      <RefreshCw className="mr-2 h-4 w-4" />
+      Refresh
+    </Button>
   )
 }

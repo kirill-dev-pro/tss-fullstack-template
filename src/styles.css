@@ -77,6 +77,14 @@ code,
   --sidebar-accent-foreground: var(--text-main);
   --sidebar-border: var(--border-subtle);
   --sidebar-ring: var(--accent-blue);
+  --success:
+    hsl(210 40% 96.1%);
+  --warning:
+    hsl(24.6 95% 53.1%);
+  --error:
+    hsl(0 84.2% 60.2%);
+  --info:
+    hsl(198.63 88.66% 48.43%);
 }
 
 /* ========== DARK THEME ========== */
@@ -122,6 +130,14 @@ code,
   --sidebar-accent-foreground: var(--text-main);
   --sidebar-border: var(--border-subtle);
   --sidebar-ring: var(--accent-blue);
+  --success:
+    hsl(217.2 32.6% 17.5%);
+  --warning:
+    hsl(24.6 95% 53.1%);
+  --error:
+    hsl(0 84.2% 60.2%);
+  --info:
+    hsl(198.63 88.66% 48.43%);
 }
 
 @theme inline {
@@ -176,6 +192,14 @@ code,
   --color-accent-orange: var(--accent-orange);
   --color-accent-red: var(--accent-red);
   --color-accent-green: var(--accent-green);
+  --color-success:
+    var(--success);
+  --color-warning:
+    var(--warning);
+  --color-error:
+    var(--error);
+  --color-info:
+    var(--info);
 }
 
 @layer base {

@@ -6,8 +6,7 @@ import {
   varchar,
   vector,
 } from 'drizzle-orm/pg-core'
-
-import { nanoid } from '@/lib/utils'
+import { nanoid } from 'nanoid'
 
 import { resources } from './resources'
 
