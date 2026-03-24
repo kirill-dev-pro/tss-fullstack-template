@@ -1,3 +1,4 @@
+import 'reflect-metadata'
 import * as Sentry from '@sentry/tanstackstart-react'
 
 const dsn = process.env.SENTRY_DSN
