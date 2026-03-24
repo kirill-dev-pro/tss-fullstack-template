@@ -1,4 +1,5 @@
 import * as AvatarPrimitive from '@radix-ui/react-avatar'
+import { Facehash } from 'facehash'
 import * as React from 'react'
 
 import { cn } from '@/lib/utils'
@@ -34,8 +35,11 @@ function AvatarImage({
 
 function AvatarFallback({
   className,
+  name,
   ...props
-}: React.ComponentProps<typeof AvatarPrimitive.Fallback>) {
+}: React.ComponentProps<typeof AvatarPrimitive.Fallback> & {
+  name?: string
+}) {
   return (
     <AvatarPrimitive.Fallback
       className={cn(
@@ -44,7 +48,9 @@ function AvatarFallback({
       )}
       data-slot="avatar-fallback"
       {...props}
-    />
+    >
+      {name ? <Facehash name={name} size="100%" /> : props.children}
+    </AvatarPrimitive.Fallback>
   )
 }
 

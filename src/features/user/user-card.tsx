@@ -253,7 +253,7 @@ export default function UserCard(props: {
                 className="object-cover"
                 src={session?.user.image || '#'}
               />
-              <AvatarFallback>{session?.user.name.charAt(0)}</AvatarFallback>
+              <AvatarFallback name={session?.user.name} />
             </Avatar>
             <div className="grid gap-1">
               <p className="text-sm leading-none font-medium">

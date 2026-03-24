@@ -68,7 +68,7 @@ export function NavUser({
                 {data.user.image && (
                   <AvatarImage alt={data.user.name} src={data.user.image} />
                 )}
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg" name={data.user.name} />
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{data.user.name}</span>
@@ -89,7 +89,10 @@ export function NavUser({
                   {data?.user.image && (
                     <AvatarImage alt={data.user.name} src={data.user.image} />
                   )}
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback
+                    className="rounded-lg"
+                    name={data.user.name}
+                  />
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{data.user.name}</span>
