@@ -26,7 +26,7 @@ export async function sendEmail({
     const html = await render(template)
 
     const { data } = await resend.emails.send({
-      from: 'noreply@example.com', // TODO: Configure in env
+      from: env.RESEND_FROM_EMAIL,
       html,
       subject,
       to,

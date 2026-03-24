@@ -3,10 +3,17 @@ import { z } from 'zod'
 
 export const env = createEnv({
   server: {
-    SERVER_URL: z.string().url().optional().default('http://localhost:3000'),
-    DATABASE_URL: z.string().url(),
-    RESEND_API_KEY: z.string().optional(),
+    SERVER_URL: z.url().optional().default('http://localhost:3000'),
     BETTER_AUTH_SECRET: z.string().min(1),
+    DATABASE_URL: z.url(),
+
+    RESEND_API_KEY: z.string().optional(),
+    RESEND_FROM_EMAIL: z.email().default('noreply@example.com'),
+
+    // Used in instrument.server.mjs
+    SENTRY_AUTH_TOKEN: z.string().optional(),
+    SENTRY_DSN: z.string().optional(),
+
     OPENAI_API_KEY: z.string().optional(),
     ANTHROPIC_API_KEY: z.string().optional(),
     OPENROUTER_API_KEY: z.string().optional(),
@@ -19,7 +26,8 @@ export const env = createEnv({
   clientPrefix: 'VITE_',
 
   client: {
-    // VITE_SERVER_URL: z.url(),
+    VITE_SENTRY_ORG: z.string().optional(),
+    VITE_SENTRY_PROJECT: z.string().optional(),
   },
 
   /**

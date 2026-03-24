@@ -208,16 +208,16 @@ export interface FileRoutesByFullPath {
   '/dashboard/admin/users': typeof DashboardAdminUsersRoute
   '/dashboard/chat/rag': typeof DashboardChatRagRoute
   '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
-  '/two-factor': typeof authTwoFactorIndexRoute
-  '/dashboard/admin': typeof DashboardAdminIndexRoute
-  '/dashboard/chat': typeof DashboardChatIndexRoute
-  '/dashboard/settings-enhanced': typeof DashboardSettingsEnhancedIndexRoute
-  '/dashboard/settings': typeof DashboardSettingsIndexRoute
-  '/dashboard/workspace': typeof DashboardWorkspaceIndexRoute
+  '/two-factor/': typeof authTwoFactorIndexRoute
+  '/dashboard/admin/': typeof DashboardAdminIndexRoute
+  '/dashboard/chat/': typeof DashboardChatIndexRoute
+  '/dashboard/settings-enhanced/': typeof DashboardSettingsEnhancedIndexRoute
+  '/dashboard/settings/': typeof DashboardSettingsIndexRoute
+  '/dashboard/workspace/': typeof DashboardWorkspaceIndexRoute
   '/api/ai/chat/rag': typeof ApiAiChatRagRoute
   '/api/ai/mcp/$transport': typeof ApiAiMcpTransportRoute
   '/api/ai/vercel/chat': typeof ApiAiVercelChatRoute
-  '/accept-invitation/$invitationId': typeof authAcceptInvitationInvitationIdIndexRoute
+  '/accept-invitation/$invitationId/': typeof authAcceptInvitationInvitationIdIndexRoute
   '/api/ai/chat/image/generation': typeof ApiAiChatImageGenerationRoute
 }
 export interface FileRoutesByTo {
@@ -301,16 +301,16 @@ export interface FileRouteTypes {
     | '/dashboard/admin/users'
     | '/dashboard/chat/rag'
     | '/dashboard/chat/vercel'
-    | '/two-factor'
-    | '/dashboard/admin'
-    | '/dashboard/chat'
-    | '/dashboard/settings-enhanced'
-    | '/dashboard/settings'
-    | '/dashboard/workspace'
+    | '/two-factor/'
+    | '/dashboard/admin/'
+    | '/dashboard/chat/'
+    | '/dashboard/settings-enhanced/'
+    | '/dashboard/settings/'
+    | '/dashboard/workspace/'
     | '/api/ai/chat/rag'
     | '/api/ai/mcp/$transport'
     | '/api/ai/vercel/chat'
-    | '/accept-invitation/$invitationId'
+    | '/accept-invitation/$invitationId/'
     | '/api/ai/chat/image/generation'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -468,42 +468,42 @@ declare module '@tanstack/react-router' {
     '/dashboard/workspace/': {
       id: '/dashboard/workspace/'
       path: '/workspace'
-      fullPath: '/dashboard/workspace'
+      fullPath: '/dashboard/workspace/'
       preLoaderRoute: typeof DashboardWorkspaceIndexRouteImport
       parentRoute: typeof DashboardLayoutRoute
     }
     '/dashboard/settings/': {
       id: '/dashboard/settings/'
       path: '/settings'
-      fullPath: '/dashboard/settings'
+      fullPath: '/dashboard/settings/'
       preLoaderRoute: typeof DashboardSettingsIndexRouteImport
       parentRoute: typeof DashboardLayoutRoute
     }
     '/dashboard/settings-enhanced/': {
       id: '/dashboard/settings-enhanced/'
       path: '/settings-enhanced'
-      fullPath: '/dashboard/settings-enhanced'
+      fullPath: '/dashboard/settings-enhanced/'
       preLoaderRoute: typeof DashboardSettingsEnhancedIndexRouteImport
       parentRoute: typeof DashboardLayoutRoute
     }
     '/dashboard/chat/': {
       id: '/dashboard/chat/'
       path: '/chat'
-      fullPath: '/dashboard/chat'
+      fullPath: '/dashboard/chat/'
       preLoaderRoute: typeof DashboardChatIndexRouteImport
       parentRoute: typeof DashboardLayoutRoute
     }
     '/dashboard/admin/': {
       id: '/dashboard/admin/'
       path: '/admin'
-      fullPath: '/dashboard/admin'
+      fullPath: '/dashboard/admin/'
       preLoaderRoute: typeof DashboardAdminIndexRouteImport
       parentRoute: typeof DashboardLayoutRoute
     }
     '/(auth)/two-factor/': {
       id: '/(auth)/two-factor/'
       path: '/two-factor'
-      fullPath: '/two-factor'
+      fullPath: '/two-factor/'
       preLoaderRoute: typeof authTwoFactorIndexRouteImport
       parentRoute: typeof authLayoutRoute
     }
@@ -559,7 +559,7 @@ declare module '@tanstack/react-router' {
     '/(auth)/accept-invitation/$invitationId/': {
       id: '/(auth)/accept-invitation/$invitationId/'
       path: '/accept-invitation/$invitationId'
-      fullPath: '/accept-invitation/$invitationId'
+      fullPath: '/accept-invitation/$invitationId/'
       preLoaderRoute: typeof authAcceptInvitationInvitationIdIndexRouteImport
       parentRoute: typeof authLayoutRoute
     }
@@ -681,12 +681,12 @@ export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
 
-import type { createStart } from '@tanstack/react-start'
-
 import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.tsx'
 declare module '@tanstack/react-start' {
   interface Register {
     ssr: true
     router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
   }
 }

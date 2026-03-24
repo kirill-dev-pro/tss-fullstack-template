@@ -1,5 +1,5 @@
 import postgresPlugin from '@neondatabase/vite-plugin-postgres'
-import { sentryVitePlugin } from '@sentry/vite-plugin'
+import { sentryTanstackStart } from '@sentry/tanstackstart-react/vite'
 import tailwindcss from '@tailwindcss/vite'
 import { devtools } from '@tanstack/devtools-vite'
 import { nitroV2Plugin } from '@tanstack/nitro-v2-vite-plugin'
@@ -12,18 +12,16 @@ import viteTsConfigPaths from 'vite-tsconfig-paths'
 dotenv.config()
 
 export default defineConfig({
-  optimizeDeps: {
-    entries: ['src/**/*.tsx', 'src/**/*.ts'],
-    exclude: ['pdfjs', 'pdf-parse'],
-  },
+  // optimizeDeps: {
+  //   entries: ['src/**/*.tsx', 'src/**/*.ts'],
+  //   exclude: ['pdfjs', 'pdf-parse'],
+  // },
   server: {
     port: 3000,
   },
   plugins: [
     devtools(),
-    viteTsConfigPaths({
-      projects: ['./tsconfig.json'],
-    }),
+    viteTsConfigPaths(),
     postgresPlugin({
       // env: ".env.local", // Path to your .env file (default: ".env")
       // envKey: "DATABASE_URL", // Name of the env variable (default: "DATABASE_URL")
@@ -33,20 +31,13 @@ export default defineConfig({
       router: {
         routeToken: 'layout',
       },
-      srcDirectory: 'src',
-      start: { entry: './start.tsx' },
-      server: { entry: './server.ts' },
     }),
-    nitroV2Plugin({ preset: 'vercel' }),
+    nitroV2Plugin({ preset: 'bun' }),
     viteReact(),
-    sentryVitePlugin({
+    sentryTanstackStart({
       org: process.env.VITE_SENTRY_ORG,
       project: process.env.VITE_SENTRY_PROJECT,
       authToken: process.env.SENTRY_AUTH_TOKEN,
-      // Only print logs for uploading source maps in CI
-      // Set to `true` to suppress logs
-      // silent: !process.env.CI,
-      // disable: process.env.NODE_ENV === "development",
     }),
   ],
 })
