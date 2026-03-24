@@ -50,7 +50,7 @@ export default defineConfig({
         routeToken: 'layout',
       },
     }),
-    nitro(),
+    nitro({ preset: 'vercel' }),
     viteReact(),
     sentryTanstackStart({
       org: process.env.VITE_SENTRY_ORG,
