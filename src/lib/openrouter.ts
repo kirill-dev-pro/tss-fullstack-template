@@ -6,7 +6,9 @@ export const openrouter = createOpenRouter({
   apiKey: env.OPENROUTER_API_KEY,
 })
 
-export const embeddingModel = openrouter('qwen/qwen3-embedding-0.6b')
+export const embeddingModel = openrouter.textEmbeddingModel(
+  'qwen/qwen3-embedding-0.6b',
+)
 
 export const imageModel = openrouter('openrouter/polaris-alpha', {
   usage: {

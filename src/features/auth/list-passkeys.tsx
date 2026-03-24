@@ -39,12 +39,14 @@ export function ListPasskeys() {
       return
     }
     setIsLoading(true)
-    const res = await authClient.passkey.addPasskey({
+    const { error } = await authClient.passkey.addPasskey({
       name: passkeyName,
     })
     setIsLoading(false)
-    if (res?.error) {
-      toast.error(res?.error.message)
+    if (error) {
+      toast.error(
+        error.message ? error.message.toString() : 'Failed to add passkey',
+      )
     } else {
       toast.success('Passkey added successfully. You can now use it to login.')
     }
@@ -81,7 +83,7 @@ export function ListPasskeys() {
                   <TableCell className="text-right">
                     <Button
                       onClick={async () => {
-                        const _res = await authClient.passkey.deletePasskey({
+                        await authClient.passkey.deletePasskey({
                           id: passkey.id,
                           fetchOptions: {
                             onRequest: () => {

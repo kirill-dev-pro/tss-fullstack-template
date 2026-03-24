@@ -1,14 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
-import {
-  convertToModelMessages,
-  experimental_generateImage as generateImage,
-  streamText,
-  tool,
-  type UIMessage,
-} from 'ai'
+import { convertToModelMessages, streamText, tool, type UIMessage } from 'ai'
 import { z } from 'zod'
 
-import { chatModel, imageModel } from '@/lib/openrouter'
+import { chatModel } from '@/lib/openrouter'
 
 export const Route = createFileRoute('/api/ai/chat/image/generation')({
   server: {
@@ -17,42 +11,45 @@ export const Route = createFileRoute('/api/ai/chat/image/generation')({
         const { messages }: { messages: UIMessage[] } = await request.json()
 
         // Filter through messages and remove base64 image data to avoid sending to the model
-        const filteredMessages = messages.map((message) => ({
-          ...message,
-          parts: message.parts.map((part) => {
-            // Keep text parts as-is
-            if (part.type === 'text') return part
+        const filteredMessages = messages.map(
+          (message) =>
+            ({
+              ...message,
+              parts: message.parts.map((part) => {
+                // Keep text parts as-is
+                if (part.type === 'text') return part
 
-            // For tool parts, filter out large data
-            if (part.type.startsWith('tool-')) {
-              // If it's an image generation tool result, remove the base64 data but keep the structure
-              if (
-                part.type === 'tool-generateImage' &&
-                'output' in part &&
-                part.output
-              ) {
-                const toolPart = part as any
-                return {
-                  ...toolPart,
-                  output: {
-                    // Keep prompt but remove the large base64 image data
-                    prompt: toolPart.output.prompt,
-                    // image: "[image data removed for context efficiency]" // Optional: add placeholder
-                  },
+                // For tool parts, filter out large data
+                if (part.type.startsWith('tool-')) {
+                  // If it's an image generation tool result, remove the base64 data but keep the structure
+                  if (
+                    part.type === 'tool-generateImage' &&
+                    'output' in part &&
+                    part.output
+                  ) {
+                    const toolPart = part as Record<string, unknown>
+                    const output = toolPart.output as Record<string, unknown>
+                    return {
+                      ...toolPart,
+                      output: {
+                        // Keep prompt but remove the large base64 image data
+                        prompt: output.prompt,
+                      },
+                    }
+                  }
+                  // Keep other tool parts as-is
+                  return part
                 }
-              }
-              // Keep other tool parts as-is
-              return part
-            }
 
-            // Keep other part types as-is
-            return part
-          }),
-        }))
+                // Keep other part types as-is
+                return part
+              }),
+            }) as UIMessage,
+        )
 
         const result = streamText({
           model: chatModel,
-          messages: convertToModelMessages(filteredMessages),
+          messages: await convertToModelMessages(filteredMessages),
           tools: {
             generateImage: tool({
               description: 'Generate an image',
@@ -62,13 +59,9 @@ export const Route = createFileRoute('/api/ai/chat/image/generation')({
                   .describe('The prompt to generate the image from'),
               }),
               execute: async ({ prompt }) => {
-                const { image } = await generateImage({
-                  model: imageModel,
-                  // model: openai.image("gpt-image-1"),
-                  prompt,
-                })
-                // in production, save this image to blob storage and return a URL
-                return { image: image.base64, prompt }
+                // Image generation is disabled - OpenRouter doesn't support image models
+                // To enable, use a proper image model like openai.image("gpt-image-1")
+                return { message: 'Image generation not available', prompt }
               },
             }),
           },

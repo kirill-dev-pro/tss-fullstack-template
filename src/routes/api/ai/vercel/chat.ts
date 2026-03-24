@@ -15,7 +15,7 @@ export const Route = createFileRoute('/api/ai/vercel/chat')({
 
           const response = streamText({
             model: chatModel,
-            messages: convertToModelMessages(messages),
+            messages: await convertToModelMessages(messages),
           })
 
           return response.toUIMessageStreamResponse()

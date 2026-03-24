@@ -46,7 +46,7 @@ export function ChangePassword() {
       onChange: ({ value }) => {
         const result = changePasswordSchema.safeParse(value)
         if (!result.success) {
-          return result.error.formErrors.fieldErrors
+          return result.error.issues.map((issue) => issue.message).join(' ')
         }
         return
       },
@@ -146,22 +146,21 @@ export function ChangePassword() {
         </div>
         <DialogFooter>
           <form.Subscribe
-            children={([canSubmit, isSubmitting]) => (
+            children={(state) => (
               <Button
-                disabled={!canSubmit || isSubmitting}
+                disabled={!state.canSubmit || state.isSubmitting}
                 onClick={(e) => {
                   e.preventDefault()
                   form.handleSubmit()
                 }}
               >
-                {isSubmitting ? (
+                {state.isSubmitting ? (
                   <Loader2 className="animate-spin" size={15} />
                 ) : (
                   t('CHANGE_PASSWORD')
                 )}
               </Button>
             )}
-            selector={(state) => [state.canSubmit, state.isSubmitting]}
           />
         </DialogFooter>
       </DialogContent>

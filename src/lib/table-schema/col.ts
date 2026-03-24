@@ -49,7 +49,7 @@ function createColBuilder<T, F extends FilterType = FilterType>(
         // Preserve auto-derived options when filter type stays the same
         // and no explicit options are provided by the caller.
         ...(sameType && existing?.options ? { options: existing.options } : {}),
-        ...(options ?? {}),
+        ...options,
       }
       return createColBuilder<T, F>({ ...config, filter: newFilter })
     },

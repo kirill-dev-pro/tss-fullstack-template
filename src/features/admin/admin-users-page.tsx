@@ -11,6 +11,7 @@ import {
 import { useCallback, useMemo, useState } from 'react'
 
 import type { InfiniteQueryMeta } from '@/lib/data-table'
+import type { User } from '@/lib/db/types'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -32,7 +33,6 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import {
-  type AdminUserRow,
   AdminUsersDataTable,
   AdminUsersExportButton,
   adminUsersStatsFromMeta,
@@ -58,31 +58,6 @@ import {
   canSetUserRoles,
   type UserRole,
 } from '@/lib/auth/permissions'
-
-interface DrawerUser {
-  id: string
-  name: string
-  email: string
-  role: string
-  emailVerified: boolean
-  banned: boolean
-  createdAt: Date
-  image?: string
-}
-
-function toDrawerUser(row: AdminUserRow): DrawerUser {
-  return {
-    id: row.id,
-    name: row.name || 'Unknown',
-    email: row.email,
-    role: row.role || 'user',
-    emailVerified: row.emailVerified,
-    banned: row.banned ?? false,
-    createdAt:
-      row.createdAt instanceof Date ? row.createdAt : new Date(row.createdAt),
-    image: row.image ?? undefined,
-  }
-}
 
 function CreateUserDialog() {
   const [open, setOpen] = useState(false)
@@ -216,7 +191,7 @@ function CreateUserDialog() {
 export function AdminUsersPage() {
   const { data: session } = authClient.useSession()
   const [tableMeta, setTableMeta] = useState<InfiniteQueryMeta | undefined>()
-  const [selectedUser, setSelectedUser] = useState<DrawerUser | null>(null)
+  const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [drawerOpen, setDrawerOpen] = useState(false)
 
   const { mutate: banUser } = useBanUser()
@@ -282,8 +257,8 @@ export function AdminUsersPage() {
     ],
   )
 
-  const onViewUser = useCallback((row: AdminUserRow) => {
-    setSelectedUser(toDrawerUser(row))
+  const onViewUser = useCallback((row: User) => {
+    setSelectedUser(row)
     setDrawerOpen(true)
   }, [])
 

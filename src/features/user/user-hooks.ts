@@ -431,15 +431,15 @@ export const useAddPasskey = () => {
 
   return useMutation({
     mutationFn: async ({ name }: { name: string }) => {
-      const result = await authClient.passkey.addPasskey({
+      const { error, data } = await authClient.passkey.addPasskey({
         name,
       })
 
-      if (result?.error) {
-        throw new Error(result.error.message || 'Failed to add passkey')
+      if (error) {
+        throw error
       }
 
-      return result
+      return data
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: userQueryKeys.passkeys() })

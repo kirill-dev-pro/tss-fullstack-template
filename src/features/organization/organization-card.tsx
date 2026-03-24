@@ -70,8 +70,6 @@ export function OrganizationCard(props: {
   const { t } = useTranslation()
   const { data: organizations } = useOrganizations()
   const setActiveOrganization = useSetActiveOrganization()
-  const _createOrganization = useCreateOrganization()
-  const _inviteMember = useInviteMember()
   const removeMember = useRemoveMember()
   const cancelInvitation = useCancelInvitation()
 

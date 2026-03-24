@@ -185,9 +185,10 @@ export function deserializeSchema(json: SchemaJSON): TableSchemaDefinition {
       if (f.type === 'slider' && f.min !== undefined && f.max !== undefined) {
         builder = builder.filterable('slider', { min: f.min, max: f.max })
       } else if (f.type === 'checkbox') {
-        builder = builder.filterable('checkbox', {
-          ...(f.options ? { options: f.options } : {}),
-        })
+        builder = builder.filterable(
+          'checkbox',
+          f.options ? { options: f.options } : {},
+        )
       } else if (f.type === 'timerange') {
         builder = builder.filterable('timerange')
       } else {

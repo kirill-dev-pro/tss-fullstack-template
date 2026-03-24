@@ -4,6 +4,17 @@ import * as React from 'react'
 
 import { cn } from '@/lib/utils'
 
+/** Matches design tokens in `src/styles.css` (@theme + accent/chart colors). */
+const facehashColors = [
+  'bg-primary',
+  'bg-accent-orange',
+  'bg-accent-green',
+  'bg-accent-red',
+  'bg-chart-5',
+  'bg-info',
+  'bg-warning',
+]
+
 function Avatar({
   className,
   ...props
@@ -36,9 +47,11 @@ function AvatarImage({
 function AvatarFallback({
   className,
   name,
+  email,
   ...props
 }: React.ComponentProps<typeof AvatarPrimitive.Fallback> & {
   name?: string
+  email?: string
 }) {
   return (
     <AvatarPrimitive.Fallback
@@ -49,9 +62,36 @@ function AvatarFallback({
       data-slot="avatar-fallback"
       {...props}
     >
-      {name ? <Facehash name={name} size="100%" /> : props.children}
+      {name ? (
+        <Facehash
+          colorClasses={facehashColors}
+          name={`${name} ${email}`}
+          size="100%"
+        />
+      ) : (
+        props.children
+      )}
     </AvatarPrimitive.Fallback>
   )
 }
 
-export { Avatar, AvatarImage, AvatarFallback }
+function UserAvatar({
+  user,
+  className,
+}: {
+  user?: { name: string; email?: string; image?: string | null } | null
+  className?: string
+}) {
+  return (
+    <Avatar className={className}>
+      <AvatarImage src={user?.image ?? undefined} />
+      <AvatarFallback
+        className={className}
+        name={user?.name || 'Anonymous'}
+        email={user?.email}
+      />
+    </Avatar>
+  )
+}
+
+export { Avatar, AvatarImage, AvatarFallback, UserAvatar }

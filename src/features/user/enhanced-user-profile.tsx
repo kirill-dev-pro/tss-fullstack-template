@@ -13,7 +13,7 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import * as z from 'zod'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
@@ -123,15 +123,7 @@ export function EnhancedUserProfile() {
       {/* Profile Header */}
       <div className="flex items-start gap-6">
         <div className="relative">
-          <Avatar className="h-24 w-24">
-            <AvatarImage alt={session?.user?.name} src={session?.user?.image} />
-            <AvatarFallback className="text-lg">
-              {session?.user?.name
-                ?.split(' ')
-                .map((n) => n[0])
-                .join('')}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar user={session?.user} className="h-24 w-24" />
           <Button
             className="absolute -right-2 -bottom-2 h-8 w-8 rounded-full p-0"
             size="sm"

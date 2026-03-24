@@ -23,7 +23,7 @@ export const Route = createFileRoute('/api/ai/chat/rag')({
             console.log('error', error)
           },
           stopWhen: stepCountIs(3),
-          messages: convertToModelMessages(messages),
+          messages: await convertToModelMessages(messages),
           system: `You are a helpful assistant. Check your knowledge base before answering any questions.
             Try to respond to questions using information from tool calls and before send result please check the answer is in the same language as the question.
             If no relevant information is found in the tool calls, respond, "Sorry, I don't know."`,

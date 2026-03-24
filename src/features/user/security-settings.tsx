@@ -112,7 +112,7 @@ export function SecuritySettings() {
                 </Badge>
               )}
               <Switch
-                checked={settings.twoFactorEnabled}
+                checked={settings.twoFactorEnabled ?? false}
                 onCheckedChange={(checked) =>
                   handleSettingChange('twoFactorEnabled', checked)
                 }

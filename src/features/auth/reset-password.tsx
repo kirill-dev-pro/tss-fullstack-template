@@ -38,7 +38,7 @@ export default function ResetPasswordForm() {
       onChange: ({ value }) => {
         const result = resetPasswordSchema.safeParse(value)
         if (!result.success) {
-          return result.error.formErrors.fieldErrors
+          return result.error.issues.map((issue) => issue.message).join(' ')
         }
         return
       },
@@ -101,16 +101,17 @@ export default function ResetPasswordForm() {
               </div>
             </div>
             <form.Subscribe
-              children={([canSubmit, isSubmitting]) => (
+              children={(state) => (
                 <Button
                   className="mt-4 w-full"
-                  disabled={!canSubmit || isSubmitting}
+                  disabled={!state.canSubmit || state.isSubmitting}
                   type="submit"
                 >
-                  {isSubmitting ? t('RESETTING') : t('RESET_PASSWORD_BUTTON')}
+                  {state.isSubmitting
+                    ? t('RESETTING')
+                    : t('RESET_PASSWORD_BUTTON')}
                 </Button>
               )}
-              selector={(state) => [state.canSubmit, state.isSubmitting]}
             />
           </form>
         </CardContent>

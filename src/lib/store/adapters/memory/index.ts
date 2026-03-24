@@ -51,7 +51,7 @@ export function useMemoryAdapter<T extends Record<string, unknown>>(
       setState(partial: Partial<T>) {
         if (pausedRef.current) {
           pendingRef.current = {
-            ...(pendingRef.current ?? {}),
+            ...pendingRef.current,
             ...partial,
           } as Partial<T>
           return

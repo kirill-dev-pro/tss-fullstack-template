@@ -1,8 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useQuery } from '@tanstack/react-query'
 import { AnimatePresence, motion } from 'framer-motion'
 import {
   ChevronDownIcon,
   Copy,
+  Loader2,
   MailPlus,
   MoreHorizontal,
   PlusIcon,
@@ -79,14 +81,10 @@ import {
 import { authClient } from '@/lib/auth/auth-client'
 import { useTranslation } from '@/lib/intl/react'
 
-type _ActiveOrganization = Awaited<
-  ReturnType<typeof authClient.organization.getFullOrganization>
->
-
 const inviteMemberSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
-  role: z.enum(['admin', 'member'], {
-    required_error: 'Please select a role',
+  email: z.email('Please enter a valid email address'),
+  role: z.string().refine((val) => val === 'admin' || val === 'member', {
+    message: 'Please select a role',
   }),
 })
 
@@ -99,7 +97,7 @@ function InviteMemberDialog() {
     resolver: zodResolver(inviteMemberSchema),
     defaultValues: {
       email: '',
-      role: 'member' as 'admin' | 'member',
+      role: 'member',
     },
   })
 
@@ -204,8 +202,13 @@ export function WorkspacePage() {
   const { t: _t } = useTranslation()
   const { data: session } = useSession()
   const { data: organizations } = useOrganizations()
-  const { data: activeOrgData } =
-    authClient.organization.useGetFullOrganization()
+  const { data: activeOrgData } = useQuery({
+    queryKey: ['fullOrganization'],
+    queryFn: async () => {
+      const organization = await authClient.organization.getFullOrganization()
+      return organization
+    },
+  })
   const setActiveOrganization = useSetActiveOrganization()
   const removeMember = useRemoveMember()
   const cancelInvitation = useCancelInvitation()

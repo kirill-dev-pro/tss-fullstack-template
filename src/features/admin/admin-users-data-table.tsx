@@ -12,13 +12,14 @@ import {
   Eye,
   MoreHorizontal,
   RefreshCw,
-  Shield,
   ShieldCheck,
   Trash2,
   UserX,
 } from 'lucide-react'
 import { type ReactNode, useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
+
+import type { User } from '@/lib/db/types'
 
 import { DataTableFilterCommand } from '@/components/data-table/data-table-filter-command'
 import { DataTableInfinite } from '@/components/data-table/data-table-infinite'
@@ -44,7 +45,6 @@ import {
   getFacetedUniqueValues,
   type InfiniteQueryMeta,
 } from '@/lib/data-table'
-import { user } from '@/lib/db/schema/auth'
 import { useMemoryAdapter } from '@/lib/store/adapters/memory'
 import { useFilterState } from '@/lib/store/hooks/useFilterState'
 import { DataTableStoreProvider } from '@/lib/store/provider/DataTableStoreProvider'
@@ -56,8 +56,6 @@ import {
   adminUsersTableQueryKeyPrefix,
   adminUsersTableSchema,
 } from './admin-users-table-schema'
-
-export type AdminUserRow = typeof user.$inferSelect
 
 /** Must render under `AdminUsersDataTable` / `DataTableStoreProvider` (uses filter state). */
 export function AdminUsersExportButton() {
@@ -131,7 +129,10 @@ export function AdminUsersExportButton() {
   )
 }
 
-const dataTableQuery = createDataTableQueryOptions<AdminUserRow[]>({
+const dataTableQuery = createDataTableQueryOptions<
+  User[],
+  Record<string, unknown>
+>({
   queryKeyPrefix: adminUsersTableQueryKeyPrefix,
   apiEndpoint: '/api/admin/users-table',
   searchParamsSerializer: (s) =>
@@ -157,9 +158,9 @@ function RowActionsCell({
   onView,
   onAction,
 }: {
-  row: AdminUserRow
+  row: User
   currentUserRole: UserRole
-  onView: (u: AdminUserRow) => void
+  onView: (u: User) => void
   onAction: (action: string, userId: string, role?: string) => void
 }) {
   return (
@@ -256,7 +257,7 @@ function AdminUsersTableInner({
   currentUserRole: UserRole
   toolbarActions?: ReactNode
   onTableMetaChange?: (meta: InfiniteQueryMeta | undefined) => void
-  onViewUser: (u: AdminUserRow) => void
+  onViewUser: (u: User) => void
   onUserAction: (action: string, userId: string, role?: string) => void
 }) {
   const filterState = useFilterState()
@@ -275,13 +276,13 @@ function AdminUsersTableInner({
   }, [meta, onTableMetaChange])
 
   const filterFields = useMemo(
-    () => generateFilterFields<AdminUserRow>(adminUsersTableSchema.definition),
+    () => generateFilterFields<User>(adminUsersTableSchema.definition),
     [],
   )
 
-  const columns = useMemo<ColumnDef<AdminUserRow>[]>(() => {
+  const columns = useMemo<ColumnDef<User>[]>(() => {
     return [
-      ...generateColumns<AdminUserRow>(adminUsersTableSchema.definition),
+      ...generateColumns<User>(adminUsersTableSchema.definition),
       {
         id: 'actions',
         header: () => <span className="sr-only">Actions</span>,
@@ -356,7 +357,7 @@ export function AdminUsersDataTable({
   currentUserRole: UserRole
   toolbarActions?: ReactNode
   onTableMetaChange?: (meta: InfiniteQueryMeta | undefined) => void
-  onViewUser: (u: AdminUserRow) => void
+  onViewUser: (u: User) => void
   onUserAction: (action: string, userId: string, role?: string) => void
 }) {
   return (

@@ -1,3 +1,5 @@
+import type { Resolver } from 'react-hook-form'
+
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useNavigate } from '@tanstack/react-router'
 import {
@@ -8,7 +10,7 @@ import {
   ShieldCheck,
   ShieldOff,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useTranslation } from 'react-i18next'
 import QRCode from 'react-qr-code'
@@ -73,6 +75,11 @@ const twoFactorOtpSchema = z.object({
     .regex(/^\d+$/, 'OTP must contain only digits'),
 })
 
+type TwoFactorFormValues = {
+  password: string
+  otp: string
+}
+
 export default function UserCard(props: {
   activeSessions: AuthClient['$Infer']['Session']['session'][]
 }) {
@@ -123,16 +130,64 @@ export default function UserCard(props: {
     )
   }
 
-  // Form for two-factor enable/disable
-  const twoFactorForm = useForm({
-    resolver: (data) => {
+  const twoFactorResolver = useCallback<Resolver<TwoFactorFormValues>>(
+    (values) => {
+      const emptyRecord = {} as Record<string, never>
+
       if (twoFactorVerifyURI) {
-        // When showing OTP input
-        return zodResolver(twoFactorOtpSchema)(data)
+        const parsed = twoFactorOtpSchema.safeParse({ otp: values.otp })
+        if (parsed.success) {
+          return {
+            values: {
+              password: values.password,
+              otp: parsed.data.otp,
+            },
+            errors: emptyRecord,
+          }
+        }
+        return {
+          values: emptyRecord,
+          errors: {
+            otp: {
+              type: 'validation',
+              message: parsed.error.issues
+                .map((issue) => issue.message)
+                .join(' '),
+            },
+          },
+        }
       }
-      // When showing password input
-      return zodResolver(twoFactorPasswordSchema)(data)
+
+      const parsed = twoFactorPasswordSchema.safeParse({
+        password: values.password,
+      })
+      if (parsed.success) {
+        return {
+          values: {
+            password: parsed.data.password,
+            otp: values.otp,
+          },
+          errors: emptyRecord,
+        }
+      }
+      return {
+        values: emptyRecord,
+        errors: {
+          password: {
+            type: 'validation',
+            message: parsed.error.issues
+              .map((issue) => issue.message)
+              .join(' '),
+          },
+        },
+      }
     },
+    [twoFactorVerifyURI],
+  )
+
+  // Form for two-factor enable/disable
+  const twoFactorForm = useForm<TwoFactorFormValues>({
+    resolver: twoFactorResolver,
     defaultValues: {
       password: '',
       otp: '',
@@ -145,12 +200,9 @@ export default function UserCard(props: {
     formState: { errors: twoFactorErrors, isSubmitting: isSubmittingTwoFactor },
     setValue,
     reset: resetTwoFactor,
-    watch,
   } = twoFactorForm
-  const _watchOtp = watch('otp')
-  const _watchPassword = watch('password')
 
-  const onSubmitTwoFactor = async (data: any) => {
+  const onSubmitTwoFactor = async (data: TwoFactorFormValues) => {
     if (session?.user.twoFactorEnabled) {
       // Disable 2FA
       disableTwoFactor.mutate(

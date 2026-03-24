@@ -6,8 +6,7 @@ const UNIX_MS_MAX = 9_999_999_999_999
 
 function isIso8601(value: string): boolean {
   return (
-    /^\d{4}-\d{2}-\d{2}(T[\d:.Z+\-]+)?$/.test(value) &&
-    !isNaN(Date.parse(value))
+    /^\d{4}-\d{2}-\d{2}(T[\d:.Z+-]+)?$/.test(value) && !isNaN(Date.parse(value))
   )
 }
 

@@ -27,7 +27,7 @@ import type { ColConfig, DisplayConfig, TableSchemaDefinition } from '../types'
 function getFilterFn(config: ColConfig): string | undefined {
   if (!config.filter) return undefined
 
-  const { kind, filter, arrayItem } = config
+  const { kind, filter } = config
 
   switch (filter.type) {
     case 'timerange':

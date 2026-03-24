@@ -1,4 +1,5 @@
 import { createFileRoute, Outlet, useLocation } from '@tanstack/react-router'
+import { Fragment } from 'react'
 
 import {
   Breadcrumb,
@@ -41,17 +42,19 @@ function RouteComponent() {
               <Breadcrumb>
                 <BreadcrumbList>
                   {breadcrumb.map((item, index) => (
-                    <BreadcrumbItem className="hidden md:block" key={item.href}>
-                      <BreadcrumbLink
-                        className="flex items-center gap-2 text-sm capitalize"
-                        href={item.href}
-                      >
-                        {item.label}
-                        {index < breadcrumb.length - 1 && index !== 0 && (
-                          <BreadcrumbSeparator className="hidden md:block" />
-                        )}
-                      </BreadcrumbLink>
-                    </BreadcrumbItem>
+                    <Fragment key={item.href}>
+                      <BreadcrumbItem className="hidden md:block">
+                        <BreadcrumbLink
+                          className="flex items-center gap-2 text-sm capitalize"
+                          href={item.href}
+                        >
+                          {item.label}
+                        </BreadcrumbLink>
+                      </BreadcrumbItem>
+                      {index < breadcrumb.length - 1 && index !== 0 && (
+                        <BreadcrumbSeparator className="hidden md:block" />
+                      )}
+                    </Fragment>
                   ))}
                 </BreadcrumbList>
               </Breadcrumb>

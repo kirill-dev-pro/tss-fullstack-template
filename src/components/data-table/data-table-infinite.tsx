@@ -117,8 +117,8 @@ export function DataTableInfinite<TData, TValue>({
   isLoading,
   fetchNextPage,
   hasNextPage,
-  fetchPreviousPage,
-  refetch,
+  fetchPreviousPage: _fetchPreviousPage,
+  refetch: _refetch,
   totalRows,
   filterRows,
   totalRowsFetched = 0,
@@ -476,16 +476,16 @@ function Row<TData>({
   row,
   table,
   selected,
-  visibleColumnIds,
-  columnOrder,
+  visibleColumnIds: _visibleColumnIds,
+  columnOrder: _columnOrder,
 }: {
   row: Row<TData>
   table: TTable<TData>
   // REMINDER: row.getIsSelected(); - just for memoization
   selected?: boolean
   // REMINDER: for memoization - triggers re-render when columns change
-  visibleColumnIds: string
-  columnOrder: string
+  visibleColumnIds: string // eslint-disable-line @typescript-eslint/no-unused-vars
+  columnOrder: string // eslint-disable-line @typescript-eslint/no-unused-vars
 }) {
   // REMINDER: rerender the row when live mode is toggled - used to opacity the row
   // via the `getRowClassName` prop - but for some reasons it wil render the row on data fetch

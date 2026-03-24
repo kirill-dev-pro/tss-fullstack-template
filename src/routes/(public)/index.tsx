@@ -84,7 +84,7 @@ function TopBar() {
             Register
           </Button>
         </Link>
-        <Button className="gap-1.5" size="sm" variant="primary">
+        <Button className="gap-1.5" size="sm" variant="default">
           <Download className="h-3.5 w-3.5" />
           Clone Template
         </Button>
@@ -109,7 +109,7 @@ function ScrollActionBar() {
   return (
     <div className="fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-panel)] px-4 py-2 shadow-[0_8px_30px_rgba(0,0,0,0.3)] backdrop-blur-sm">
       <Link to="/register">
-        <Button className="gap-1.5" size="sm" variant="primary">
+        <Button className="gap-1.5" size="sm" variant="default">
           <UserPlus className="h-3.5 w-3.5" />
           Get Started
         </Button>
@@ -270,7 +270,7 @@ function HeroSection() {
           Drizzle. Skip the plumbing, start writing business logic.
         </p>
         <div className="flex gap-3">
-          <Button className="px-4 py-2" variant="primary">
+          <Button className="px-4 py-2" variant="default">
             Initialize Project
           </Button>
           <Button className="px-4 py-2">Read Docs</Button>
@@ -700,7 +700,7 @@ function DeploymentLicenses() {
             </ul>
             <Button
               className="w-full justify-center"
-              variant={plan.active ? 'primary' : 'default'}
+              variant={plan.active ? 'default' : 'outline'}
             >
               {plan.button}
             </Button>

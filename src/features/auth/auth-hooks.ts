@@ -51,9 +51,14 @@ export const useLogin = () => {
 
   const loginWithPasskey = useMutation({
     mutationFn: async () => {
-      const result = await authClient.signIn.passkey()
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const result = (await authClient.signIn.passkey()) as any
       if (result?.error) {
-        throw new Error(result.error.message || 'Passkey authentication failed')
+        const errorMsg =
+          typeof result.error === 'string'
+            ? result.error
+            : result.error.message || 'Passkey authentication failed'
+        throw new Error(errorMsg)
       }
       return result
     },
@@ -141,7 +146,7 @@ export const useRegister = ({
 export const useAuthHelpers = () => {
   const forgotPassword = useMutation({
     mutationFn: async ({ email }: { email: string }) =>
-      await authClient.forgetPassword({ email, redirectTo: '/reset-password' }),
+      await authClient.forgetPassword.emailOtp({ email }),
   })
 
   const sendOtp = useMutation({

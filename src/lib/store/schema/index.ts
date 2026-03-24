@@ -1,4 +1,4 @@
-import type { InferSchemaType, Schema, SchemaDefinition } from './types'
+import type { Schema, SchemaDefinition } from './types'
 
 import { getSchemaDefaults } from './serialization'
 

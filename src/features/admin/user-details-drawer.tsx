@@ -5,14 +5,16 @@ import {
   Copy,
   Shield,
   ShieldCheck,
-  User,
   UserCheck,
   X,
+  User as UserIcon,
 } from 'lucide-react'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import type { User } from '@/lib/db/types'
+
+import { UserAvatar } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -62,17 +64,6 @@ import {
   getAssignableRoles,
   type UserRole,
 } from '@/lib/auth/permissions'
-
-interface User {
-  id: string
-  name: string
-  email: string
-  role: string
-  emailVerified: boolean
-  banned: boolean
-  createdAt: Date
-  image?: string
-}
 
 interface UserDetailsDrawerProps {
   user: User | null
@@ -169,7 +160,7 @@ function ChangeRoleDialog({
   onOpenChange: (open: boolean) => void
   currentUserRole: UserRole
 }) {
-  const [selectedRole, setSelectedRole] = useState<string>(user?.role || 'user')
+  const [selectedRole, setSelectedRole] = useState(user?.role || 'user')
   const { mutate: setUserRole, isPending } = useSetUserRole()
 
   const assignableRoles = getAssignableRoles(currentUserRole)
@@ -178,7 +169,7 @@ function ChangeRoleDialog({
     if (!user) return
 
     setUserRole(
-      { userId: user.id, role: selectedRole },
+      { userId: user.id, role: selectedRole as UserRole },
       {
         onSuccess: () => {
           toast.success('User role updated successfully')
@@ -525,15 +516,7 @@ export function UserDetailsDrawer({
                 <Card>
                   <CardHeader>
                     <CardTitle className="flex items-center gap-3">
-                      <Avatar className="h-12 w-12">
-                        <AvatarImage alt={user.name} src={user.image} />
-                        <AvatarFallback>
-                          {user.name
-                            .split(' ')
-                            .map((n) => n[0])
-                            .join('')}
-                        </AvatarFallback>
-                      </Avatar>
+                      <UserAvatar user={user} className="h-12 w-12" />
                       <div>
                         <h3 className="text-lg font-semibold">{user.name}</h3>
                         <p className="text-sm text-muted-foreground">
@@ -550,7 +533,7 @@ export function UserDetailsDrawer({
 
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium">Role</span>
-                      {getRoleBadge(user.role)}
+                      {getRoleBadge(user.role as UserRole)}
                     </div>
 
                     <Separator />
@@ -627,7 +610,7 @@ export function UserDetailsDrawer({
                   </CardHeader>
                   <CardContent>
                     <div className="py-8 text-center text-muted-foreground">
-                      <User className="mx-auto mb-2 h-8 w-8" />
+                      <UserIcon className="mx-auto mb-2 h-8 w-8" />
                       <p>Activity tracking coming soon</p>
                     </div>
                   </CardContent>

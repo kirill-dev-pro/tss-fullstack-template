@@ -19,7 +19,7 @@ export const Route = createFileRoute('/api/ai/chat')({
 
         const result = streamText({
           model: openrouter('google/gemini-2.5-flash-lite-preview-02-05:free'),
-          messages: convertToModelMessages(messages),
+          messages: await convertToModelMessages(messages),
         })
 
         return result.toUIMessageStreamResponse()

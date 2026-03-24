@@ -51,6 +51,18 @@ export const auth = betterAuth({
     window: 10,
   },
   user: {
+    additionalFields: {
+      banned: {
+        type: 'boolean',
+        default: false,
+      },
+      banReason: {
+        type: 'string',
+      },
+      banExpires: {
+        type: 'date',
+      },
+    },
     deleteUser: {
       enabled: true,
     },
