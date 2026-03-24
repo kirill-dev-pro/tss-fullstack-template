@@ -6,8 +6,6 @@ export const openrouter = createOpenRouter({
   apiKey: env.OPENROUTER_API_KEY,
 })
 
-console.log('openrouter', openrouter)
-
 export const embeddingModel = openrouter('qwen/qwen3-embedding-0.6b')
 
 export const imageModel = openrouter('openrouter/polaris-alpha', {

@@ -9,6 +9,7 @@ import {
   Settings,
   Settings2,
   Shield,
+  Sparkles,
   Users,
 } from 'lucide-react'
 import { type ComponentProps } from 'react'
@@ -42,6 +43,11 @@ const navigationItems = [
     name: 'Workspace',
     url: '/dashboard/workspace',
     icon: Briefcase,
+  },
+  {
+    name: 'Upgrade',
+    url: '/dashboard/upgrade',
+    icon: Sparkles,
   },
   {
     name: 'Settings',

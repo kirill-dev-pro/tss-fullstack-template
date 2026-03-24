@@ -37,6 +37,7 @@ import { Route as DashboardProtectExamplesRouteImport } from './routes/dashboard
 import { Route as DashboardSettingsEnhancedIndexRouteImport } from './routes/dashboard/settings-enhanced/index'
 import { Route as DashboardSettingsIndexRouteImport } from './routes/dashboard/settings/index'
 import { Route as DashboardTanstackDbExampleRouteImport } from './routes/dashboard/tanstack-db-example'
+import { Route as DashboardUpgradeRouteImport } from './routes/dashboard/upgrade'
 import { Route as DashboardWorkspaceIndexRouteImport } from './routes/dashboard/workspace/index'
 
 const DashboardLayoutRoute = DashboardLayoutRouteImport.update({
@@ -57,6 +58,11 @@ const publicIndexRoute = publicIndexRouteImport.update({
   id: '/(public)/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const DashboardUpgradeRoute = DashboardUpgradeRouteImport.update({
+  id: '/upgrade',
+  path: '/upgrade',
+  getParentRoute: () => DashboardLayoutRoute,
 } as any)
 const DashboardTanstackDbExampleRoute =
   DashboardTanstackDbExampleRouteImport.update({
@@ -199,6 +205,7 @@ export interface FileRoutesByFullPath {
   '/.well-known/oauth-authorization-server': typeof DotwellKnownOauthAuthorizationServerRoute
   '/dashboard/protect-examples': typeof DashboardProtectExamplesRoute
   '/dashboard/tanstack-db-example': typeof DashboardTanstackDbExampleRoute
+  '/dashboard/upgrade': typeof DashboardUpgradeRoute
   '/': typeof publicIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/two-factor/otp': typeof authTwoFactorOtpRoute
@@ -228,6 +235,7 @@ export interface FileRoutesByTo {
   '/.well-known/oauth-authorization-server': typeof DotwellKnownOauthAuthorizationServerRoute
   '/dashboard/protect-examples': typeof DashboardProtectExamplesRoute
   '/dashboard/tanstack-db-example': typeof DashboardTanstackDbExampleRoute
+  '/dashboard/upgrade': typeof DashboardUpgradeRoute
   '/': typeof publicIndexRoute
   '/dashboard': typeof DashboardIndexRoute
   '/two-factor/otp': typeof authTwoFactorOtpRoute
@@ -260,6 +268,7 @@ export interface FileRoutesById {
   '/.well-known/oauth-authorization-server': typeof DotwellKnownOauthAuthorizationServerRoute
   '/dashboard/protect-examples': typeof DashboardProtectExamplesRoute
   '/dashboard/tanstack-db-example': typeof DashboardTanstackDbExampleRoute
+  '/dashboard/upgrade': typeof DashboardUpgradeRoute
   '/(public)/': typeof publicIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
   '/(auth)/two-factor/otp': typeof authTwoFactorOtpRoute
@@ -292,6 +301,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-authorization-server'
     | '/dashboard/protect-examples'
     | '/dashboard/tanstack-db-example'
+    | '/dashboard/upgrade'
     | '/'
     | '/dashboard/'
     | '/two-factor/otp'
@@ -321,6 +331,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-authorization-server'
     | '/dashboard/protect-examples'
     | '/dashboard/tanstack-db-example'
+    | '/dashboard/upgrade'
     | '/'
     | '/dashboard'
     | '/two-factor/otp'
@@ -352,6 +363,7 @@ export interface FileRouteTypes {
     | '/.well-known/oauth-authorization-server'
     | '/dashboard/protect-examples'
     | '/dashboard/tanstack-db-example'
+    | '/dashboard/upgrade'
     | '/(public)/'
     | '/dashboard/'
     | '/(auth)/two-factor/otp'
@@ -415,6 +427,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof publicIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/dashboard/upgrade': {
+      id: '/dashboard/upgrade'
+      path: '/upgrade'
+      fullPath: '/dashboard/upgrade'
+      preLoaderRoute: typeof DashboardUpgradeRouteImport
+      parentRoute: typeof DashboardLayoutRoute
     }
     '/dashboard/tanstack-db-example': {
       id: '/dashboard/tanstack-db-example'
@@ -622,6 +641,7 @@ const authLayoutRouteWithChildren = authLayoutRoute._addFileChildren(
 interface DashboardLayoutRouteChildren {
   DashboardProtectExamplesRoute: typeof DashboardProtectExamplesRoute
   DashboardTanstackDbExampleRoute: typeof DashboardTanstackDbExampleRoute
+  DashboardUpgradeRoute: typeof DashboardUpgradeRoute
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardAdminUsersRoute: typeof DashboardAdminUsersRoute
   DashboardChatRagRoute: typeof DashboardChatRagRoute
@@ -636,6 +656,7 @@ interface DashboardLayoutRouteChildren {
 const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardProtectExamplesRoute: DashboardProtectExamplesRoute,
   DashboardTanstackDbExampleRoute: DashboardTanstackDbExampleRoute,
+  DashboardUpgradeRoute: DashboardUpgradeRoute,
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardAdminUsersRoute: DashboardAdminUsersRoute,
   DashboardChatRagRoute: DashboardChatRagRoute,

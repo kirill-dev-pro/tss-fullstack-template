@@ -12,7 +12,7 @@ This project provides a solid foundation for building modern web applications us
 
 ## Core Technologies
 
-- **Framework:** [TanStack Start](https://tanstack.com/start/v1) on [Vite](https://vitejs.dev/) + [Vinxi](https://vinxi.dev/) (Modern React foundation with SSR)
+- **Framework:** [TanStack Start](https://tanstack.com/start/v1) on [Vite](https://vitejs.dev/) (Modern React foundation with SSR)
 - **Routing:** [TanStack Router](https://tanstack.com/router/v1) (Type-safe client and server routing)
 - **API:** [tRPC](https://trpc.io/) (End-to-end typesafe APIs)
 - **Database:** [Drizzle ORM](https://orm.drizzle.team/) with [Neon](https://neon.com/) + [Vite Plugin](https://www.npmjs.com/package/@neondatabase/vite-plugin-postgres) (Auto-provisioned serverless PostgreSQL)
@@ -23,7 +23,7 @@ This project provides a solid foundation for building modern web applications us
 - **Email:** [Resend](https://resend.com/), [React Email](https://react.email/) (Transactional emails)
 - **Monitoring:** [Sentry](https://sentry.io/) (Error tracking and performance monitoring)
 - **Testing:** [Vitest](https://vitest.dev/) (Unit/Integration testing)
-- **Tooling & DX:** [Biome](https://biomejs.dev/) (Linting/Formatting), [T3 Env](https://github.com/t3-oss/t3-env), [TypeScript](https://www.typescriptlang.org/)
+- **Tooling & DX:** [oxfmt](https://oxc.rs/docs/guide/usage/oxfmt) + [oxlint](https://oxc.rs/docs/guide/usage/oxlint) (Linting/Formatting), [T3 Env](https://github.com/t3-oss/t3-env), [TypeScript](https://www.typescriptlang.org/)
 - **AI:** [@ai-sdk/react](https://sdk.vercel.ai/), [ai](https://sdk.vercel.ai/) (Ready for AI features)
 - **i18n:** [i18next](https://www.i18next.com/) (Internationalization)
 
@@ -430,7 +430,7 @@ Powered by [Better Auth](https://github.com/BetterTyped/better-auth), providing 
 
 - **Hot Module Replacement (HMR):** Fast development cycles with Vite.
 - **Type Safety:** End-to-end type safety from database to frontend.
-- **Code Quality:** Integrated linting and formatting with Biome.
+- **Code Quality:** Integrated linting and formatting with oxfmt + oxlint.
 - **Environment Variables:** Type-safe env management with T3 Env.
 
 ## Getting Started
@@ -537,7 +537,6 @@ This project follows a structured organization pattern for better maintainabilit
 
 ```
 src/
-├─ app/                   # App specific files
 ├─ components/            # Reusable UI components (including shadcn/ui)
 ├─ features/              # Feature-specific components and logic
 │  ├─ ai-embedding.ts     # Vector embedding generation for RAG functionality
@@ -569,9 +568,8 @@ src/
 │  ├─ router.ts           # Main API router setup
 │  └─ routes/             # Server-side route handlers
 ├─ api.ts                 # API client export
-├─ client.tsx             # Client entry point
 ├─ router.tsx             # Router configuration
-└─ ssr.tsx                # Server-side rendering setup
+└─ server.ts              # Server entry point
 
 public/                   # Static assets
 ```
@@ -591,9 +589,9 @@ The structure organizes code by feature and responsibility, keeping related code
 - `bun run db:neon-setup`: Sets up Neon database integration locally.
 - `bun run db:setup-vector`: Enables the pg_vector extension for AI embedding features.
 - `bun run add-ui-components <component-name>`: Adds shadcn/ui components.
-- `bun run format`: Formats code using Biome.
-- `bun run lint`: Lints code using Biome.
-- `bun run check`: Runs Biome check (format, lint, safety).
+- `bun run format`: Formats code using oxfmt.
+- `bun run lint`: Lints code using oxlint.
+- `bun run check`: Runs oxfmt and oxlint check.
 
 ## Docker Deployment
 

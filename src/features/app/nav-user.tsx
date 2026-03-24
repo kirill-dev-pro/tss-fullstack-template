@@ -5,8 +5,12 @@ import {
   ChevronsUpDown,
   CreditCard,
   LogOut,
+  Monitor,
+  Moon,
   Sparkles,
+  Sun,
 } from 'lucide-react'
+import { useTheme } from 'next-themes'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -15,7 +19,12 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import {
@@ -40,6 +49,7 @@ export function NavUser({
   const { data } = authClient.useSession()
   const router = useRouter()
   const logout = useLogout()
+  const { theme, setTheme } = useTheme()
 
   if (!data) {
     return null
@@ -89,7 +99,34 @@ export function NavUser({
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
+              <DropdownMenuSub>
+                <DropdownMenuSubTrigger>
+                  <Sun />
+                  Theme
+                </DropdownMenuSubTrigger>
+                <DropdownMenuSubContent className="min-w-36">
+                  <DropdownMenuRadioGroup
+                    onValueChange={setTheme}
+                    value={theme ?? 'system'}
+                  >
+                    <DropdownMenuRadioItem value="light">
+                      <Sun aria-hidden />
+                      Light
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="dark">
+                      <Moon aria-hidden />
+                      Dark
+                    </DropdownMenuRadioItem>
+                    <DropdownMenuRadioItem value="system">
+                      <Monitor aria-hidden />
+                      System
+                    </DropdownMenuRadioItem>
+                  </DropdownMenuRadioGroup>
+                </DropdownMenuSubContent>
+              </DropdownMenuSub>
+              <DropdownMenuItem
+                onClick={() => router.navigate({ to: '/dashboard/upgrade' })}
+              >
                 <Sparkles />
                 Upgrade to Pro
               </DropdownMenuItem>

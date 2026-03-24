@@ -14,7 +14,7 @@
   "files.readonlyInclude": {
     "**/routeTree.gen.ts": true
   },
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.defaultFormatter": "oxc.oxc-vscode",
   "editor.formatOnSave": true,
   "[typescript]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
@@ -39,10 +39,6 @@
   },
   "[css]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
-  },
-  "editor.codeActionsOnSave": {
-    "source.organizeImports.biome": "explicit",
-    "source.fixAll.biome": "explicit"
   },
   "[javascript][typescript][javascriptreact][typescriptreact][json][jsonc][css][graphql]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
