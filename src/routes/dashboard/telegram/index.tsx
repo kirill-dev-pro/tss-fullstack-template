@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-import { TelegramDashboard } from '@/features/telegram/telegram-dashboard'
+import { TelegramOverview } from '@/features/telegram/telegram-overview'
 
 export const Route = createFileRoute('/dashboard/telegram/')({
-  component: TelegramDashboard,
+  component: TelegramOverview,
 })

@@ -31,11 +31,16 @@ import { Route as DashboardSettingsEnhancedIndexRouteImport } from './routes/das
 import { Route as DashboardChatIndexRouteImport } from './routes/dashboard/chat/index'
 import { Route as DashboardAdminIndexRouteImport } from './routes/dashboard/admin/index'
 import { Route as authTwoFactorIndexRouteImport } from './routes/(auth)/two-factor/index'
+import { Route as DashboardTelegramContactsRouteImport } from './routes/dashboard/telegram/contacts'
+import { Route as DashboardTelegramChatsRouteImport } from './routes/dashboard/telegram/chats'
 import { Route as DashboardChatVercelRouteImport } from './routes/dashboard/chat/vercel'
 import { Route as DashboardChatRagRouteImport } from './routes/dashboard/chat/rag'
 import { Route as DashboardAdminUsersRouteImport } from './routes/dashboard/admin/users'
 import { Route as ApiWebhooksTelegramRouteImport } from './routes/api/webhooks/telegram'
 import { Route as ApiTrpcSplatRouteImport } from './routes/api/trpc/$'
+import { Route as ApiTelegramTrackOpenRouteImport } from './routes/api/telegram/track-open'
+import { Route as ApiTelegramContactsTableRouteImport } from './routes/api/telegram/contacts-table'
+import { Route as ApiTelegramChatsTableRouteImport } from './routes/api/telegram/chats-table'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as ApiAiChatRouteImport } from './routes/api/ai/chat'
 import { Route as ApiAdminUsersTableRouteImport } from './routes/api/admin/users-table'
@@ -160,6 +165,17 @@ const authTwoFactorIndexRoute = authTwoFactorIndexRouteImport.update({
   path: '/two-factor/',
   getParentRoute: () => authLayoutRoute,
 } as any)
+const DashboardTelegramContactsRoute =
+  DashboardTelegramContactsRouteImport.update({
+    id: '/telegram/contacts',
+    path: '/telegram/contacts',
+    getParentRoute: () => DashboardLayoutRoute,
+  } as any)
+const DashboardTelegramChatsRoute = DashboardTelegramChatsRouteImport.update({
+  id: '/telegram/chats',
+  path: '/telegram/chats',
+  getParentRoute: () => DashboardLayoutRoute,
+} as any)
 const DashboardChatVercelRoute = DashboardChatVercelRouteImport.update({
   id: '/chat/vercel',
   path: '/chat/vercel',
@@ -183,6 +199,22 @@ const ApiWebhooksTelegramRoute = ApiWebhooksTelegramRouteImport.update({
 const ApiTrpcSplatRoute = ApiTrpcSplatRouteImport.update({
   id: '/api/trpc/$',
   path: '/api/trpc/$',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiTelegramTrackOpenRoute = ApiTelegramTrackOpenRouteImport.update({
+  id: '/api/telegram/track-open',
+  path: '/api/telegram/track-open',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiTelegramContactsTableRoute =
+  ApiTelegramContactsTableRouteImport.update({
+    id: '/api/telegram/contacts-table',
+    path: '/api/telegram/contacts-table',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiTelegramChatsTableRoute = ApiTelegramChatsTableRouteImport.update({
+  id: '/api/telegram/chats-table',
+  path: '/api/telegram/chats-table',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -258,11 +290,16 @@ export interface FileRoutesByFullPath {
   '/api/admin/users-table': typeof ApiAdminUsersTableRoute
   '/api/ai/chat': typeof ApiAiChatRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/telegram/chats-table': typeof ApiTelegramChatsTableRoute
+  '/api/telegram/contacts-table': typeof ApiTelegramContactsTableRoute
+  '/api/telegram/track-open': typeof ApiTelegramTrackOpenRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
   '/api/webhooks/telegram': typeof ApiWebhooksTelegramRoute
   '/dashboard/admin/users': typeof DashboardAdminUsersRoute
   '/dashboard/chat/rag': typeof DashboardChatRagRoute
   '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
+  '/dashboard/telegram/chats': typeof DashboardTelegramChatsRoute
+  '/dashboard/telegram/contacts': typeof DashboardTelegramContactsRoute
   '/two-factor/': typeof authTwoFactorIndexRoute
   '/dashboard/admin/': typeof DashboardAdminIndexRoute
   '/dashboard/chat/': typeof DashboardChatIndexRoute
@@ -294,11 +331,16 @@ export interface FileRoutesByTo {
   '/api/admin/users-table': typeof ApiAdminUsersTableRoute
   '/api/ai/chat': typeof ApiAiChatRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/telegram/chats-table': typeof ApiTelegramChatsTableRoute
+  '/api/telegram/contacts-table': typeof ApiTelegramContactsTableRoute
+  '/api/telegram/track-open': typeof ApiTelegramTrackOpenRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
   '/api/webhooks/telegram': typeof ApiWebhooksTelegramRoute
   '/dashboard/admin/users': typeof DashboardAdminUsersRoute
   '/dashboard/chat/rag': typeof DashboardChatRagRoute
   '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
+  '/dashboard/telegram/chats': typeof DashboardTelegramChatsRoute
+  '/dashboard/telegram/contacts': typeof DashboardTelegramContactsRoute
   '/two-factor': typeof authTwoFactorIndexRoute
   '/dashboard/admin': typeof DashboardAdminIndexRoute
   '/dashboard/chat': typeof DashboardChatIndexRoute
@@ -334,11 +376,16 @@ export interface FileRoutesById {
   '/api/admin/users-table': typeof ApiAdminUsersTableRoute
   '/api/ai/chat': typeof ApiAiChatRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
+  '/api/telegram/chats-table': typeof ApiTelegramChatsTableRoute
+  '/api/telegram/contacts-table': typeof ApiTelegramContactsTableRoute
+  '/api/telegram/track-open': typeof ApiTelegramTrackOpenRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
   '/api/webhooks/telegram': typeof ApiWebhooksTelegramRoute
   '/dashboard/admin/users': typeof DashboardAdminUsersRoute
   '/dashboard/chat/rag': typeof DashboardChatRagRoute
   '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
+  '/dashboard/telegram/chats': typeof DashboardTelegramChatsRoute
+  '/dashboard/telegram/contacts': typeof DashboardTelegramContactsRoute
   '/(auth)/two-factor/': typeof authTwoFactorIndexRoute
   '/dashboard/admin/': typeof DashboardAdminIndexRoute
   '/dashboard/chat/': typeof DashboardChatIndexRoute
@@ -374,11 +421,16 @@ export interface FileRouteTypes {
     | '/api/admin/users-table'
     | '/api/ai/chat'
     | '/api/auth/$'
+    | '/api/telegram/chats-table'
+    | '/api/telegram/contacts-table'
+    | '/api/telegram/track-open'
     | '/api/trpc/$'
     | '/api/webhooks/telegram'
     | '/dashboard/admin/users'
     | '/dashboard/chat/rag'
     | '/dashboard/chat/vercel'
+    | '/dashboard/telegram/chats'
+    | '/dashboard/telegram/contacts'
     | '/two-factor/'
     | '/dashboard/admin/'
     | '/dashboard/chat/'
@@ -410,11 +462,16 @@ export interface FileRouteTypes {
     | '/api/admin/users-table'
     | '/api/ai/chat'
     | '/api/auth/$'
+    | '/api/telegram/chats-table'
+    | '/api/telegram/contacts-table'
+    | '/api/telegram/track-open'
     | '/api/trpc/$'
     | '/api/webhooks/telegram'
     | '/dashboard/admin/users'
     | '/dashboard/chat/rag'
     | '/dashboard/chat/vercel'
+    | '/dashboard/telegram/chats'
+    | '/dashboard/telegram/contacts'
     | '/two-factor'
     | '/dashboard/admin'
     | '/dashboard/chat'
@@ -449,11 +506,16 @@ export interface FileRouteTypes {
     | '/api/admin/users-table'
     | '/api/ai/chat'
     | '/api/auth/$'
+    | '/api/telegram/chats-table'
+    | '/api/telegram/contacts-table'
+    | '/api/telegram/track-open'
     | '/api/trpc/$'
     | '/api/webhooks/telegram'
     | '/dashboard/admin/users'
     | '/dashboard/chat/rag'
     | '/dashboard/chat/vercel'
+    | '/dashboard/telegram/chats'
+    | '/dashboard/telegram/contacts'
     | '/(auth)/two-factor/'
     | '/dashboard/admin/'
     | '/dashboard/chat/'
@@ -478,6 +540,9 @@ export interface RootRouteChildren {
   ApiAdminUsersTableRoute: typeof ApiAdminUsersTableRoute
   ApiAiChatRoute: typeof ApiAiChatRouteWithChildren
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
+  ApiTelegramChatsTableRoute: typeof ApiTelegramChatsTableRoute
+  ApiTelegramContactsTableRoute: typeof ApiTelegramContactsTableRoute
+  ApiTelegramTrackOpenRoute: typeof ApiTelegramTrackOpenRoute
   ApiTrpcSplatRoute: typeof ApiTrpcSplatRoute
   ApiWebhooksTelegramRoute: typeof ApiWebhooksTelegramRoute
   ApiAiMcpTransportRoute: typeof ApiAiMcpTransportRoute
@@ -640,6 +705,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authTwoFactorIndexRouteImport
       parentRoute: typeof authLayoutRoute
     }
+    '/dashboard/telegram/contacts': {
+      id: '/dashboard/telegram/contacts'
+      path: '/telegram/contacts'
+      fullPath: '/dashboard/telegram/contacts'
+      preLoaderRoute: typeof DashboardTelegramContactsRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
+    '/dashboard/telegram/chats': {
+      id: '/dashboard/telegram/chats'
+      path: '/telegram/chats'
+      fullPath: '/dashboard/telegram/chats'
+      preLoaderRoute: typeof DashboardTelegramChatsRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
     '/dashboard/chat/vercel': {
       id: '/dashboard/chat/vercel'
       path: '/chat/vercel'
@@ -673,6 +752,27 @@ declare module '@tanstack/react-router' {
       path: '/api/trpc/$'
       fullPath: '/api/trpc/$'
       preLoaderRoute: typeof ApiTrpcSplatRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/telegram/track-open': {
+      id: '/api/telegram/track-open'
+      path: '/api/telegram/track-open'
+      fullPath: '/api/telegram/track-open'
+      preLoaderRoute: typeof ApiTelegramTrackOpenRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/telegram/contacts-table': {
+      id: '/api/telegram/contacts-table'
+      path: '/api/telegram/contacts-table'
+      fullPath: '/api/telegram/contacts-table'
+      preLoaderRoute: typeof ApiTelegramContactsTableRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/telegram/chats-table': {
+      id: '/api/telegram/chats-table'
+      path: '/api/telegram/chats-table'
+      fullPath: '/api/telegram/chats-table'
+      preLoaderRoute: typeof ApiTelegramChatsTableRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/auth/$': {
@@ -781,6 +881,8 @@ interface DashboardLayoutRouteChildren {
   DashboardAdminUsersRoute: typeof DashboardAdminUsersRoute
   DashboardChatRagRoute: typeof DashboardChatRagRoute
   DashboardChatVercelRoute: typeof DashboardChatVercelRoute
+  DashboardTelegramChatsRoute: typeof DashboardTelegramChatsRoute
+  DashboardTelegramContactsRoute: typeof DashboardTelegramContactsRoute
   DashboardAdminIndexRoute: typeof DashboardAdminIndexRoute
   DashboardChatIndexRoute: typeof DashboardChatIndexRoute
   DashboardSettingsEnhancedIndexRoute: typeof DashboardSettingsEnhancedIndexRoute
@@ -797,6 +899,8 @@ const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardAdminUsersRoute: DashboardAdminUsersRoute,
   DashboardChatRagRoute: DashboardChatRagRoute,
   DashboardChatVercelRoute: DashboardChatVercelRoute,
+  DashboardTelegramChatsRoute: DashboardTelegramChatsRoute,
+  DashboardTelegramContactsRoute: DashboardTelegramContactsRoute,
   DashboardAdminIndexRoute: DashboardAdminIndexRoute,
   DashboardChatIndexRoute: DashboardChatIndexRoute,
   DashboardSettingsEnhancedIndexRoute: DashboardSettingsEnhancedIndexRoute,
@@ -849,6 +953,9 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAdminUsersTableRoute: ApiAdminUsersTableRoute,
   ApiAiChatRoute: ApiAiChatRouteWithChildren,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
+  ApiTelegramChatsTableRoute: ApiTelegramChatsTableRoute,
+  ApiTelegramContactsTableRoute: ApiTelegramContactsTableRoute,
+  ApiTelegramTrackOpenRoute: ApiTelegramTrackOpenRoute,
   ApiTrpcSplatRoute: ApiTrpcSplatRoute,
   ApiWebhooksTelegramRoute: ApiWebhooksTelegramRoute,
   ApiAiMcpTransportRoute: ApiAiMcpTransportRoute,

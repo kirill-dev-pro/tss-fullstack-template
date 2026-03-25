@@ -7,6 +7,7 @@ import {
   createTRPCClient,
   httpBatchLink,
   httpLink,
+  httpSubscriptionLink,
   isNonJsonSerializable,
   loggerLink,
   splitLink,
@@ -65,28 +66,35 @@ export const trpcClient = createTRPCClient<TRPCRouter>({
         (op.direction === 'down' && op.result instanceof Error),
     }),
     splitLink({
-      condition: (op) => isNonJsonSerializable(op.input),
-      true: httpLink({
+      condition: (op) => op.type === 'subscription',
+      true: httpSubscriptionLink({
         url: getUrl(),
         transformer,
-        fetch(url, options) {
-          return fetch(url, {
-            ...options,
-            credentials: 'include',
-          })
-        },
-        headers,
       }),
-      false: httpBatchLink({
-        url: getUrl(),
-        transformer,
-        headers,
-        fetch(url, options) {
-          return fetch(url, {
-            ...options,
-            credentials: 'include',
-          })
-        },
+      false: splitLink({
+        condition: (op) => isNonJsonSerializable(op.input),
+        true: httpLink({
+          url: getUrl(),
+          transformer,
+          fetch(url, options) {
+            return fetch(url, {
+              ...options,
+              credentials: 'include',
+            })
+          },
+          headers,
+        }),
+        false: httpBatchLink({
+          url: getUrl(),
+          transformer,
+          headers,
+          fetch(url, options) {
+            return fetch(url, {
+              ...options,
+              credentials: 'include',
+            })
+          },
+        }),
       }),
     }),
   ],

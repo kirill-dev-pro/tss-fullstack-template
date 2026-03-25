@@ -1,4 +1,9 @@
-import { createFileRoute, Outlet, useLocation } from '@tanstack/react-router'
+import {
+  createFileRoute,
+  Link,
+  Outlet,
+  useLocation,
+} from '@tanstack/react-router'
 import { Fragment } from 'react'
 
 import {
@@ -25,10 +30,10 @@ function RouteComponent() {
   const location = useLocation()
   const pathname = location.pathname
 
-  const paths = pathname.split('/')
-  const breadcrumb = paths.map((path) => ({
-    label: path,
-    href: `/${path}`,
+  const segments = pathname.split('/').filter(Boolean)
+  const breadcrumb = segments.map((segment, index) => ({
+    label: segment,
+    href: `/${segments.slice(0, index + 1).join('/')}`,
   }))
   return (
     <AuthProvider>
@@ -44,14 +49,14 @@ function RouteComponent() {
                   {breadcrumb.map((item, index) => (
                     <Fragment key={item.href}>
                       <BreadcrumbItem className="hidden md:block">
-                        <BreadcrumbLink
-                          className="flex items-center gap-2 text-sm capitalize"
-                          href={item.href}
+                        <Link
+                          to={item.href}
+                          className="flex items-center gap-2 text-sm capitalize transition-colors hover:text-foreground"
                         >
                           {item.label}
-                        </BreadcrumbLink>
+                        </Link>
                       </BreadcrumbItem>
-                      {index < breadcrumb.length - 1 && index !== 0 && (
+                      {index < breadcrumb.length - 1 && (
                         <BreadcrumbSeparator className="hidden md:block" />
                       )}
                     </Fragment>

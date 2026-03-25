@@ -1,7 +1,23 @@
-import { count, desc, eq, gte } from 'drizzle-orm'
+import { and, count, desc, eq, gte, isNull, lt } from 'drizzle-orm'
 
 import { db } from '@/lib/db'
-import { telegramContacts, telegramMessages } from '@/lib/db/schema/telegram'
+import {
+  telegramChats,
+  telegramContacts,
+  telegramMessages,
+} from '@/lib/db/schema/telegram'
+
+export type MessagePayload = {
+  messageType: string
+  text: string | null
+  media: Record<string, unknown> | null
+}
+
+export type ChatContext = {
+  chatId: number
+  chatType: string
+  chatTitle: string | null
+}
 
 export async function saveMessage(
   telegramUserId: number,
@@ -10,19 +26,103 @@ export async function saveMessage(
   lastName: string | null,
   messageId: number,
   direction: 'incoming' | 'outgoing',
-  text: string | null,
+  payload: MessagePayload,
+  chat: ChatContext,
 ) {
   const now = new Date()
 
-  await db.insert(telegramMessages).values({
-    telegramUserId,
-    username,
-    messageId,
-    direction,
-    text,
-    createdAt: now,
-  })
+  const [inserted] = await db
+    .insert(telegramMessages)
+    .values({
+      chatId: chat.chatId,
+      telegramUserId,
+      username,
+      messageId,
+      direction,
+      messageType: payload.messageType,
+      text: payload.text,
+      media: payload.media,
+      createdAt: now,
+    })
+    .returning()
 
+  if (direction === 'incoming') {
+    const existingContact = await db
+      .select()
+      .from(telegramContacts)
+      .where(eq(telegramContacts.telegramUserId, telegramUserId))
+      .limit(1)
+
+    if (existingContact.length > 0) {
+      await db
+        .update(telegramContacts)
+        .set({
+          username,
+          firstName,
+          lastName,
+          messagesSent: existingContact[0].messagesSent + 1,
+          lastMessageAt: now,
+          updatedAt: now,
+        })
+        .where(eq(telegramContacts.telegramUserId, telegramUserId))
+    } else {
+      await db.insert(telegramContacts).values({
+        telegramUserId,
+        username,
+        firstName,
+        lastName,
+        messagesSent: 1,
+        messagesReceived: 0,
+        firstMessageAt: now,
+        lastMessageAt: now,
+        createdAt: now,
+        updatedAt: now,
+      })
+    }
+  }
+
+  const existingChat = await db
+    .select()
+    .from(telegramChats)
+    .where(eq(telegramChats.chatId, chat.chatId))
+    .limit(1)
+
+  if (existingChat.length > 0) {
+    await db
+      .update(telegramChats)
+      .set({
+        chatType: chat.chatType,
+        title: chat.chatTitle ?? existingChat[0].title,
+        messageCount: existingChat[0].messageCount + 1,
+        lastMessageAt: now,
+        updatedAt: now,
+      })
+      .where(eq(telegramChats.chatId, chat.chatId))
+  } else {
+    await db.insert(telegramChats).values({
+      chatId: chat.chatId,
+      chatType: chat.chatType,
+      title: chat.chatTitle,
+      messageCount: 1,
+      firstMessageAt: now,
+      lastMessageAt: now,
+      createdAt: now,
+      updatedAt: now,
+    })
+  }
+
+  return inserted
+}
+
+export async function markContactBlocked(telegramUserId: number) {
+  await db
+    .update(telegramContacts)
+    .set({ blockedAt: new Date(), updatedAt: new Date() })
+    .where(eq(telegramContacts.telegramUserId, telegramUserId))
+}
+
+export async function markMiniAppOpened(telegramUserId: number) {
+  const now = new Date()
   const existing = await db
     .select()
     .from(telegramContacts)
@@ -32,36 +132,28 @@ export async function saveMessage(
   if (existing.length > 0) {
     await db
       .update(telegramContacts)
-      .set({
-        username,
-        firstName,
-        lastName,
-        messagesSent:
-          direction === 'incoming'
-            ? existing[0].messagesSent + 1
-            : existing[0].messagesSent,
-        messagesReceived:
-          direction === 'outgoing'
-            ? existing[0].messagesReceived + 1
-            : existing[0].messagesReceived,
-        lastMessageAt: now,
-        updatedAt: now,
-      })
+      .set({ openedMiniAppAt: now, updatedAt: now })
       .where(eq(telegramContacts.telegramUserId, telegramUserId))
   } else {
     await db.insert(telegramContacts).values({
       telegramUserId,
-      username,
-      firstName,
-      lastName,
-      messagesSent: direction === 'incoming' ? 1 : 0,
-      messagesReceived: direction === 'outgoing' ? 1 : 0,
+      messagesSent: 0,
+      messagesReceived: 0,
       firstMessageAt: now,
       lastMessageAt: now,
+      openedMiniAppAt: now,
       createdAt: now,
       updatedAt: now,
     })
   }
+}
+
+export async function getBroadcastableContacts() {
+  return db
+    .select()
+    .from(telegramContacts)
+    .where(isNull(telegramContacts.blockedAt))
+    .orderBy(desc(telegramContacts.lastMessageAt))
 }
 
 export async function getTelegramStats() {
@@ -73,6 +165,8 @@ export async function getTelegramStats() {
   const [contactCount] = await db
     .select({ count: count() })
     .from(telegramContacts)
+
+  const [chatCount] = await db.select({ count: count() }).from(telegramChats)
 
   const [messageCount] = await db
     .select({ count: count() })
@@ -90,6 +184,7 @@ export async function getTelegramStats() {
 
   return {
     totalContacts: contactCount.count,
+    totalChats: chatCount.count,
     totalMessages: messageCount.count,
     messagesToday: todayCount.count,
     messagesThisWeek: weekCount.count,
@@ -103,10 +198,34 @@ export async function getTelegramContactsList() {
     .orderBy(desc(telegramContacts.lastMessageAt))
 }
 
-export async function getTelegramMessagesByUser(telegramUserId: number) {
+export async function getTelegramChatsList() {
   return db
     .select()
+    .from(telegramChats)
+    .orderBy(desc(telegramChats.lastMessageAt))
+}
+
+export async function getMessagesPage(
+  chatId: number,
+  cursor?: number,
+  limit = 50,
+) {
+  const conditions = [eq(telegramMessages.chatId, chatId)]
+
+  if (cursor) {
+    conditions.push(lt(telegramMessages.id, cursor))
+  }
+
+  const rows = await db
+    .select()
     .from(telegramMessages)
-    .where(eq(telegramMessages.telegramUserId, telegramUserId))
-    .orderBy(telegramMessages.createdAt)
+    .where(and(...conditions))
+    .orderBy(desc(telegramMessages.id))
+    .limit(limit + 1)
+
+  const hasMore = rows.length > limit
+  const page = hasMore ? rows.slice(0, limit) : rows
+  const messages = [...page].reverse()
+
+  return { messages, hasMore }
 }

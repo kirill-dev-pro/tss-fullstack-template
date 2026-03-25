@@ -33,9 +33,20 @@ function rowsFromUser(user: User): { key: string; value: string }[] {
 
 function TmaApp() {
   const initDataState = useSignal(initData.state)
+  const initDataRaw = useSignal(initData.raw)
   const user = initDataState?.user
 
   const rows = useMemo(() => (user ? rowsFromUser(user) : []), [user])
+
+  useEffect(() => {
+    if (initDataRaw) {
+      fetch('/api/telegram/track-open', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ initData: initDataRaw }),
+      }).catch(() => {})
+    }
+  }, [initDataRaw])
 
   useEffect(() => {
     mainButton.mount()
