@@ -5,7 +5,9 @@ import {
   ExternalLink,
   Layers,
   Layout,
+  LayoutDashboard,
   LogIn,
+  MessageCircle,
   MessageSquare,
   Receipt,
   UserPlus,
@@ -277,6 +279,56 @@ function HeroSection() {
         </div>
       </div>
       <TerminalBlock />
+    </section>
+  )
+}
+
+function QuickLinks() {
+  const links = [
+    {
+      icon: ExternalLink,
+      label: 'Open Repo',
+      description: 'View source code on GitHub',
+      href: '#',
+    },
+    {
+      icon: LayoutDashboard,
+      label: 'Demo Dashboard',
+      description: 'Explore the admin dashboard',
+      href: '/dashboard',
+    },
+    {
+      icon: MessageCircle,
+      label: 'Telegram Mini App',
+      description: 'Try the Telegram Mini App',
+      href: '/telegram-mini-app',
+    },
+  ]
+
+  return (
+    <section>
+      <SectionTitle>Quick Links</SectionTitle>
+      <div className="grid grid-cols-3 gap-4">
+        {links.map((link) => (
+          <a
+            className="group flex flex-col items-center gap-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-panel)] p-6 transition-colors hover:border-[var(--accent-blue)] hover:bg-[var(--bg-panel-light)]"
+            href={link.href}
+            key={link.label}
+          >
+            <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[var(--bg-deep)] transition-colors group-hover:bg-[var(--accent-blue)]/10">
+              <link.icon className="h-6 w-6 text-[var(--text-muted)] transition-colors group-hover:text-[var(--accent-blue)]" />
+            </div>
+            <div className="text-center">
+              <div className="text-sm font-medium text-[var(--text-main)]">
+                {link.label}
+              </div>
+              <div className="mt-0.5 text-[11px] text-[var(--text-muted)]">
+                {link.description}
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
     </section>
   )
 }
@@ -928,6 +980,7 @@ function LandingPage() {
 
         <div className="relative z-10 mx-auto flex max-w-[900px] flex-col gap-15 px-10 py-10">
           <HeroSection />
+          <QuickLinks />
           <CoreInfrastructure />
           <CommunityValidation />
           <SocialMedia />

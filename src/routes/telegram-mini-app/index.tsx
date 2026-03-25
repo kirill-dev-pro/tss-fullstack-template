@@ -1,11 +1,10 @@
+import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { initData, mainButton, useSignal, type User } from '@tma.js/sdk-react'
 import { useEffect, useMemo } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-
-import { Sticker } from './-components/Sticker'
 
 export const Route = createFileRoute('/telegram-mini-app/')({
   component: () => <TmaApp />,
@@ -53,7 +52,12 @@ function TmaApp() {
 
   return (
     <div className="flex w-full flex-col items-center gap-4 p-4">
-      <Sticker src="/stickers/clippy_plane.tgs" />
+      <DotLottieReact
+        src="/stickers/dog_share.json"
+        loop
+        autoplay
+        className="w-120"
+      />
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Telegram mini app for TSS fulstack template</CardTitle>

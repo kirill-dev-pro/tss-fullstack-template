@@ -25,6 +25,7 @@ import { Route as authRegisterRouteImport } from './routes/(auth)/register'
 import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
 import { Route as DashboardWorkspaceIndexRouteImport } from './routes/dashboard/workspace/index'
+import { Route as DashboardTelegramIndexRouteImport } from './routes/dashboard/telegram/index'
 import { Route as DashboardSettingsIndexRouteImport } from './routes/dashboard/settings/index'
 import { Route as DashboardSettingsEnhancedIndexRouteImport } from './routes/dashboard/settings-enhanced/index'
 import { Route as DashboardChatIndexRouteImport } from './routes/dashboard/chat/index'
@@ -126,6 +127,11 @@ const authForgotPasswordRoute = authForgotPasswordRouteImport.update({
 const DashboardWorkspaceIndexRoute = DashboardWorkspaceIndexRouteImport.update({
   id: '/workspace/',
   path: '/workspace/',
+  getParentRoute: () => DashboardLayoutRoute,
+} as any)
+const DashboardTelegramIndexRoute = DashboardTelegramIndexRouteImport.update({
+  id: '/telegram/',
+  path: '/telegram/',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
 const DashboardSettingsIndexRoute = DashboardSettingsIndexRouteImport.update({
@@ -262,6 +268,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/chat/': typeof DashboardChatIndexRoute
   '/dashboard/settings-enhanced/': typeof DashboardSettingsEnhancedIndexRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
+  '/dashboard/telegram/': typeof DashboardTelegramIndexRoute
   '/dashboard/workspace/': typeof DashboardWorkspaceIndexRoute
   '/api/ai/chat/rag': typeof ApiAiChatRagRoute
   '/api/ai/mcp/$transport': typeof ApiAiMcpTransportRoute
@@ -297,6 +304,7 @@ export interface FileRoutesByTo {
   '/dashboard/chat': typeof DashboardChatIndexRoute
   '/dashboard/settings-enhanced': typeof DashboardSettingsEnhancedIndexRoute
   '/dashboard/settings': typeof DashboardSettingsIndexRoute
+  '/dashboard/telegram': typeof DashboardTelegramIndexRoute
   '/dashboard/workspace': typeof DashboardWorkspaceIndexRoute
   '/api/ai/chat/rag': typeof ApiAiChatRagRoute
   '/api/ai/mcp/$transport': typeof ApiAiMcpTransportRoute
@@ -336,6 +344,7 @@ export interface FileRoutesById {
   '/dashboard/chat/': typeof DashboardChatIndexRoute
   '/dashboard/settings-enhanced/': typeof DashboardSettingsEnhancedIndexRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
+  '/dashboard/telegram/': typeof DashboardTelegramIndexRoute
   '/dashboard/workspace/': typeof DashboardWorkspaceIndexRoute
   '/api/ai/chat/rag': typeof ApiAiChatRagRoute
   '/api/ai/mcp/$transport': typeof ApiAiMcpTransportRoute
@@ -375,6 +384,7 @@ export interface FileRouteTypes {
     | '/dashboard/chat/'
     | '/dashboard/settings-enhanced/'
     | '/dashboard/settings/'
+    | '/dashboard/telegram/'
     | '/dashboard/workspace/'
     | '/api/ai/chat/rag'
     | '/api/ai/mcp/$transport'
@@ -410,6 +420,7 @@ export interface FileRouteTypes {
     | '/dashboard/chat'
     | '/dashboard/settings-enhanced'
     | '/dashboard/settings'
+    | '/dashboard/telegram'
     | '/dashboard/workspace'
     | '/api/ai/chat/rag'
     | '/api/ai/mcp/$transport'
@@ -448,6 +459,7 @@ export interface FileRouteTypes {
     | '/dashboard/chat/'
     | '/dashboard/settings-enhanced/'
     | '/dashboard/settings/'
+    | '/dashboard/telegram/'
     | '/dashboard/workspace/'
     | '/api/ai/chat/rag'
     | '/api/ai/mcp/$transport'
@@ -584,6 +596,13 @@ declare module '@tanstack/react-router' {
       path: '/workspace'
       fullPath: '/dashboard/workspace/'
       preLoaderRoute: typeof DashboardWorkspaceIndexRouteImport
+      parentRoute: typeof DashboardLayoutRoute
+    }
+    '/dashboard/telegram/': {
+      id: '/dashboard/telegram/'
+      path: '/telegram'
+      fullPath: '/dashboard/telegram/'
+      preLoaderRoute: typeof DashboardTelegramIndexRouteImport
       parentRoute: typeof DashboardLayoutRoute
     }
     '/dashboard/settings/': {
@@ -766,6 +785,7 @@ interface DashboardLayoutRouteChildren {
   DashboardChatIndexRoute: typeof DashboardChatIndexRoute
   DashboardSettingsEnhancedIndexRoute: typeof DashboardSettingsEnhancedIndexRoute
   DashboardSettingsIndexRoute: typeof DashboardSettingsIndexRoute
+  DashboardTelegramIndexRoute: typeof DashboardTelegramIndexRoute
   DashboardWorkspaceIndexRoute: typeof DashboardWorkspaceIndexRoute
 }
 
@@ -781,6 +801,7 @@ const DashboardLayoutRouteChildren: DashboardLayoutRouteChildren = {
   DashboardChatIndexRoute: DashboardChatIndexRoute,
   DashboardSettingsEnhancedIndexRoute: DashboardSettingsEnhancedIndexRoute,
   DashboardSettingsIndexRoute: DashboardSettingsIndexRoute,
+  DashboardTelegramIndexRoute: DashboardTelegramIndexRoute,
   DashboardWorkspaceIndexRoute: DashboardWorkspaceIndexRoute,
 }
 

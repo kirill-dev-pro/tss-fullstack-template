@@ -55,6 +55,7 @@
     "@hookform/resolvers": "^5.2.2",
     "@langchain/community": "^1.1.24",
     "@langchain/textsplitters": "^1.0.1",
+    "@lottiefiles/dotlottie-react": "^0.18.7",
     "@lottiefiles/lottie-player": "^2.0.12",
     "@modelcontextprotocol/sdk": "^1.27.1",
     "@neondatabase/serverless": "^1.0.2",

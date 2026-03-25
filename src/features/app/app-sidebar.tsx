@@ -1,4 +1,5 @@
 import {
+  Bot,
   Briefcase,
   Database,
   File,
@@ -105,6 +106,11 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   // Admin navigation items - only show if user has admin permissions
   const adminItems = canManageUsers(currentUserRole)
     ? [
+        {
+          name: 'Telegram Bot',
+          url: '/dashboard/telegram',
+          icon: Bot,
+        },
         {
           name: 'Admin Dashboard',
           url: '/dashboard/admin',
