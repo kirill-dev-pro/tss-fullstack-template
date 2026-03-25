@@ -8,40 +8,49 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as rootRouteImport } from './routes/__root'
-import { Route as DashboardLayoutRouteImport } from './routes/dashboard/layout'
-import { Route as authLayoutRouteImport } from './routes/(auth)/layout'
-import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
-import { Route as publicIndexRouteImport } from './routes/(public)/index'
-import { Route as DashboardUpgradeRouteImport } from './routes/dashboard/upgrade'
-import { Route as DashboardTanstackDbExampleRouteImport } from './routes/dashboard/tanstack-db-example'
-import { Route as DashboardProtectExamplesRouteImport } from './routes/dashboard/protect-examples'
-import { Route as DotwellKnownOauthAuthorizationServerRouteImport } from './routes/[.]well-known.oauth-authorization-server'
-import { Route as authResetPasswordRouteImport } from './routes/(auth)/reset-password'
-import { Route as authRegisterRouteImport } from './routes/(auth)/register'
-import { Route as authLoginRouteImport } from './routes/(auth)/login'
-import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
-import { Route as DashboardWorkspaceIndexRouteImport } from './routes/dashboard/workspace/index'
-import { Route as DashboardSettingsIndexRouteImport } from './routes/dashboard/settings/index'
-import { Route as DashboardSettingsEnhancedIndexRouteImport } from './routes/dashboard/settings-enhanced/index'
-import { Route as DashboardChatIndexRouteImport } from './routes/dashboard/chat/index'
-import { Route as DashboardAdminIndexRouteImport } from './routes/dashboard/admin/index'
-import { Route as authTwoFactorIndexRouteImport } from './routes/(auth)/two-factor/index'
-import { Route as DashboardChatVercelRouteImport } from './routes/dashboard/chat/vercel'
-import { Route as DashboardChatRagRouteImport } from './routes/dashboard/chat/rag'
-import { Route as DashboardAdminUsersRouteImport } from './routes/dashboard/admin/users'
-import { Route as ApiTrpcSplatRouteImport } from './routes/api/trpc/$'
-import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
-import { Route as ApiAiChatRouteImport } from './routes/api/ai/chat'
-import { Route as ApiAdminUsersTableRouteImport } from './routes/api/admin/users-table'
-import { Route as ApiAdminUsersExportRouteImport } from './routes/api/admin/users-export'
-import { Route as authTwoFactorOtpRouteImport } from './routes/(auth)/two-factor/otp'
 import { Route as authAcceptInvitationInvitationIdIndexRouteImport } from './routes/(auth)/accept-invitation/$invitationId/index'
-import { Route as ApiAiVercelChatRouteImport } from './routes/api/ai/vercel/chat'
-import { Route as ApiAiMcpTransportRouteImport } from './routes/api/ai/mcp/$transport'
-import { Route as ApiAiChatRagRouteImport } from './routes/api/ai/chat.rag'
+import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
+import { Route as authLayoutRouteImport } from './routes/(auth)/layout'
+import { Route as authLoginRouteImport } from './routes/(auth)/login'
+import { Route as authRegisterRouteImport } from './routes/(auth)/register'
+import { Route as authResetPasswordRouteImport } from './routes/(auth)/reset-password'
+import { Route as authTwoFactorIndexRouteImport } from './routes/(auth)/two-factor/index'
+import { Route as authTwoFactorOtpRouteImport } from './routes/(auth)/two-factor/otp'
+import { Route as publicIndexRouteImport } from './routes/(public)/index'
+import { Route as DotwellKnownOauthAuthorizationServerRouteImport } from './routes/[.]well-known.oauth-authorization-server'
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as ApiAdminUsersExportRouteImport } from './routes/api/admin/users-export'
+import { Route as ApiAdminUsersTableRouteImport } from './routes/api/admin/users-table'
+import { Route as ApiAiChatRouteImport } from './routes/api/ai/chat'
 import { Route as ApiAiChatImageGenerationRouteImport } from './routes/api/ai/chat.image.generation'
+import { Route as ApiAiChatRagRouteImport } from './routes/api/ai/chat.rag'
+import { Route as ApiAiMcpTransportRouteImport } from './routes/api/ai/mcp/$transport'
+import { Route as ApiAiVercelChatRouteImport } from './routes/api/ai/vercel/chat'
+import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
+import { Route as ApiTrpcSplatRouteImport } from './routes/api/trpc/$'
+import { Route as ApiWebhooksTelegramRouteImport } from './routes/api/webhooks/telegram'
+import { Route as DashboardAdminIndexRouteImport } from './routes/dashboard/admin/index'
+import { Route as DashboardAdminUsersRouteImport } from './routes/dashboard/admin/users'
+import { Route as DashboardChatIndexRouteImport } from './routes/dashboard/chat/index'
+import { Route as DashboardChatRagRouteImport } from './routes/dashboard/chat/rag'
+import { Route as DashboardChatVercelRouteImport } from './routes/dashboard/chat/vercel'
+import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
+import { Route as DashboardLayoutRouteImport } from './routes/dashboard/layout'
+import { Route as DashboardProtectExamplesRouteImport } from './routes/dashboard/protect-examples'
+import { Route as DashboardSettingsEnhancedIndexRouteImport } from './routes/dashboard/settings-enhanced/index'
+import { Route as DashboardSettingsIndexRouteImport } from './routes/dashboard/settings/index'
+import { Route as DashboardTanstackDbExampleRouteImport } from './routes/dashboard/tanstack-db-example'
+import { Route as DashboardUpgradeRouteImport } from './routes/dashboard/upgrade'
+import { Route as DashboardWorkspaceIndexRouteImport } from './routes/dashboard/workspace/index'
+import { Route as TelegramMiniAppIndexRouteImport } from './routes/telegram-mini-app/index'
+import { Route as TelegramMiniAppInitDataRouteImport } from './routes/telegram-mini-app/initData'
+import { Route as TelegramMiniAppLayoutRouteImport } from './routes/telegram-mini-app/layout'
 
+const TelegramMiniAppLayoutRoute = TelegramMiniAppLayoutRouteImport.update({
+  id: '/telegram-mini-app',
+  path: '/telegram-mini-app',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DashboardLayoutRoute = DashboardLayoutRouteImport.update({
   id: '/dashboard',
   path: '/dashboard',
@@ -50,6 +59,11 @@ const DashboardLayoutRoute = DashboardLayoutRouteImport.update({
 const authLayoutRoute = authLayoutRouteImport.update({
   id: '/(auth)',
   getParentRoute: () => rootRouteImport,
+} as any)
+const TelegramMiniAppIndexRoute = TelegramMiniAppIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => TelegramMiniAppLayoutRoute,
 } as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
   id: '/',
@@ -60,6 +74,11 @@ const publicIndexRoute = publicIndexRouteImport.update({
   id: '/(public)/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const TelegramMiniAppInitDataRoute = TelegramMiniAppInitDataRouteImport.update({
+  id: '/initData',
+  path: '/initData',
+  getParentRoute: () => TelegramMiniAppLayoutRoute,
 } as any)
 const DashboardUpgradeRoute = DashboardUpgradeRouteImport.update({
   id: '/upgrade',
@@ -150,6 +169,11 @@ const DashboardAdminUsersRoute = DashboardAdminUsersRouteImport.update({
   path: '/admin/users',
   getParentRoute: () => DashboardLayoutRoute,
 } as any)
+const ApiWebhooksTelegramRoute = ApiWebhooksTelegramRouteImport.update({
+  id: '/api/webhooks/telegram',
+  path: '/api/webhooks/telegram',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiTrpcSplatRoute = ApiTrpcSplatRouteImport.update({
   id: '/api/trpc/$',
   path: '/api/trpc/$',
@@ -210,6 +234,7 @@ const ApiAiChatImageGenerationRoute =
 
 export interface FileRoutesByFullPath {
   '/dashboard': typeof DashboardLayoutRouteWithChildren
+  '/telegram-mini-app': typeof TelegramMiniAppLayoutRouteWithChildren
   '/forgot-password': typeof authForgotPasswordRoute
   '/login': typeof authLoginRoute
   '/register': typeof authRegisterRoute
@@ -218,14 +243,17 @@ export interface FileRoutesByFullPath {
   '/dashboard/protect-examples': typeof DashboardProtectExamplesRoute
   '/dashboard/tanstack-db-example': typeof DashboardTanstackDbExampleRoute
   '/dashboard/upgrade': typeof DashboardUpgradeRoute
+  '/telegram-mini-app/initData': typeof TelegramMiniAppInitDataRoute
   '/': typeof publicIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/telegram-mini-app/': typeof TelegramMiniAppIndexRoute
   '/two-factor/otp': typeof authTwoFactorOtpRoute
   '/api/admin/users-export': typeof ApiAdminUsersExportRoute
   '/api/admin/users-table': typeof ApiAdminUsersTableRoute
   '/api/ai/chat': typeof ApiAiChatRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
+  '/api/webhooks/telegram': typeof ApiWebhooksTelegramRoute
   '/dashboard/admin/users': typeof DashboardAdminUsersRoute
   '/dashboard/chat/rag': typeof DashboardChatRagRoute
   '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
@@ -250,14 +278,17 @@ export interface FileRoutesByTo {
   '/dashboard/protect-examples': typeof DashboardProtectExamplesRoute
   '/dashboard/tanstack-db-example': typeof DashboardTanstackDbExampleRoute
   '/dashboard/upgrade': typeof DashboardUpgradeRoute
+  '/telegram-mini-app/initData': typeof TelegramMiniAppInitDataRoute
   '/': typeof publicIndexRoute
   '/dashboard': typeof DashboardIndexRoute
+  '/telegram-mini-app': typeof TelegramMiniAppIndexRoute
   '/two-factor/otp': typeof authTwoFactorOtpRoute
   '/api/admin/users-export': typeof ApiAdminUsersExportRoute
   '/api/admin/users-table': typeof ApiAdminUsersTableRoute
   '/api/ai/chat': typeof ApiAiChatRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
+  '/api/webhooks/telegram': typeof ApiWebhooksTelegramRoute
   '/dashboard/admin/users': typeof DashboardAdminUsersRoute
   '/dashboard/chat/rag': typeof DashboardChatRagRoute
   '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
@@ -277,6 +308,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/(auth)': typeof authLayoutRouteWithChildren
   '/dashboard': typeof DashboardLayoutRouteWithChildren
+  '/telegram-mini-app': typeof TelegramMiniAppLayoutRouteWithChildren
   '/(auth)/forgot-password': typeof authForgotPasswordRoute
   '/(auth)/login': typeof authLoginRoute
   '/(auth)/register': typeof authRegisterRoute
@@ -285,14 +317,17 @@ export interface FileRoutesById {
   '/dashboard/protect-examples': typeof DashboardProtectExamplesRoute
   '/dashboard/tanstack-db-example': typeof DashboardTanstackDbExampleRoute
   '/dashboard/upgrade': typeof DashboardUpgradeRoute
+  '/telegram-mini-app/initData': typeof TelegramMiniAppInitDataRoute
   '/(public)/': typeof publicIndexRoute
   '/dashboard/': typeof DashboardIndexRoute
+  '/telegram-mini-app/': typeof TelegramMiniAppIndexRoute
   '/(auth)/two-factor/otp': typeof authTwoFactorOtpRoute
   '/api/admin/users-export': typeof ApiAdminUsersExportRoute
   '/api/admin/users-table': typeof ApiAdminUsersTableRoute
   '/api/ai/chat': typeof ApiAiChatRouteWithChildren
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/api/trpc/$': typeof ApiTrpcSplatRoute
+  '/api/webhooks/telegram': typeof ApiWebhooksTelegramRoute
   '/dashboard/admin/users': typeof DashboardAdminUsersRoute
   '/dashboard/chat/rag': typeof DashboardChatRagRoute
   '/dashboard/chat/vercel': typeof DashboardChatVercelRoute
@@ -312,6 +347,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/dashboard'
+    | '/telegram-mini-app'
     | '/forgot-password'
     | '/login'
     | '/register'
@@ -320,14 +356,17 @@ export interface FileRouteTypes {
     | '/dashboard/protect-examples'
     | '/dashboard/tanstack-db-example'
     | '/dashboard/upgrade'
+    | '/telegram-mini-app/initData'
     | '/'
     | '/dashboard/'
+    | '/telegram-mini-app/'
     | '/two-factor/otp'
     | '/api/admin/users-export'
     | '/api/admin/users-table'
     | '/api/ai/chat'
     | '/api/auth/$'
     | '/api/trpc/$'
+    | '/api/webhooks/telegram'
     | '/dashboard/admin/users'
     | '/dashboard/chat/rag'
     | '/dashboard/chat/vercel'
@@ -352,14 +391,17 @@ export interface FileRouteTypes {
     | '/dashboard/protect-examples'
     | '/dashboard/tanstack-db-example'
     | '/dashboard/upgrade'
+    | '/telegram-mini-app/initData'
     | '/'
     | '/dashboard'
+    | '/telegram-mini-app'
     | '/two-factor/otp'
     | '/api/admin/users-export'
     | '/api/admin/users-table'
     | '/api/ai/chat'
     | '/api/auth/$'
     | '/api/trpc/$'
+    | '/api/webhooks/telegram'
     | '/dashboard/admin/users'
     | '/dashboard/chat/rag'
     | '/dashboard/chat/vercel'
@@ -378,6 +420,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/(auth)'
     | '/dashboard'
+    | '/telegram-mini-app'
     | '/(auth)/forgot-password'
     | '/(auth)/login'
     | '/(auth)/register'
@@ -386,14 +429,17 @@ export interface FileRouteTypes {
     | '/dashboard/protect-examples'
     | '/dashboard/tanstack-db-example'
     | '/dashboard/upgrade'
+    | '/telegram-mini-app/initData'
     | '/(public)/'
     | '/dashboard/'
+    | '/telegram-mini-app/'
     | '/(auth)/two-factor/otp'
     | '/api/admin/users-export'
     | '/api/admin/users-table'
     | '/api/ai/chat'
     | '/api/auth/$'
     | '/api/trpc/$'
+    | '/api/webhooks/telegram'
     | '/dashboard/admin/users'
     | '/dashboard/chat/rag'
     | '/dashboard/chat/vercel'
@@ -413,6 +459,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   authLayoutRoute: typeof authLayoutRouteWithChildren
   DashboardLayoutRoute: typeof DashboardLayoutRouteWithChildren
+  TelegramMiniAppLayoutRoute: typeof TelegramMiniAppLayoutRouteWithChildren
   DotwellKnownOauthAuthorizationServerRoute: typeof DotwellKnownOauthAuthorizationServerRoute
   publicIndexRoute: typeof publicIndexRoute
   ApiAdminUsersExportRoute: typeof ApiAdminUsersExportRoute
@@ -420,12 +467,20 @@ export interface RootRouteChildren {
   ApiAiChatRoute: typeof ApiAiChatRouteWithChildren
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
   ApiTrpcSplatRoute: typeof ApiTrpcSplatRoute
+  ApiWebhooksTelegramRoute: typeof ApiWebhooksTelegramRoute
   ApiAiMcpTransportRoute: typeof ApiAiMcpTransportRoute
   ApiAiVercelChatRoute: typeof ApiAiVercelChatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/telegram-mini-app': {
+      id: '/telegram-mini-app'
+      path: '/telegram-mini-app'
+      fullPath: '/telegram-mini-app'
+      preLoaderRoute: typeof TelegramMiniAppLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/dashboard': {
       id: '/dashboard'
       path: '/dashboard'
@@ -440,6 +495,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authLayoutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/telegram-mini-app/': {
+      id: '/telegram-mini-app/'
+      path: '/'
+      fullPath: '/telegram-mini-app/'
+      preLoaderRoute: typeof TelegramMiniAppIndexRouteImport
+      parentRoute: typeof TelegramMiniAppLayoutRoute
+    }
     '/dashboard/': {
       id: '/dashboard/'
       path: '/'
@@ -453,6 +515,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/'
       preLoaderRoute: typeof publicIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/telegram-mini-app/initData': {
+      id: '/telegram-mini-app/initData'
+      path: '/initData'
+      fullPath: '/telegram-mini-app/initData'
+      preLoaderRoute: typeof TelegramMiniAppInitDataRouteImport
+      parentRoute: typeof TelegramMiniAppLayoutRoute
     }
     '/dashboard/upgrade': {
       id: '/dashboard/upgrade'
@@ -572,6 +641,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/dashboard/admin/users'
       preLoaderRoute: typeof DashboardAdminUsersRouteImport
       parentRoute: typeof DashboardLayoutRoute
+    }
+    '/api/webhooks/telegram': {
+      id: '/api/webhooks/telegram'
+      path: '/api/webhooks/telegram'
+      fullPath: '/api/webhooks/telegram'
+      preLoaderRoute: typeof ApiWebhooksTelegramRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/api/trpc/$': {
       id: '/api/trpc/$'
@@ -712,6 +788,21 @@ const DashboardLayoutRouteWithChildren = DashboardLayoutRoute._addFileChildren(
   DashboardLayoutRouteChildren,
 )
 
+interface TelegramMiniAppLayoutRouteChildren {
+  TelegramMiniAppInitDataRoute: typeof TelegramMiniAppInitDataRoute
+  TelegramMiniAppIndexRoute: typeof TelegramMiniAppIndexRoute
+}
+
+const TelegramMiniAppLayoutRouteChildren: TelegramMiniAppLayoutRouteChildren = {
+  TelegramMiniAppInitDataRoute: TelegramMiniAppInitDataRoute,
+  TelegramMiniAppIndexRoute: TelegramMiniAppIndexRoute,
+}
+
+const TelegramMiniAppLayoutRouteWithChildren =
+  TelegramMiniAppLayoutRoute._addFileChildren(
+    TelegramMiniAppLayoutRouteChildren,
+  )
+
 interface ApiAiChatRouteChildren {
   ApiAiChatRagRoute: typeof ApiAiChatRagRoute
   ApiAiChatImageGenerationRoute: typeof ApiAiChatImageGenerationRoute
@@ -729,6 +820,7 @@ const ApiAiChatRouteWithChildren = ApiAiChatRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   authLayoutRoute: authLayoutRouteWithChildren,
   DashboardLayoutRoute: DashboardLayoutRouteWithChildren,
+  TelegramMiniAppLayoutRoute: TelegramMiniAppLayoutRouteWithChildren,
   DotwellKnownOauthAuthorizationServerRoute:
     DotwellKnownOauthAuthorizationServerRoute,
   publicIndexRoute: publicIndexRoute,
@@ -737,6 +829,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAiChatRoute: ApiAiChatRouteWithChildren,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
   ApiTrpcSplatRoute: ApiTrpcSplatRoute,
+  ApiWebhooksTelegramRoute: ApiWebhooksTelegramRoute,
   ApiAiMcpTransportRoute: ApiAiMcpTransportRoute,
   ApiAiVercelChatRoute: ApiAiVercelChatRoute,
 }

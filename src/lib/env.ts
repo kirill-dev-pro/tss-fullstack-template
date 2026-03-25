@@ -17,6 +17,8 @@ export const env = createEnv({
     OPENAI_API_KEY: z.string().optional(),
     ANTHROPIC_API_KEY: z.string().optional(),
     OPENROUTER_API_KEY: z.string().optional(),
+
+    BOT_TOKEN: z.string().default('SET_YOUR_BOT_TOKEN'),
   },
 
   /**
