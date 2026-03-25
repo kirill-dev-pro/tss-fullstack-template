@@ -1,8 +1,11 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import { initData, mainButton, useSignal, type User } from '@tma.js/sdk-react'
 import { useEffect, useMemo } from 'react'
 
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+
+import { Sticker } from './-components/Sticker'
 
 export const Route = createFileRoute('/telegram-mini-app/')({
   component: () => <TmaApp />,
@@ -49,10 +52,11 @@ function TmaApp() {
   }, [])
 
   return (
-    <div className="flex w-full flex-col gap-4 p-4">
-      <Card>
+    <div className="flex w-full flex-col items-center gap-4 p-4">
+      <Sticker src="/stickers/clippy_plane.tgs" />
+      <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Telegram user</CardTitle>
+          <CardTitle>Telegram mini app for TSS fulstack template</CardTitle>
         </CardHeader>
         <CardContent>
           {rows.length > 0 ? (
@@ -77,6 +81,10 @@ function TmaApp() {
           )}
         </CardContent>
       </Card>
+
+      <Link to="/telegram-mini-app/initData">
+        <Button>View init data</Button>
+      </Link>
     </div>
   )
 }
