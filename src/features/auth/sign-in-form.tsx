@@ -31,7 +31,12 @@ const signInSchema = z.object({
 
 export default function SignInForm() {
   const { t } = useTranslation()
-  const { loginWithCredentials, loginWithPasskey, loginWithSocial } = useLogin()
+  const {
+    loginWithCredentials,
+    loginWithPasskey,
+    loginWithSocial,
+    getRedirectTarget,
+  } = useLogin()
 
   const form = useForm({
     resolver: zodResolver(signInSchema),
@@ -195,7 +200,7 @@ export default function SignInForm() {
               onClick={() => {
                 loginWithSocial.mutate({
                   provider: 'google',
-                  callbackURL: '/dashboard',
+                  callbackURL: getRedirectTarget(),
                 })
               }}
               variant="outline"
@@ -231,7 +236,7 @@ export default function SignInForm() {
               onClick={() => {
                 loginWithSocial.mutate({
                   provider: 'github',
-                  callbackURL: '/dashboard',
+                  callbackURL: getRedirectTarget(),
                 })
               }}
               variant="outline"

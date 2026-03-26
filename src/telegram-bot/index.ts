@@ -6,7 +6,6 @@ import {
   saveMessage,
 } from '@/lib/db/methods'
 import { env } from '@/lib/env'
-import { emitTelegramMessage } from '@/lib/events/telegram'
 
 const bot = new Bot(env.BOT_TOKEN)
 
@@ -171,11 +170,7 @@ bot.use(async (ctx, next) => {
       'incoming',
       payload,
       chat,
-    )
-      .then((msg) => {
-        if (msg) emitTelegramMessage(msg)
-      })
-      .catch((err) => console.error('[DB] save incoming:', err))
+    ).catch((err) => console.error('[DB] save incoming:', err))
   }
 
   await next()
@@ -198,11 +193,7 @@ bot.api.config.use(async (prev, method, payload, signal) => {
       'outgoing',
       { messageType: 'text', text: p.text, media: null },
       { chatId: p.chat_id, chatType: 'private', chatTitle: null },
-    )
-      .then((msg) => {
-        if (msg) emitTelegramMessage(msg)
-      })
-      .catch((err) => console.error('[DB] save outgoing:', err))
+    ).catch((err) => console.error('[DB] save outgoing:', err))
   }
 
   return result

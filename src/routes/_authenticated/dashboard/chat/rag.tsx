@@ -3,7 +3,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { Chat } from '@/features/ai/chat-rag'
 import UploadComponent from '@/features/files/file-upload'
 
-export const Route = createFileRoute('/dashboard/chat/rag')({
+export const Route = createFileRoute('/_authenticated/dashboard/chat/rag')({
   component: RouteComponent,
 })
 

@@ -1,4 +1,3 @@
-import { tracked } from '@trpc/server'
 import { GrammyError } from 'grammy'
 import { z } from 'zod'
 
@@ -12,7 +11,6 @@ import {
   getTelegramStats,
   markContactBlocked,
 } from '@/lib/db/methods'
-import { onTelegramMessage } from '@/lib/events/telegram'
 import { createTRPCRouter, protectedProcedure } from '@/lib/trpc/init'
 import { bot } from '@/telegram-bot'
 
@@ -114,38 +112,5 @@ export const telegramRouter = createTRPCRouter({
       }
 
       return results
-    }),
-
-  onNewMessage: protectedProcedure
-    .input(z.object({ chatId: z.number() }))
-    .subscription(async function* ({ input, signal }) {
-      const pending: Array<{ id: string; data: unknown }> = []
-      let resolve: (() => void) | null = null
-
-      const cleanup = onTelegramMessage((message) => {
-        if (message.chatId === input.chatId) {
-          pending.push({
-            id: String(message.id),
-            data: message,
-          })
-          resolve?.()
-        }
-      })
-
-      try {
-        while (!signal?.aborted) {
-          while (pending.length > 0) {
-            const { id, data } = pending.shift()!
-            yield tracked(id, data)
-          }
-
-          await new Promise<void>((r) => {
-            resolve = r
-            signal?.addEventListener('abort', () => r(), { once: true })
-          })
-        }
-      } finally {
-        cleanup()
-      }
     }),
 })

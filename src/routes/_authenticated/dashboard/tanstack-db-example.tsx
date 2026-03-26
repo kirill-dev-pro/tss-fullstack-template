@@ -13,7 +13,9 @@ import { Input } from '@/components/ui/input'
 import { useTRPC } from '@/lib/trpc/react'
 import { trpcClient } from '@/lib/trpc/root-provider'
 
-export const Route = createFileRoute('/dashboard/tanstack-db-example')({
+export const Route = createFileRoute(
+  '/_authenticated/dashboard/tanstack-db-example',
+)({
   component: TanStackDBExample,
 })
 

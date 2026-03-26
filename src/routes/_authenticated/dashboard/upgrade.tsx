@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
-export const Route = createFileRoute('/dashboard/upgrade')({
+export const Route = createFileRoute('/_authenticated/dashboard/upgrade')({
   component: UpgradePage,
 })
 

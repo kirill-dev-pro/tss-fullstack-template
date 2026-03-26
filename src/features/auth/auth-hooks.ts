@@ -10,6 +10,15 @@ const authQueryKeys = {
   session: ['session'],
 }
 
+const DEFAULT_REDIRECT = '/dashboard'
+
+function sanitizeRedirect(url: unknown): string {
+  if (typeof url !== 'string' || !url.startsWith('/') || url.startsWith('//')) {
+    return DEFAULT_REDIRECT
+  }
+  return url
+}
+
 export const useSession = () => {
   const session = authClient.useSession()
   return session
@@ -17,6 +26,12 @@ export const useSession = () => {
 
 export const useLogin = () => {
   const router = useRouter()
+
+  const getRedirectTarget = (): string => {
+    const searchParams = router.state.location.search as Record<string, unknown>
+    return sanitizeRedirect(searchParams.redirect)
+  }
+
   const loginWithCredentials = useMutation({
     mutationFn: async ({
       email,
@@ -41,7 +56,7 @@ export const useLogin = () => {
     },
     onSuccess(response) {
       if (response.data?.user.id) {
-        router.navigate({ to: '/dashboard' })
+        router.navigate({ to: getRedirectTarget() })
       }
     },
     onError(error: any) {
@@ -63,7 +78,7 @@ export const useLogin = () => {
       return result
     },
     onSuccess: () => {
-      router.navigate({ to: '/dashboard' })
+      router.navigate({ to: getRedirectTarget() })
     },
     onError(error: any) {
       console.error('Passkey login error:', error)
@@ -80,7 +95,7 @@ export const useLogin = () => {
     }) => {
       const result = await authClient.signIn.social({
         provider,
-        callbackURL: callbackURL || '/dashboard',
+        callbackURL: callbackURL || DEFAULT_REDIRECT,
       })
 
       if (result.error) {
@@ -98,6 +113,7 @@ export const useLogin = () => {
     loginWithCredentials,
     loginWithPasskey,
     loginWithSocial,
+    getRedirectTarget,
   }
 }
 

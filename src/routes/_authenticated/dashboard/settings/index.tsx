@@ -8,7 +8,7 @@ import UserCard from '@/features/user/user-card'
 import { useSessions } from '@/features/user/user-hooks'
 import { useTranslation } from '@/lib/intl/react'
 
-export const Route = createFileRoute('/dashboard/settings/')({
+export const Route = createFileRoute('/_authenticated/dashboard/settings/')({
   component: RouteComponent,
 })
 

@@ -15,7 +15,9 @@ import { EnhancedUserProfile } from '@/features/user/enhanced-user-profile'
 import { NotificationSettings } from '@/features/user/notification-settings'
 import { SecuritySettings } from '@/features/user/security-settings'
 
-export const Route = createFileRoute('/dashboard/settings-enhanced/')({
+export const Route = createFileRoute(
+  '/_authenticated/dashboard/settings-enhanced/',
+)({
   component: EnhancedSettingsPage,
 })
 

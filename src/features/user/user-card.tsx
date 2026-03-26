@@ -23,7 +23,7 @@ import type { AuthClient } from '@/lib/auth/auth-client'
 import CopyButton from '@/components/copy-button'
 import { LanguageSwitch } from '@/components/language-switch'
 import { AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { UserAvatar } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import { ButtonGroup } from '@/components/ui/button-group'
 import {
@@ -299,14 +299,7 @@ export default function UserCard(props: {
       <CardContent className="flex flex-col gap-8">
         <div className="flex items-start justify-between">
           <div className="flex items-center gap-4">
-            <Avatar className="hidden h-9 w-9 sm:flex">
-              <AvatarImage
-                alt="Avatar"
-                className="object-cover"
-                src={session?.user.image || '#'}
-              />
-              <AvatarFallback name={session?.user.name} />
-            </Avatar>
+            <UserAvatar user={session?.user} className="h-9 w-9" />
             <div className="grid gap-1">
               <p className="text-sm leading-none font-medium">
                 {session?.user.name}
