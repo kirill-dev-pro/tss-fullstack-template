@@ -93,11 +93,7 @@ export function TelegramContactsPage() {
       <TelegramContactsDataTable
         onTableMetaChange={handleTableMetaChange}
         onViewChat={() => {}}
-        toolbarActions={
-          <>
-            <BroadcastDialog contactCount={stats.total} />
-          </>
-        }
+        toolbarActions={<BroadcastDialog />}
       />
 
       {selectedChat && (

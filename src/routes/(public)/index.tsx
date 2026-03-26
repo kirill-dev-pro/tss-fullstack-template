@@ -9,7 +9,10 @@ import {
   LogIn,
   MessageCircle,
   MessageSquare,
+  Radio,
   Receipt,
+  Send,
+  Smartphone,
   UserPlus,
   Users,
   Zap,
@@ -136,6 +139,7 @@ function LeftSidebar() {
   const pages = [
     { icon: Layout, label: 'Hero Section', active: true },
     { icon: Layers, label: 'Stack Architecture' },
+    { icon: Send, label: 'Telegram Integration' },
     { icon: Receipt, label: 'Licensing' },
     { icon: MessageSquare, label: 'Community Logs' },
     { icon: Users, label: 'Used By' },
@@ -269,7 +273,8 @@ function HeroSection() {
         </h1>
         <p className="mb-6 max-w-[400px] text-sm text-[var(--text-muted)]">
           A production-ready boilerplate fusing React, TanStack Start, tRPC, and
-          Drizzle. Skip the plumbing, start writing business logic.
+          Drizzle — with built-in Telegram Mini App, web chat, and broadcast
+          support. Skip the plumbing, start writing business logic.
         </p>
         <div className="flex gap-3">
           <Button className="px-4 py-2" variant="default">
@@ -333,6 +338,106 @@ function QuickLinks() {
   )
 }
 
+function TelegramSection() {
+  const features = [
+    {
+      icon: Smartphone,
+      title: 'Mini App',
+      badge: 'live',
+      description:
+        'Full Telegram Mini App with WebApp SDK, native auth, and haptic feedback.',
+      href: '/telegram-mini-app',
+      linkLabel: 'Open Mini App',
+      codeLine: 'telegram-mini-app/',
+    },
+    {
+      icon: MessageCircle,
+      title: 'Web Chat',
+      badge: 'ready',
+      description:
+        'Dashboard chat backed by the bot. Real-time via webhooks + tRPC subscriptions.',
+      href: '/dashboard/telegram/chats',
+      linkLabel: 'View Chats',
+      codeLine: 'api/webhooks/telegram.ts',
+    },
+    {
+      icon: Radio,
+      title: 'Broadcasts',
+      badge: 'ready',
+      description:
+        'Send messages to filtered contact segments with delivery tracking.',
+      href: '/dashboard/telegram/contacts',
+      linkLabel: 'Manage Contacts',
+      codeLine: 'api/telegram/contacts-table.ts',
+    },
+  ]
+
+  return (
+    <section>
+      <SectionTitle>Telegram Integration</SectionTitle>
+      <div className="overflow-hidden rounded border border-[var(--border-subtle)] bg-[var(--bg-panel)]">
+        {/* Header row */}
+        <div className="flex items-center justify-between border-b border-[var(--border-subtle)] bg-[var(--bg-panel-light)] px-3 py-2">
+          <div className="flex items-center gap-2">
+            <svg
+              className="h-3.5 w-3.5 fill-[var(--accent-blue)]"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <title>Telegram</title>
+              <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+            </svg>
+            <span className="text-[11px] font-semibold tracking-wider uppercase">
+              Built-in Telegram Platform
+            </span>
+          </div>
+          <a
+            className="text-[11px] text-[var(--accent-blue)] hover:underline"
+            href="/telegram-mini-app"
+          >
+            Try Mini App →
+          </a>
+        </div>
+        {/* Feature cards */}
+        <div className="grid grid-cols-3 divide-x divide-[var(--border-subtle)]">
+          {features.map((feature) => (
+            <div
+              className="flex flex-col gap-3 p-4 hover:bg-[var(--bg-panel-light)]"
+              key={feature.title}
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <feature.icon className="h-3.5 w-3.5 text-[var(--accent-blue)]" />
+                  <span className="text-xs font-medium text-[var(--text-main)]">
+                    {feature.title}
+                  </span>
+                </div>
+                <span className="font-mono text-[10px] text-[var(--accent-green)]">
+                  {feature.badge}
+                </span>
+              </div>
+              <p className="text-[11px] leading-relaxed text-[var(--text-muted)]">
+                {feature.description}
+              </p>
+              <div className="mt-auto flex flex-col gap-1.5">
+                <div className="overflow-hidden rounded bg-[var(--bg-deep)] px-2 py-1 font-mono text-[10px] text-[var(--text-muted)]">
+                  <span className="truncate block">{feature.codeLine}</span>
+                </div>
+                <a
+                  className="text-[11px] text-[var(--accent-blue)] hover:underline"
+                  href={feature.href}
+                >
+                  {feature.linkLabel} →
+                </a>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-4 flex items-center gap-2 font-mono text-[11px] tracking-widest text-[var(--accent-blue)] uppercase">
@@ -366,6 +471,10 @@ function CoreInfrastructure() {
     {
       label: 'Database',
       value: 'Drizzle ORM (Edge-ready, raw SQL performance)',
+    },
+    {
+      label: 'Telegram',
+      value: 'Grammy bot · Mini App SDK · Webhook handler · Broadcasts',
     },
   ]
 
@@ -803,6 +912,7 @@ function RightSidebar() {
     { name: 'shadcn/ui', version: 'latest' },
     { name: 'Lucide Icons', version: '0.546' },
     { name: 'Framer Motion', version: '12.38' },
+    { name: 'Grammy (Telegram)', version: '1.36' },
   ]
 
   const deploymentTargets = [
@@ -827,6 +937,12 @@ function RightSidebar() {
           </div>
           <div className="flex items-center gap-1 rounded-[2px] bg-[var(--accent-blue)] px-1.5 py-0.5 text-[11px] text-white">
             type_safe{' '}
+            <span className="cursor-pointer opacity-60 hover:opacity-100">
+              ×
+            </span>
+          </div>
+          <div className="flex items-center gap-1 rounded-[2px] bg-[#229ED9]/80 px-1.5 py-0.5 text-[11px] text-white">
+            telegram{' '}
             <span className="cursor-pointer opacity-60 hover:opacity-100">
               ×
             </span>
@@ -981,6 +1097,7 @@ function LandingPage() {
         <div className="relative z-10 mx-auto flex max-w-[900px] flex-col gap-15 px-10 py-10">
           <HeroSection />
           <QuickLinks />
+          <TelegramSection />
           <CoreInfrastructure />
           <CommunityValidation />
           <SocialMedia />

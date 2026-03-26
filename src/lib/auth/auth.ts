@@ -37,7 +37,17 @@ export const auth = betterAuth({
   secret: env.BETTER_AUTH_SECRET,
   basePath: '/api/auth',
   baseURL: env.SERVER_URL,
-  trustedOrigins: [env.SERVER_URL],
+  trustedOrigins: [
+    env.SERVER_URL,
+    // Trust both Vercel system URLs so auth works from any preview URL,
+    // even when the browser hits the deployment-unique URL instead of the branch URL.
+    ...(process.env.VERCEL_BRANCH_URL
+      ? [`https://${process.env.VERCEL_BRANCH_URL}`]
+      : []),
+    ...(process.env.VERCEL_URL
+      ? [`https://${process.env.VERCEL_URL}`]
+      : []),
+  ],
   onAPIError: {
     throw: true,
     onError: (error) => {

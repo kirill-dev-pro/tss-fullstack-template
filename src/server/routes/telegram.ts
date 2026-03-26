@@ -3,7 +3,9 @@ import { GrammyError } from 'grammy'
 import { z } from 'zod'
 
 import {
-  getBroadcastableContacts,
+  type BroadcastAudienceFilters,
+  countBroadcastAudience,
+  getBroadcastAudienceContacts,
   getMessagesPage,
   getTelegramChatsList,
   getTelegramContactsList,
@@ -60,14 +62,31 @@ export const telegramRouter = createTRPCRouter({
       }
     }),
 
+  audienceCount: protectedProcedure
+    .input(
+      z.object({
+        nameSearch: z.string().optional(),
+        openedMiniAppOnly: z.boolean().optional(),
+        lastActiveDays: z.number().optional(),
+      }),
+    )
+    .query(async ({ input }) => {
+      const total = await countBroadcastAudience(input as BroadcastAudienceFilters)
+      return { total }
+    }),
+
   broadcastMessage: protectedProcedure
     .input(
       z.object({
         text: z.string().min(1),
+        nameSearch: z.string().optional(),
+        openedMiniAppOnly: z.boolean().optional(),
+        lastActiveDays: z.number().optional(),
       }),
     )
     .mutation(async ({ input }) => {
-      const contacts = await getBroadcastableContacts()
+      const { text, ...filters } = input
+      const contacts = await getBroadcastAudienceContacts(filters as BroadcastAudienceFilters)
       const results = { sent: 0, blocked: 0, failed: 0, total: contacts.length }
 
       for (let i = 0; i < contacts.length; i += 30) {
@@ -76,7 +95,7 @@ export const telegramRouter = createTRPCRouter({
         await Promise.all(
           batch.map(async (contact) => {
             try {
-              await bot.api.sendMessage(contact.telegramUserId, input.text)
+              await bot.api.sendMessage(contact.telegramUserId, text)
               results.sent++
             } catch (err) {
               if (err instanceof GrammyError && err.error_code === 403) {
