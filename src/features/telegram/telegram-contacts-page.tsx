@@ -16,8 +16,6 @@ import {
 
 export function TelegramContactsPage() {
   const [meta, setMeta] = useState<InfiniteQueryMeta | undefined>()
-  const [filterSearchString, setFilterSearchString] = useState('')
-  const [filterRowCount, setFilterRowCount] = useState(0)
   const [selectedChat, setSelectedChat] = useState<{
     chatId: number
     chatTitle: string | null
@@ -27,14 +25,6 @@ export function TelegramContactsPage() {
 
   const handleTableMetaChange = useCallback(
     (newMeta: InfiniteQueryMeta | undefined) => setMeta(newMeta),
-    [],
-  )
-
-  const handleFilterChange = useCallback(
-    (newFilterSearchString: string, newFilterRowCount: number) => {
-      setFilterSearchString(newFilterSearchString)
-      setFilterRowCount(newFilterRowCount)
-    },
     [],
   )
 
@@ -101,16 +91,9 @@ export function TelegramContactsPage() {
       </div>
 
       <TelegramContactsDataTable
-        onFilterChange={handleFilterChange}
         onTableMetaChange={handleTableMetaChange}
         onViewChat={() => {}}
-        toolbarActions={
-          <BroadcastDialog
-            filterRowCount={filterRowCount}
-            filterSearchString={filterSearchString}
-            totalNonBlocked={stats.total}
-          />
-        }
+        toolbarActions={<BroadcastDialog />}
       />
 
       {selectedChat && (

@@ -1,4 +1,4 @@
-import { and, count, desc, eq, gte, isNull, lt } from 'drizzle-orm'
+import { and, count, desc, eq, gte, ilike, isNotNull, isNull, lt, or, type SQL } from 'drizzle-orm'
 
 import { db } from '@/lib/db'
 import {
@@ -153,6 +153,58 @@ export async function getBroadcastableContacts() {
     .select()
     .from(telegramContacts)
     .where(isNull(telegramContacts.blockedAt))
+    .orderBy(desc(telegramContacts.lastMessageAt))
+}
+
+export interface BroadcastAudienceFilters {
+  nameSearch?: string
+  openedMiniAppOnly?: boolean
+  lastActiveDays?: number
+}
+
+function buildAudienceConditions(filters: BroadcastAudienceFilters): SQL[] {
+  const conditions: SQL[] = [isNull(telegramContacts.blockedAt)]
+
+  if (filters.nameSearch?.trim()) {
+    const pattern = `%${filters.nameSearch.trim()}%`
+    const nameCondition = or(
+      ilike(telegramContacts.username, pattern),
+      ilike(telegramContacts.firstName, pattern),
+      ilike(telegramContacts.lastName, pattern),
+    )
+    if (nameCondition) conditions.push(nameCondition)
+  }
+
+  if (filters.openedMiniAppOnly) {
+    conditions.push(isNotNull(telegramContacts.openedMiniAppAt))
+  }
+
+  if (filters.lastActiveDays) {
+    const cutoff = new Date()
+    cutoff.setDate(cutoff.getDate() - filters.lastActiveDays)
+    conditions.push(gte(telegramContacts.lastMessageAt, cutoff))
+  }
+
+  return conditions
+}
+
+export async function countBroadcastAudience(
+  filters: BroadcastAudienceFilters,
+): Promise<number> {
+  const [result] = await db
+    .select({ total: count() })
+    .from(telegramContacts)
+    .where(and(...buildAudienceConditions(filters)))
+  return result?.total ?? 0
+}
+
+export async function getBroadcastAudienceContacts(
+  filters: BroadcastAudienceFilters,
+) {
+  return db
+    .select()
+    .from(telegramContacts)
+    .where(and(...buildAudienceConditions(filters)))
     .orderBy(desc(telegramContacts.lastMessageAt))
 }
 
