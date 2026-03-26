@@ -40,11 +40,14 @@ export const env = createEnv({
     ...process.env,
     SERVER_URL:
       process.env.SERVER_URL ||
-      (process.env.VERCEL_URL
-        ? `https://${process.env.VERCEL_URL}`
-        : undefined) ||
+      // VERCEL_BRANCH_URL is stable per branch (e.g. my-app-git-main-org.vercel.app)
+      // — preferred for auth so OAuth redirect URIs don't change every deploy
       (process.env.VERCEL_BRANCH_URL
         ? `https://${process.env.VERCEL_BRANCH_URL}`
+        : undefined) ||
+      // VERCEL_URL is unique per deployment — use as last-resort Vercel fallback
+      (process.env.VERCEL_URL
+        ? `https://${process.env.VERCEL_URL}`
         : undefined),
   },
 
