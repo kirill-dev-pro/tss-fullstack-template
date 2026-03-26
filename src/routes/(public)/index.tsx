@@ -9,7 +9,10 @@ import {
   LogIn,
   MessageCircle,
   MessageSquare,
+  Radio,
   Receipt,
+  Send,
+  Smartphone,
   UserPlus,
   Users,
   Zap,
@@ -136,6 +139,7 @@ function LeftSidebar() {
   const pages = [
     { icon: Layout, label: 'Hero Section', active: true },
     { icon: Layers, label: 'Stack Architecture' },
+    { icon: Send, label: 'Telegram Integration' },
     { icon: Receipt, label: 'Licensing' },
     { icon: MessageSquare, label: 'Community Logs' },
     { icon: Users, label: 'Used By' },
@@ -269,7 +273,8 @@ function HeroSection() {
         </h1>
         <p className="mb-6 max-w-[400px] text-sm text-[var(--text-muted)]">
           A production-ready boilerplate fusing React, TanStack Start, tRPC, and
-          Drizzle. Skip the plumbing, start writing business logic.
+          Drizzle — with built-in Telegram Mini App, web chat, and broadcast
+          support. Skip the plumbing, start writing business logic.
         </p>
         <div className="flex gap-3">
           <Button className="px-4 py-2" variant="default">
@@ -333,6 +338,117 @@ function QuickLinks() {
   )
 }
 
+function TelegramSection() {
+  const features = [
+    {
+      icon: Smartphone,
+      title: 'Mini App',
+      badge: 'Live',
+      badgeColor: 'bg-[#27c93f]/20 text-[#27c93f]',
+      description:
+        'Full-featured Telegram Mini App with WebApp SDK, Telegram-native auth, and haptic feedback. Runs inside any Telegram chat.',
+      href: '/telegram-mini-app',
+      linkLabel: 'Open Mini App',
+      codeLine: 'src/routes/telegram-mini-app/',
+    },
+    {
+      icon: MessageCircle,
+      title: 'Web Chat',
+      badge: 'Ready',
+      badgeColor: 'bg-[#229ED9]/20 text-[#229ED9]',
+      description:
+        'Embeddable web chat backed by your Telegram bot. Real-time messages delivered via webhooks and tRPC, visible in the dashboard.',
+      href: '/dashboard/telegram/chats',
+      linkLabel: 'View Chats',
+      codeLine: 'src/routes/api/webhooks/telegram.ts',
+    },
+    {
+      icon: Radio,
+      title: 'Broadcasts',
+      badge: 'Ready',
+      badgeColor: 'bg-[var(--accent-orange)]/20 text-[var(--accent-orange)]',
+      description:
+        'Schedule and send broadcast messages to your Telegram contacts with delivery tracking, open-rate analytics, and contact management.',
+      href: '/dashboard/telegram/contacts',
+      linkLabel: 'Manage Contacts',
+      codeLine: 'src/routes/api/telegram/contacts-table.ts',
+    },
+  ]
+
+  return (
+    <section>
+      <SectionTitle>Telegram Integration</SectionTitle>
+      {/* Banner */}
+      <div className="mb-4 flex items-center gap-3 rounded border border-[#229ED9]/30 bg-[#229ED9]/5 px-4 py-3">
+        <svg
+          className="h-7 w-7 shrink-0 fill-[#229ED9]"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <title>Telegram</title>
+          <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z" />
+        </svg>
+        <div>
+          <div className="text-sm font-medium text-[var(--text-main)]">
+            Ready-to-use Telegram platform
+          </div>
+          <div className="text-xs text-[var(--text-muted)]">
+            Mini App · Web Chat · Broadcasts — all wired up and
+            production-ready out of the box
+          </div>
+        </div>
+        <a className="ml-auto shrink-0" href="/telegram-mini-app">
+          <button
+            className="rounded border border-[#229ED9]/40 bg-[#229ED9]/10 px-3 py-1.5 text-xs text-[#229ED9] transition-colors hover:bg-[#229ED9]/20"
+            type="button"
+          >
+            Try Mini App →
+          </button>
+        </a>
+      </div>
+      {/* Feature cards */}
+      <div className="grid grid-cols-3 gap-4">
+        {features.map((feature) => (
+          <div
+            className="flex flex-col gap-3 rounded border border-[var(--border-subtle)] bg-[var(--bg-panel)] p-4 transition-colors hover:border-[#229ED9]/40"
+            key={feature.title}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-[var(--bg-deep)]">
+                <feature.icon className="h-4.5 w-4.5 text-[#229ED9]" />
+              </div>
+              <span
+                className={`rounded px-1.5 py-0.5 text-[10px] font-semibold ${feature.badgeColor}`}
+              >
+                {feature.badge}
+              </span>
+            </div>
+            <div>
+              <div className="text-sm font-medium text-[var(--text-main)]">
+                {feature.title}
+              </div>
+              <div className="mt-1 text-[12px] leading-relaxed text-[var(--text-muted)]">
+                {feature.description}
+              </div>
+            </div>
+            <div className="mt-auto flex flex-col gap-2">
+              <div className="rounded bg-[var(--bg-deep)] px-2 py-1 font-mono text-[10px] text-[var(--text-muted)]">
+                {feature.codeLine}
+              </div>
+              <a
+                className="text-[11px] text-[#229ED9] hover:underline"
+                href={feature.href}
+              >
+                {feature.linkLabel} →
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  )
+}
+
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-4 flex items-center gap-2 font-mono text-[11px] tracking-widest text-[var(--accent-blue)] uppercase">
@@ -366,6 +482,10 @@ function CoreInfrastructure() {
     {
       label: 'Database',
       value: 'Drizzle ORM (Edge-ready, raw SQL performance)',
+    },
+    {
+      label: 'Telegram',
+      value: 'Grammy bot · Mini App SDK · Webhook handler · Broadcasts',
     },
   ]
 
@@ -803,6 +923,7 @@ function RightSidebar() {
     { name: 'shadcn/ui', version: 'latest' },
     { name: 'Lucide Icons', version: '0.546' },
     { name: 'Framer Motion', version: '12.38' },
+    { name: 'Grammy (Telegram)', version: '1.36' },
   ]
 
   const deploymentTargets = [
@@ -827,6 +948,12 @@ function RightSidebar() {
           </div>
           <div className="flex items-center gap-1 rounded-[2px] bg-[var(--accent-blue)] px-1.5 py-0.5 text-[11px] text-white">
             type_safe{' '}
+            <span className="cursor-pointer opacity-60 hover:opacity-100">
+              ×
+            </span>
+          </div>
+          <div className="flex items-center gap-1 rounded-[2px] bg-[#229ED9]/80 px-1.5 py-0.5 text-[11px] text-white">
+            telegram{' '}
             <span className="cursor-pointer opacity-60 hover:opacity-100">
               ×
             </span>
@@ -981,6 +1108,7 @@ function LandingPage() {
         <div className="relative z-10 mx-auto flex max-w-[900px] flex-col gap-15 px-10 py-10">
           <HeroSection />
           <QuickLinks />
+          <TelegramSection />
           <CoreInfrastructure />
           <CommunityValidation />
           <SocialMedia />
