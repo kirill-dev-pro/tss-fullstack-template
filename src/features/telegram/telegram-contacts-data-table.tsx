@@ -45,10 +45,12 @@ const dataTableQuery = createDataTableQueryOptions<
 function TelegramContactsTableInner({
   toolbarActions,
   onTableMetaChange,
+  onFilterChange,
   onViewChat,
 }: {
   toolbarActions?: ReactNode
   onTableMetaChange?: (meta: InfiniteQueryMeta | undefined) => void
+  onFilterChange?: (filterSearchString: string, filterRowCount: number) => void
   onViewChat: (contact: TelegramContactRow) => void
 }) {
   const filterState = useFilterState()
@@ -65,6 +67,15 @@ function TelegramContactsTableInner({
   useEffect(() => {
     onTableMetaChange?.(meta)
   }, [meta, onTableMetaChange])
+
+  useEffect(() => {
+    if (!onFilterChange) return
+    const filterSearchString = stateToSearchString(
+      telegramContactsFilterSchema.definition,
+      filterState as Record<string, unknown>,
+    )
+    onFilterChange(filterSearchString, meta?.filterRowCount ?? 0)
+  }, [filterState, meta?.filterRowCount, onFilterChange])
 
   const filterFields = useMemo(
     () =>
@@ -150,15 +161,18 @@ function TelegramContactsDataTableProvider({
 export function TelegramContactsDataTable({
   toolbarActions,
   onTableMetaChange,
+  onFilterChange,
   onViewChat,
 }: {
   toolbarActions?: ReactNode
   onTableMetaChange?: (meta: InfiniteQueryMeta | undefined) => void
+  onFilterChange?: (filterSearchString: string, filterRowCount: number) => void
   onViewChat: (contact: TelegramContactRow) => void
 }) {
   return (
     <TelegramContactsDataTableProvider>
       <TelegramContactsTableInner
+        onFilterChange={onFilterChange}
         onTableMetaChange={onTableMetaChange}
         onViewChat={onViewChat}
         toolbarActions={toolbarActions}

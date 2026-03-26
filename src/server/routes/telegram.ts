@@ -10,6 +10,7 @@ import {
   getTelegramStats,
   markContactBlocked,
 } from '@/lib/db/methods'
+import { getFilteredBroadcastableContacts } from '@/lib/telegram-contacts-table/drizzle'
 import { onTelegramMessage } from '@/lib/events/telegram'
 import { createTRPCRouter, protectedProcedure } from '@/lib/trpc/init'
 import { bot } from '@/telegram-bot'
@@ -64,10 +65,13 @@ export const telegramRouter = createTRPCRouter({
     .input(
       z.object({
         text: z.string().min(1),
+        filterSearchString: z.string().optional(),
       }),
     )
     .mutation(async ({ input }) => {
-      const contacts = await getBroadcastableContacts()
+      const contacts = input.filterSearchString
+        ? await getFilteredBroadcastableContacts(input.filterSearchString)
+        : await getBroadcastableContacts()
       const results = { sent: 0, blocked: 0, failed: 0, total: contacts.length }
 
       for (let i = 0; i < contacts.length; i += 30) {
