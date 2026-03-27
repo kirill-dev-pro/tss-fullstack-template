@@ -10,11 +10,9 @@ import {
   MessageCircle,
   MessageSquare,
   Radio,
-  Receipt,
   Send,
   Smartphone,
   UserPlus,
-  Users,
   Zap,
   Container,
   Globe,
@@ -89,7 +87,7 @@ function TopBar() {
             Register
           </Button>
         </Link>
-        <Button className="gap-1.5" size="sm" variant="default">
+        <Button className="hidden gap-1.5 sm:flex" size="sm" variant="default">
           <Download className="h-3.5 w-3.5" />
           Clone Template
         </Button>
@@ -140,9 +138,7 @@ function LeftSidebar() {
     { icon: Layout, label: 'Hero Section', active: true },
     { icon: Layers, label: 'Stack Architecture' },
     { icon: Send, label: 'Telegram Integration' },
-    { icon: Receipt, label: 'Licensing' },
     { icon: MessageSquare, label: 'Community Logs' },
-    { icon: Users, label: 'Used By' },
     { icon: BookOpen, label: 'Engineering Blog' },
   ]
 
@@ -160,7 +156,7 @@ function LeftSidebar() {
   ]
 
   return (
-    <aside className="flex flex-col overflow-y-auto border-r border-[var(--border-subtle)] bg-[var(--bg-base)]">
+    <aside className="hidden flex-col overflow-y-auto border-r border-[var(--border-subtle)] bg-[var(--bg-base)] lg:flex">
       <div className="border-b border-[var(--border-subtle)] py-2">
         <div className="px-3 py-1 text-[10px] font-semibold tracking-wider text-[var(--text-muted)] uppercase">
           Pages
@@ -255,7 +251,7 @@ function TerminalBlock() {
 
 function HeroSection() {
   return (
-    <section className="grid grid-cols-2 items-center gap-10">
+    <section className="grid grid-cols-1 items-center gap-10 md:grid-cols-2">
       <div>
         <div className="mb-4 flex w-fit items-center gap-1 rounded-sm border border-[var(--border-blue)] bg-[var(--bg-deep)] p-0.5">
           <div className="rounded-[2px] bg-[var(--accent-blue)] px-1.5 py-0.5 text-[11px] text-white">
@@ -313,7 +309,7 @@ function QuickLinks() {
   return (
     <section>
       <SectionTitle>Quick Links</SectionTitle>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {links.map((link) => (
           <a
             className="group flex flex-col items-center gap-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-panel)] p-6 transition-colors hover:border-[var(--accent-blue)] hover:bg-[var(--bg-panel-light)]"
@@ -399,7 +395,7 @@ function TelegramSection() {
           </a>
         </div>
         {/* Feature cards */}
-        <div className="grid grid-cols-3 divide-x divide-[var(--border-subtle)]">
+        <div className="grid grid-cols-1 divide-y divide-[var(--border-subtle)] sm:grid-cols-3 sm:divide-x sm:divide-y-0">
           {features.map((feature) => (
             <div
               className="flex flex-col gap-3 p-4 hover:bg-[var(--bg-panel-light)]"
@@ -600,7 +596,7 @@ function SocialMedia() {
   return (
     <section>
       <SectionTitle>Social Media</SectionTitle>
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {posts.map((post) => (
           <Card className="flex flex-col gap-3 p-5" key={post.name}>
             <div className="flex items-center gap-3">
@@ -627,112 +623,6 @@ function SocialMedia() {
   )
 }
 
-function UsedBy() {
-  const companies = [
-    {
-      name: 'Vercel',
-      icon: (
-        <svg className="h-10 w-10" fill="currentColor" viewBox="0 0 24 24">
-          <rect height="7" rx="1" width="7" x="3" y="3" />
-          <rect height="7" rx="1" width="7" x="14" y="3" />
-          <rect height="7" rx="1" width="7" x="14" y="14" />
-          <rect height="7" rx="1" width="7" x="3" y="14" />
-        </svg>
-      ),
-    },
-    {
-      name: 'Linear',
-      icon: (
-        <svg className="h-10 w-10" fill="currentColor" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 6v12M6 12h12" stroke="#000" strokeWidth="2" />
-        </svg>
-      ),
-    },
-    {
-      name: 'Stripe',
-      icon: (
-        <svg className="h-10 w-10" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
-        </svg>
-      ),
-    },
-    {
-      name: 'Notion',
-      icon: (
-        <svg className="h-10 w-10" fill="currentColor" viewBox="0 0 24 24">
-          <polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2" />
-        </svg>
-      ),
-    },
-    {
-      name: 'Supabase',
-      icon: (
-        <svg className="h-10 w-10" fill="currentColor" viewBox="0 0 24 24">
-          <rect height="14" rx="4" width="20" x="2" y="5" />
-          <line stroke="#000" x1="2" x2="22" y1="10" y2="10" />
-        </svg>
-      ),
-    },
-    {
-      name: 'GitHub',
-      icon: (
-        <svg className="h-10 w-10" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h2v-6h-2v6zm0-8h2V7h-2v2z" />
-        </svg>
-      ),
-    },
-    {
-      name: 'Figma',
-      icon: (
-        <svg className="h-10 w-10" fill="currentColor" viewBox="0 0 24 24">
-          <rect height="18" rx="2" width="20" x="2" y="3" />
-          <line stroke="#000" x1="2" x2="22" y1="9" y2="9" />
-          <line stroke="#000" x1="10" x2="10" y1="21" y2="15" />
-          <line stroke="#000" x1="14" x2="14" y1="21" y2="15" />
-        </svg>
-      ),
-    },
-    {
-      name: 'Raycast',
-      icon: (
-        <svg className="h-10 w-10" fill="currentColor" viewBox="0 0 24 24">
-          <circle cx="12" cy="12" r="10" />
-          <circle cx="12" cy="12" fill="#000" r="4" />
-        </svg>
-      ),
-    },
-  ]
-
-  return (
-    <section>
-      <SectionTitle>Used By</SectionTitle>
-      <Card>
-        <div className="border-b border-[var(--border-subtle)] bg-[var(--bg-panel-light)] px-3 py-2 text-[11px] font-semibold tracking-wider uppercase">
-          Companies Building with Stack_Init
-        </div>
-        <div className="grid grid-cols-4 gap-6 p-6">
-          {companies.map((company) => (
-            <div
-              className="flex flex-col items-center text-center opacity-60 transition-opacity hover:opacity-100"
-              key={company.name}
-            >
-              <div className="text-[var(--text-muted)]">{company.icon}</div>
-              <div className="mt-2 text-[11px] text-[var(--text-muted)]">
-                {company.name}
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="flex items-center gap-1 border-t border-[var(--border-subtle)] px-6 py-3 text-xs text-[var(--text-muted)]">
-          <span className="font-mono text-[var(--accent-blue)]">500+</span>{' '}
-          production apps deployed by teams ranging from YC startups to Fortune
-          500 companies.
-        </div>
-      </Card>
-    </section>
-  )
-}
 
 function BlogSection() {
   const posts = [
@@ -764,7 +654,7 @@ function BlogSection() {
   return (
     <section>
       <SectionTitle>From the Blog</SectionTitle>
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {posts.map((post) => (
           <Card className="flex flex-col gap-3 p-4" key={post.title}>
             <div className="text-[11px] text-[var(--accent-blue)] uppercase">
@@ -784,98 +674,11 @@ function BlogSection() {
   )
 }
 
-function DeploymentLicenses() {
-  const plans = [
-    {
-      mode: 'mode: "open-source"',
-      price: '$0',
-      period: '/forever',
-      features: [
-        'Full MIT License',
-        'Community Discord',
-        'Self-hosted documentation',
-      ],
-      button: 'Clone Repo',
-      active: false,
-      modeColor: 'text-[var(--text-muted)]',
-    },
-    {
-      mode: 'mode: "pro-indie"',
-      price: '$49',
-      period: '/once',
-      features: [
-        'Pre-built Auth Modules',
-        'Stripe Integration Ready',
-        'Premium UI Components',
-        'Email Support (1yr)',
-      ],
-      button: 'Purchase License',
-      active: true,
-      modeColor: 'text-[var(--accent-blue)]',
-    },
-    {
-      mode: 'mode: "enterprise"',
-      price: 'Custom',
-      period: '',
-      features: ['Dedicated onboarding', 'Custom integrations', 'SLA Support'],
-      button: 'Contact Sales',
-      active: false,
-      modeColor: 'text-[var(--text-muted)]',
-    },
-  ]
-
-  return (
-    <section>
-      <SectionTitle>Deployment Licenses</SectionTitle>
-      <div className="grid grid-cols-3 gap-5">
-        {plans.map((plan) => (
-          <div
-            className={`flex flex-col gap-3 border border-t-[3px] bg-[var(--bg-panel)] p-4 transition-all ${
-              plan.active
-                ? 'border-[var(--border-blue)] border-t-[var(--accent-blue)]'
-                : 'border-[var(--border-subtle)] border-t-[var(--border-subtle)] hover:border-[var(--border-active)] hover:border-t-[var(--accent-blue)]'
-            } ${plan.active ? 'bg-gradient-to-b from-[var(--accent-blue)]/5 to-transparent' : ''}`}
-            key={plan.mode}
-          >
-            <div className={`font-mono text-xs ${plan.modeColor}`}>
-              {plan.mode}
-            </div>
-            <div className="font-mono text-2xl text-[var(--text-main)]">
-              {plan.price}
-              {plan.period && (
-                <span className="text-xs text-[var(--text-muted)]">
-                  {plan.period}
-                </span>
-              )}
-            </div>
-            <ul className="mt-3 flex flex-1 flex-col gap-2">
-              {plan.features.map((feature) => (
-                <li
-                  className="flex items-center gap-2 text-xs text-[var(--text-muted)]"
-                  key={feature}
-                >
-                  <span className="font-mono text-[var(--accent-blue)]">✓</span>{' '}
-                  {feature}
-                </li>
-              ))}
-            </ul>
-            <Button
-              className="w-full justify-center"
-              variant={plan.active ? 'default' : 'outline'}
-            >
-              {plan.button}
-            </Button>
-          </div>
-        ))}
-      </div>
-    </section>
-  )
-}
 
 function Footer() {
   return (
     <footer className="flex items-center justify-between border-t border-[var(--border-subtle)] py-10 text-[11px] text-[var(--text-muted)]">
-      <div>© 2024 Stack_Init. MIT Licensed core.</div>
+      <div>© 2025 TSS Template. MIT Licensed.</div>
       <div className="font-mono">v.2.4.1 // SYSTEM_ONLINE</div>
     </footer>
   )
@@ -922,7 +725,7 @@ function RightSidebar() {
   ]
 
   return (
-    <aside className="flex flex-col overflow-y-auto border-l border-[var(--border-subtle)] bg-[var(--bg-panel)]">
+    <aside className="hidden flex-col overflow-y-auto border-l border-[var(--border-subtle)] bg-[var(--bg-panel)] lg:flex">
       {/* Stack Selectors */}
       <div className="border-b border-[var(--border-subtle)] p-3">
         <div className="mb-2 text-[11px] font-semibold text-[var(--text-muted)]">
@@ -1078,7 +881,7 @@ function RightSidebar() {
 
 function LandingPage() {
   return (
-    <div className="grid h-screen grid-cols-[280px_1fr_320px] grid-rows-[40px_1fr]">
+    <div className="grid h-screen grid-cols-1 grid-rows-[40px_1fr] lg:grid-cols-[280px_1fr_320px]">
       <TopBar />
       <LeftSidebar />
       <main className="relative overflow-y-auto bg-[var(--bg-deep)]">
@@ -1101,9 +904,7 @@ function LandingPage() {
           <CoreInfrastructure />
           <CommunityValidation />
           <SocialMedia />
-          <UsedBy />
           <BlogSection />
-          <DeploymentLicenses />
           <Footer />
         </div>
       </main>
