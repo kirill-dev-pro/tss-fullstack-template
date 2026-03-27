@@ -2,7 +2,7 @@
 
 A production-ready full-stack boilerplate for bootstrapping modern web applications. Built with a hand-picked set of technologies that work exceptionally well together — with end-to-end type safety from the database to the UI, Telegram integration, AI features, and multi-tenant auth all included out of the box.
 
-**Live Demo:** [tss-fulstack-template.vercel.app](https://tss-fulstack-template.vercel.app)
+**Live Demo:** [tss-fullstack-template.vercel.app](https://tss-fullstack-template.vercel.app)
 
 <img width="1599" alt="Landing page" src="https://github.com/user-attachments/assets/e53f8665-ecf6-422b-a04a-014b99bdc922" />
 
