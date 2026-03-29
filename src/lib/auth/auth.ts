@@ -44,8 +44,10 @@ export const auth = betterAuth({
     ...(process.env.VERCEL_BRANCH_URL
       ? [`https://${process.env.VERCEL_BRANCH_URL}`]
       : []),
-    ...(process.env.VERCEL_URL
-      ? [`https://${process.env.VERCEL_URL}`]
+    ...(process.env.VERCEL_URL ? [`https://${process.env.VERCEL_URL}`] : []),
+    // Production hostname (e.g. *.vercel.app) often differs from VERCEL_URL per deploy.
+    ...(process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? [`https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`]
       : []),
   ],
   onAPIError: {
