@@ -1,12 +1,17 @@
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { initData, mainButton, useSignal, type User } from '@tma.js/sdk-react'
-import { useEffect, useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 
+import type { TmaPreviewPostMessage } from './-utils/preview-message'
+
 export const Route = createFileRoute('/telegram-mini-app/')({
+  validateSearch: (search: Record<string, unknown>) => ({
+    preview: search.preview === '1' ? true : undefined,
+  }),
   component: () => <TmaApp />,
   wrapInSuspense: true,
 })
@@ -32,6 +37,11 @@ function rowsFromUser(user: User): { key: string; value: string }[] {
 }
 
 function TmaApp() {
+  const { preview: isDashboardPreview } = Route.useSearch()
+  const [previewProfile, setPreviewProfile] = useState<
+    TmaPreviewPostMessage['profile'] | null
+  >(null)
+
   const initDataState = useSignal(initData.state)
   const initDataRaw = useSignal(initData.raw)
   const user = initDataState?.user
@@ -39,14 +49,28 @@ function TmaApp() {
   const rows = useMemo(() => (user ? rowsFromUser(user) : []), [user])
 
   useEffect(() => {
-    if (initDataRaw) {
-      fetch('/api/telegram/track-open', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ initData: initDataRaw }),
-      }).catch(() => {})
+    const onUpdate = (e: Event) => {
+      const detail = (e as CustomEvent<TmaPreviewPostMessage>).detail
+      if (detail?.profile) {
+        setPreviewProfile(detail.profile)
+      }
     }
-  }, [initDataRaw])
+    window.addEventListener('tma-preview-update', onUpdate)
+    return () => {
+      window.removeEventListener('tma-preview-update', onUpdate)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isDashboardPreview || !initDataRaw) {
+      return
+    }
+    fetch('/api/telegram/track-open', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ initData: initDataRaw }),
+    }).catch(() => {})
+  }, [isDashboardPreview, initDataRaw])
 
   useEffect(() => {
     mainButton.mount()
@@ -61,8 +85,35 @@ function TmaApp() {
     }
   }, [])
 
+  const showPreviewStrip =
+    previewProfile &&
+    (previewProfile.displayName.trim() !== '' ||
+      previewProfile.avatarUrl !== '')
+
   return (
     <div className="flex w-full flex-col items-center gap-4 p-4">
+      {showPreviewStrip ? (
+        <div className="flex w-full max-w-md items-center gap-3 rounded-xl border border-[var(--tg-theme-hint-color,#708499)]/40 bg-[var(--tg-theme-secondary-bg-color,#232e3c)] px-3 py-2">
+          {previewProfile.avatarUrl ? (
+            <img
+              alt={
+                previewProfile.displayName
+                  ? `Avatar for ${previewProfile.displayName}`
+                  : 'Profile avatar'
+              }
+              className="size-10 shrink-0 rounded-full object-cover"
+              height={40}
+              src={previewProfile.avatarUrl}
+              width={40}
+            />
+          ) : null}
+          {previewProfile.displayName ? (
+            <span className="min-w-0 truncate text-sm font-medium text-[var(--tg-theme-text-color)]">
+              {previewProfile.displayName}
+            </span>
+          ) : null}
+        </div>
+      ) : null}
       <DotLottieReact
         src="/stickers/dog_share.json"
         loop
@@ -84,7 +135,9 @@ function TmaApp() {
                   <dt className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
                     {row.key}
                   </dt>
-                  <dd className="font-mono text-sm break-words">{row.value}</dd>
+                  <dd className="font-mono text-sm wrap-break-word">
+                    {row.value}
+                  </dd>
                 </div>
               ))}
             </dl>

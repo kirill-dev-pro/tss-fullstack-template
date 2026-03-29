@@ -1,4 +1,5 @@
 import {
+  AppWindow,
   Bot,
   Briefcase,
   Database,
@@ -110,6 +111,11 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
           name: 'Telegram Bot',
           url: '/dashboard/telegram',
           icon: Bot,
+        },
+        {
+          name: 'Mini App preview',
+          url: '/dashboard/telegram/preview',
+          icon: AppWindow,
         },
         {
           name: 'Admin Dashboard',

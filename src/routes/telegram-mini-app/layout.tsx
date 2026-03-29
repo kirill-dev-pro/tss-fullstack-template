@@ -1,5 +1,6 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
+import { PreviewBridgeListener } from './-components/preview-bridge-listener'
 import './-utils/instrumentation-client'
 
 export const Route = createFileRoute('/telegram-mini-app')({
@@ -9,5 +10,10 @@ export const Route = createFileRoute('/telegram-mini-app')({
 })
 
 function RouteComponent() {
-  return <Outlet />
+  return (
+    <>
+      <PreviewBridgeListener />
+      <Outlet />
+    </>
+  )
 }

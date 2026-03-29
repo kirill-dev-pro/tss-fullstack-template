@@ -46,6 +46,7 @@ import { Route as authAcceptInvitationInvitationIdIndexRouteImport } from './rou
 import { Route as ApiAiVercelChatRouteImport } from './routes/api/ai/vercel/chat'
 import { Route as ApiAiMcpTransportRouteImport } from './routes/api/ai/mcp/$transport'
 import { Route as ApiAiChatRagRouteImport } from './routes/api/ai/chat.rag'
+import { Route as AuthenticatedDashboardTelegramPreviewRouteImport } from './routes/_authenticated/dashboard/telegram/preview'
 import { Route as AuthenticatedDashboardTelegramContactsRouteImport } from './routes/_authenticated/dashboard/telegram/contacts'
 import { Route as AuthenticatedDashboardTelegramChatsRouteImport } from './routes/_authenticated/dashboard/telegram/chats'
 import { Route as AuthenticatedDashboardChatVercelRouteImport } from './routes/_authenticated/dashboard/chat/vercel'
@@ -250,6 +251,12 @@ const ApiAiChatRagRoute = ApiAiChatRagRouteImport.update({
   path: '/rag',
   getParentRoute: () => ApiAiChatRoute,
 } as any)
+const AuthenticatedDashboardTelegramPreviewRoute =
+  AuthenticatedDashboardTelegramPreviewRouteImport.update({
+    id: '/telegram/preview',
+    path: '/telegram/preview',
+    getParentRoute: () => AuthenticatedDashboardLayoutRoute,
+  } as any)
 const AuthenticatedDashboardTelegramContactsRoute =
   AuthenticatedDashboardTelegramContactsRouteImport.update({
     id: '/telegram/contacts',
@@ -318,6 +325,7 @@ export interface FileRoutesByFullPath {
   '/dashboard/chat/vercel': typeof AuthenticatedDashboardChatVercelRoute
   '/dashboard/telegram/chats': typeof AuthenticatedDashboardTelegramChatsRoute
   '/dashboard/telegram/contacts': typeof AuthenticatedDashboardTelegramContactsRoute
+  '/dashboard/telegram/preview': typeof AuthenticatedDashboardTelegramPreviewRoute
   '/api/ai/chat/rag': typeof ApiAiChatRagRoute
   '/api/ai/mcp/$transport': typeof ApiAiMcpTransportRoute
   '/api/ai/vercel/chat': typeof ApiAiVercelChatRoute
@@ -359,6 +367,7 @@ export interface FileRoutesByTo {
   '/dashboard/chat/vercel': typeof AuthenticatedDashboardChatVercelRoute
   '/dashboard/telegram/chats': typeof AuthenticatedDashboardTelegramChatsRoute
   '/dashboard/telegram/contacts': typeof AuthenticatedDashboardTelegramContactsRoute
+  '/dashboard/telegram/preview': typeof AuthenticatedDashboardTelegramPreviewRoute
   '/api/ai/chat/rag': typeof ApiAiChatRagRoute
   '/api/ai/mcp/$transport': typeof ApiAiMcpTransportRoute
   '/api/ai/vercel/chat': typeof ApiAiVercelChatRoute
@@ -405,6 +414,7 @@ export interface FileRoutesById {
   '/_authenticated/dashboard/chat/vercel': typeof AuthenticatedDashboardChatVercelRoute
   '/_authenticated/dashboard/telegram/chats': typeof AuthenticatedDashboardTelegramChatsRoute
   '/_authenticated/dashboard/telegram/contacts': typeof AuthenticatedDashboardTelegramContactsRoute
+  '/_authenticated/dashboard/telegram/preview': typeof AuthenticatedDashboardTelegramPreviewRoute
   '/api/ai/chat/rag': typeof ApiAiChatRagRoute
   '/api/ai/mcp/$transport': typeof ApiAiMcpTransportRoute
   '/api/ai/vercel/chat': typeof ApiAiVercelChatRoute
@@ -450,6 +460,7 @@ export interface FileRouteTypes {
     | '/dashboard/chat/vercel'
     | '/dashboard/telegram/chats'
     | '/dashboard/telegram/contacts'
+    | '/dashboard/telegram/preview'
     | '/api/ai/chat/rag'
     | '/api/ai/mcp/$transport'
     | '/api/ai/vercel/chat'
@@ -491,6 +502,7 @@ export interface FileRouteTypes {
     | '/dashboard/chat/vercel'
     | '/dashboard/telegram/chats'
     | '/dashboard/telegram/contacts'
+    | '/dashboard/telegram/preview'
     | '/api/ai/chat/rag'
     | '/api/ai/mcp/$transport'
     | '/api/ai/vercel/chat'
@@ -536,6 +548,7 @@ export interface FileRouteTypes {
     | '/_authenticated/dashboard/chat/vercel'
     | '/_authenticated/dashboard/telegram/chats'
     | '/_authenticated/dashboard/telegram/contacts'
+    | '/_authenticated/dashboard/telegram/preview'
     | '/api/ai/chat/rag'
     | '/api/ai/mcp/$transport'
     | '/api/ai/vercel/chat'
@@ -829,6 +842,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAiChatRagRouteImport
       parentRoute: typeof ApiAiChatRoute
     }
+    '/_authenticated/dashboard/telegram/preview': {
+      id: '/_authenticated/dashboard/telegram/preview'
+      path: '/telegram/preview'
+      fullPath: '/dashboard/telegram/preview'
+      preLoaderRoute: typeof AuthenticatedDashboardTelegramPreviewRouteImport
+      parentRoute: typeof AuthenticatedDashboardLayoutRoute
+    }
     '/_authenticated/dashboard/telegram/contacts': {
       id: '/_authenticated/dashboard/telegram/contacts'
       path: '/telegram/contacts'
@@ -924,6 +944,7 @@ interface AuthenticatedDashboardLayoutRouteChildren {
   AuthenticatedDashboardChatVercelRoute: typeof AuthenticatedDashboardChatVercelRoute
   AuthenticatedDashboardTelegramChatsRoute: typeof AuthenticatedDashboardTelegramChatsRoute
   AuthenticatedDashboardTelegramContactsRoute: typeof AuthenticatedDashboardTelegramContactsRoute
+  AuthenticatedDashboardTelegramPreviewRoute: typeof AuthenticatedDashboardTelegramPreviewRoute
   AuthenticatedDashboardAdminIndexRoute: typeof AuthenticatedDashboardAdminIndexRoute
   AuthenticatedDashboardChatIndexRoute: typeof AuthenticatedDashboardChatIndexRoute
   AuthenticatedDashboardSettingsEnhancedIndexRoute: typeof AuthenticatedDashboardSettingsEnhancedIndexRoute
@@ -949,6 +970,8 @@ const AuthenticatedDashboardLayoutRouteChildren: AuthenticatedDashboardLayoutRou
       AuthenticatedDashboardTelegramChatsRoute,
     AuthenticatedDashboardTelegramContactsRoute:
       AuthenticatedDashboardTelegramContactsRoute,
+    AuthenticatedDashboardTelegramPreviewRoute:
+      AuthenticatedDashboardTelegramPreviewRoute,
     AuthenticatedDashboardAdminIndexRoute:
       AuthenticatedDashboardAdminIndexRoute,
     AuthenticatedDashboardChatIndexRoute: AuthenticatedDashboardChatIndexRoute,

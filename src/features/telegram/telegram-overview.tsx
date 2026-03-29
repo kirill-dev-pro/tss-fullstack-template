@@ -2,7 +2,13 @@
 
 import { useQuery } from '@tanstack/react-query'
 import { Link } from '@tanstack/react-router'
-import { MessagesSquare, MessageSquare, Send, Users } from 'lucide-react'
+import {
+  AppWindow,
+  MessagesSquare,
+  MessageSquare,
+  Send,
+  Users,
+} from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -12,7 +18,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { TelegramMiniAppPreview } from '@/features/telegram/telegram-mini-app-preview'
 import { useTRPC } from '@/lib/trpc/react'
 
 export function TelegramOverview() {
@@ -92,9 +97,7 @@ export function TelegramOverview() {
         </Card>
       </div>
 
-      <TelegramMiniAppPreview />
-
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -125,6 +128,23 @@ export function TelegramOverview() {
           <CardContent>
             <Link to="/dashboard/telegram/contacts">
               <Button variant="outline">Open Contacts Table</Button>
+            </Link>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <AppWindow className="h-5 w-5" />
+              Mini App preview
+            </CardTitle>
+            <CardDescription>
+              Phone/tablet frame, iframe back, theme and profile overrides
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Link to="/dashboard/telegram/preview">
+              <Button variant="outline">Open preview</Button>
             </Link>
           </CardContent>
         </Card>
