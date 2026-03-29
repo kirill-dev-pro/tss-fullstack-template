@@ -26,7 +26,7 @@ export function TelegramContactsTablePage() {
       <TelegramChatsDataTable
         onTableMetaChange={() => {}}
         onViewChat={handleViewChat}
-        toolbarActions={<BroadcastDialog contactCount={0} />}
+        toolbarActions={<BroadcastDialog />}
       />
       {selectedChat && (
         <ChatHistoryDrawer

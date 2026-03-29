@@ -17,17 +17,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { cn } from '@/lib/utils'
-import {
-  defaultTmaPreviewProfile,
-  defaultTmaPreviewTheme,
-  type TmaPreviewPostMessage,
-  type TmaPreviewThemeKeys,
-  TMA_PREVIEW_MESSAGE_TYPE,
-} from '@/routes/telegram-mini-app/-utils/preview-message'
 
 type DeviceMode = 'phone' | 'tablet'
 
@@ -50,26 +41,10 @@ const FRAME = {
   },
 } as const
 
-const THEME_LABELS: Record<TmaPreviewThemeKeys, string> = {
-  bg_color: 'Background',
-  header_bg_color: 'Header',
-  secondary_bg_color: 'Secondary bg',
-  button_color: 'Button',
-  button_text_color: 'Button text',
-  text_color: 'Text',
-  hint_color: 'Hint',
-  link_color: 'Link',
-}
-
 export function TelegramMiniAppPreviewPage() {
   const iframeRef = useRef<HTMLIFrameElement>(null)
   const [device, setDevice] = useState<DeviceMode>('phone')
   const [iframeReady, setIframeReady] = useState(false)
-  const [theme, setTheme] = useState(defaultTmaPreviewTheme)
-  const [displayName, setDisplayName] = useState(
-    defaultTmaPreviewProfile.displayName,
-  )
-  const [avatarUrl, setAvatarUrl] = useState(defaultTmaPreviewProfile.avatarUrl)
   const [iframeCanGoBack, setIframeCanGoBack] = useState(false)
 
   const f = FRAME[device]
@@ -86,25 +61,6 @@ export function TelegramMiniAppPreviewPage() {
       setIframeCanGoBack(false)
     }
   }, [])
-
-  const postToIframe = useCallback(() => {
-    const win = iframeRef.current?.contentWindow
-    if (!win) {
-      return
-    }
-    const payload: TmaPreviewPostMessage = {
-      type: TMA_PREVIEW_MESSAGE_TYPE,
-      theme,
-      profile: { displayName, avatarUrl },
-    }
-    win.postMessage(payload, window.location.origin)
-  }, [theme, displayName, avatarUrl])
-
-  useEffect(() => {
-    if (iframeReady) {
-      postToIframe()
-    }
-  }, [iframeReady, postToIframe])
 
   useEffect(() => {
     if (!iframeReady) {
@@ -133,10 +89,6 @@ export function TelegramMiniAppPreviewPage() {
   const handleIframeReload = () => {
     setIframeReady(false)
     iframeRef.current?.contentWindow?.location.reload()
-  }
-
-  const handleThemeColor = (key: TmaPreviewThemeKeys, value: string) => {
-    setTheme((prev) => ({ ...prev, [key]: value }))
   }
 
   return (

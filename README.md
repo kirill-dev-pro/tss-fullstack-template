@@ -4,9 +4,9 @@ A production-ready full-stack boilerplate for bootstrapping modern web applicati
 
 **Live Demo:** [tss-fullstack-template.vercel.app](https://tss-fullstack-template.vercel.app)
 
-<img width="1599" alt="Landing page" src="https://github.com/user-attachments/assets/e53f8665-ecf6-422b-a04a-014b99bdc922" />
+<img width="1599" alt="Landing page" src="./public/screenshots/1.webp" />
 
-<img width="1597" alt="Dashboard overview" src="https://github.com/user-attachments/assets/01bccb09-b700-41e3-815c-be5dc02c5e7c" />
+<img width="1597" alt="Dashboard overview" src="./public/screenshots/4.webp" />
 
 ---
 
@@ -24,24 +24,24 @@ Most boilerplates give you a blank canvas. This one gives you a running applicat
 
 ## Tech Stack
 
-| Category | Technology |
-|---|---|
-| **Framework** | [TanStack Start](https://tanstack.com/start/v1) on [Vite](https://vitejs.dev/) — React with SSR |
-| **Routing** | [TanStack Router](https://tanstack.com/router/v1) — type-safe file-based routing |
-| **API** | [tRPC v11](https://trpc.io/) — end-to-end typesafe RPC |
-| **Database** | [Drizzle ORM](https://orm.drizzle.team/) + [Neon](https://neon.com/) serverless Postgres |
-| **UI** | [React 19](https://react.dev/), [Tailwind CSS v4](https://tailwindcss.com/), [shadcn/ui](https://ui.shadcn.com/), [Lucide Icons](https://lucide.dev/) |
-| **State** | [TanStack Query](https://tanstack.com/query/v5), [TanStack Store](https://tanstack.com/store/v0), [TanStack DB](https://tanstack.com/db/latest) |
-| **Forms** | [React Hook Form](https://react-hook-form.com/), [TanStack Form](https://tanstack.com/form/v1), [Zod v4](https://zod.dev/) |
-| **Auth** | [Better Auth](https://www.better-auth.com/) |
-| **Email** | [Resend](https://resend.com/) + [React Email](https://react.email/) |
-| **AI** | [Vercel AI SDK](https://sdk.vercel.ai/) — OpenAI, Anthropic, streaming, RAG, MCP |
-| **Telegram** | [Grammy](https://grammy.dev/) bot + [TMA.js SDK](https://docs.telegram-mini-apps.com/) Mini App |
-| **Monitoring** | [Sentry](https://sentry.io/) |
-| **i18n** | [i18next](https://www.i18next.com/) |
-| **Testing** | [Vitest](https://vitest.dev/) |
-| **Tooling** | [oxlint](https://oxc.rs/docs/guide/usage/oxlint) + [oxfmt](https://oxc.rs/docs/guide/usage/oxfmt), [T3 Env](https://env.t3.gg/), TypeScript strict mode |
-| **Runtime** | [Bun](https://bun.sh/) |
+| Category       | Technology                                                                                                                                              |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Framework**  | [TanStack Start](https://tanstack.com/start/v1) on [Vite](https://vitejs.dev/) — React with SSR                                                         |
+| **Routing**    | [TanStack Router](https://tanstack.com/router/v1) — type-safe file-based routing                                                                        |
+| **API**        | [tRPC v11](https://trpc.io/) — end-to-end typesafe RPC                                                                                                  |
+| **Database**   | [Drizzle ORM](https://orm.drizzle.team/) + [Neon](https://neon.com/) serverless Postgres                                                                |
+| **UI**         | [React 19](https://react.dev/), [Tailwind CSS v4](https://tailwindcss.com/), [shadcn/ui](https://ui.shadcn.com/), [Lucide Icons](https://lucide.dev/)   |
+| **State**      | [TanStack Query](https://tanstack.com/query/v5), [TanStack Store](https://tanstack.com/store/v0), [TanStack DB](https://tanstack.com/db/latest)         |
+| **Forms**      | [React Hook Form](https://react-hook-form.com/), [TanStack Form](https://tanstack.com/form/v1), [Zod v4](https://zod.dev/)                              |
+| **Auth**       | [Better Auth](https://www.better-auth.com/)                                                                                                             |
+| **Email**      | [Resend](https://resend.com/) + [React Email](https://react.email/)                                                                                     |
+| **AI**         | [Vercel AI SDK](https://sdk.vercel.ai/) — OpenAI, Anthropic, streaming, RAG, MCP                                                                        |
+| **Telegram**   | [Grammy](https://grammy.dev/) bot + [TMA.js SDK](https://docs.telegram-mini-apps.com/) Mini App                                                         |
+| **Monitoring** | [Sentry](https://sentry.io/)                                                                                                                            |
+| **i18n**       | [i18next](https://www.i18next.com/)                                                                                                                     |
+| **Testing**    | [Vitest](https://vitest.dev/)                                                                                                                           |
+| **Tooling**    | [oxlint](https://oxc.rs/docs/guide/usage/oxlint) + [oxfmt](https://oxc.rs/docs/guide/usage/oxfmt), [T3 Env](https://env.t3.gg/), TypeScript strict mode |
+| **Runtime**    | [Bun](https://bun.sh/)                                                                                                                                  |
 
 ---
 
@@ -60,23 +60,11 @@ Powered by [Better Auth](https://www.better-auth.com/):
 - Admin user management dashboard
 - API reference at `/api/auth/reference`
 
-<img width="1597" alt="Auth screens" src="https://github.com/user-attachments/assets/e1b3ac60-d95d-4add-b31b-807322d20605" />
+### Telegram
 
-<img width="1599" alt="Dashboard" src="https://github.com/user-attachments/assets/17d16240-279d-4c65-994e-6ba286d85cb9" />
-
-### Telegram Integration
-
-Three Telegram features are pre-built and ready to connect to your bot:
-
-- **Mini App** (`/telegram-mini-app`) — full Telegram Mini App with WebApp SDK, native auth, and haptic feedback
-- **Web Chat** (`/dashboard/telegram/chats`) — view and reply to Telegram messages from the dashboard, powered by bot webhooks + tRPC
-- **Broadcasts** (`/dashboard/telegram/contacts`) — manage contacts, filter by segment, and send bulk messages with delivery tracking
+[Grammy](https://grammy.dev/) bot + [TMA.js](https://docs.telegram-mini-apps.com/) Mini App, dashboard chats, and broadcasts — see [Telegram](#telegram).
 
 ### AI Features
-
-<img width="1591" alt="AI chat" src="https://github.com/user-attachments/assets/9e87d828-60cb-4430-b690-44b8d635e14f" />
-
-<img width="1600" alt="AI features" src="https://github.com/user-attachments/assets/2cf7ab06-fc4b-441d-b1e6-88b391b0691b" />
 
 - **Basic Chat** (`/dashboard/chat`) — streaming chat with OpenAI GPT-4o
 - **Vercel v0 Chat** (`/dashboard/chat/vercel`) — web-dev–optimised chat using `v0-1.0-md`
@@ -84,11 +72,11 @@ Three Telegram features are pre-built and ready to connect to your bot:
 - **RAG Chat** (`/dashboard/chat/rag`) — upload PDFs, generate embeddings with `pg_vector`, and chat with your documents
 - **MCP Server** (`/api/ai/mcp/mcp`) — Model Context Protocol server compatible with Claude Desktop and Cursor
 
-<img width="1599" alt="RAG feature" src="https://github.com/user-attachments/assets/473dd7f7-50b2-4a3b-af1c-bfb195d00800" />
+<img width="1599" alt="RAG feature" src="./public/screenshots/rag.webp" />
 
 ### TanStack DB — Reactive Collections
 
-<img width="1599" alt="TanStack DB example" src="https://github.com/user-attachments/assets/3e0d9de1-e7c4-4f0e-93f9-1cca421fc424" />
+<img width="1599" alt="TanStack DB example" src="./public/screenshots/db.webp" />
 
 TanStack DB provides reactive client-side collections with live queries. Visit `/dashboard/tanstack-db-example` to see a todo list with three simultaneously live-updating views (All, Pending, Completed) — all driven by a single data source with no manual refetch.
 
@@ -123,6 +111,33 @@ Configure in Claude Desktop (`~/Library/Application Support/Claude/claude_deskto
 Built-in example tools: `getCatFact`, `getJoke`, `calculateBMI`, `getTodos` (live database query), `getWelcomeMessage`.
 
 Add your own tools in `src/lib/ai/mcp-tools.ts`.
+
+---
+
+## Telegram
+
+<img width="1591" alt="AI chat" src="./public/screenshots/3.webp" />
+
+The stack uses [Grammy](https://grammy.dev/) for the bot (webhooks → tRPC-backed handlers) and [TMA.js](https://docs.telegram-mini-apps.com/) for the Mini App. Incoming updates are received at `/api/telegram/webhook`; dashboard routes under `/dashboard/telegram/*` require admin (see `requireAdmin` on those routes).
+
+### Routes
+
+| What                       | Path                           |
+| -------------------------- | ------------------------------ |
+| Overview                   | `/dashboard/telegram`          |
+| Chats                      | `/dashboard/telegram/chats`    |
+| Contacts & broadcasts      | `/dashboard/telegram/contacts` |
+| Mini App preview           | `/dashboard/telegram/preview`  |
+| Mini App (Telegram WebApp) | `/telegram-mini-app`           |
+
+### Setup
+
+1. Create a bot with [@BotFather](https://t.me/BotFather) and copy the token
+2. Set `TELEGRAM_BOT_TOKEN` in `.env`
+3. Set the webhook URL to `https://your-domain.com/api/telegram/webhook`
+4. For the Mini App, set the Web App URL in BotFather to `https://your-domain.com/telegram-mini-app`
+
+Code lives under `src/features/telegram/` and `src/routes/api/telegram/`.
 
 ---
 
@@ -161,13 +176,14 @@ The app will be running at `http://localhost:3000`.
 
 ### Environment Variables
 
-| Variable | Required | Description |
-|---|---|---|
-| `DATABASE_URL` | Auto | Neon Postgres connection string — created automatically by the Vite plugin |
-| `BETTER_AUTH_SECRET` | Yes | Random secret for Better Auth (`openssl rand -base64 32`) |
-| `RESEND_API_KEY` | For email | [Resend](https://resend.com/) API key |
-| `ANTHROPIC_API_KEY` | For AI | Anthropic API key |
-| `VITE_SENTRY_DSN` | Optional | Sentry DSN for error tracking |
+| Variable             | Required     | Description                                                                |
+| -------------------- | ------------ | -------------------------------------------------------------------------- |
+| `DATABASE_URL`       | Auto         | Neon Postgres connection string — created automatically by the Vite plugin |
+| `BETTER_AUTH_SECRET` | Yes          | Random secret for Better Auth (`openssl rand -base64 32`)                  |
+| `RESEND_API_KEY`     | For email    | [Resend](https://resend.com/) API key                                      |
+| `ANTHROPIC_API_KEY`  | For AI       | Anthropic API key                                                          |
+| `TELEGRAM_BOT_TOKEN` | For Telegram | Bot token from [@BotFather](https://t.me/BotFather)                        |
+| `VITE_SENTRY_DSN`    | Optional     | Sentry DSN for error tracking                                              |
 
 ### Database Setup
 
@@ -220,21 +236,21 @@ src/
 
 ## Available Scripts
 
-| Script | Description |
-|---|---|
-| `bun run dev` | Start development server |
-| `bun run build` | Build for production |
-| `bun run start` | Start production server |
-| `bun run test` | Run Vitest tests |
-| `bun run db:push` | Push Drizzle schema to database |
-| `bun run db:generate` | Generate migration files |
-| `bun run db:studio` | Open Drizzle Studio |
-| `bun run db:setup-vector` | Enable pg_vector extension |
-| `bun run db:neon-setup` | Manual Neon database setup |
-| `bun run add-ui-components <name>` | Add a shadcn/ui component |
-| `bun run format` | Format with oxfmt |
-| `bun run lint` | Lint with oxlint |
-| `bun run check` | Run format + lint check |
+| Script                             | Description                     |
+| ---------------------------------- | ------------------------------- |
+| `bun run dev`                      | Start development server        |
+| `bun run build`                    | Build for production            |
+| `bun run start`                    | Start production server         |
+| `bun run test`                     | Run Vitest tests                |
+| `bun run db:push`                  | Push Drizzle schema to database |
+| `bun run db:generate`              | Generate migration files        |
+| `bun run db:studio`                | Open Drizzle Studio             |
+| `bun run db:setup-vector`          | Enable pg_vector extension      |
+| `bun run db:neon-setup`            | Manual Neon database setup      |
+| `bun run add-ui-components <name>` | Add a shadcn/ui component       |
+| `bun run format`                   | Format with oxfmt               |
+| `bun run lint`                     | Lint with oxlint                |
+| `bun run check`                    | Run format + lint check         |
 
 ---
 
@@ -254,15 +270,6 @@ docker-compose up --build
 ```
 
 GitHub Actions CI/CD workflow is included at `.github/workflows/build-docker.yml`. It builds a multi-stage Docker image and pushes it to GitHub Container Registry on push to `main`.
-
----
-
-## Telegram Bot Setup
-
-1. Create a bot with [@BotFather](https://t.me/BotFather) and copy the token
-2. Add `TELEGRAM_BOT_TOKEN` to your `.env`
-3. Set the webhook URL to `https://your-domain.com/api/telegram/webhook`
-4. For the Mini App, set the Web App URL in BotFather to `https://your-domain.com/telegram-mini-app`
 
 ---
 
