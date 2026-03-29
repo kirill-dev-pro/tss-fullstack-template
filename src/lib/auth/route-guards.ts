@@ -1,11 +1,11 @@
 import { redirect } from '@tanstack/react-router'
 
-import { authClient } from '@/lib/auth/auth-client'
+import { getAuthSession } from '@/lib/auth/auth-server'
 import { canManageUsers, type UserRole } from '@/lib/auth/permissions'
 
-export function requireAdmin() {
-  const sessionData = authClient.$store.atoms.session.get()
-  const userRole = (sessionData?.data?.user?.role || 'user') as UserRole
+export async function requireAdmin() {
+  const session = await getAuthSession()
+  const userRole = (session?.user?.role || 'user') as UserRole
 
   if (!canManageUsers(userRole)) {
     throw redirect({ to: '/dashboard' })

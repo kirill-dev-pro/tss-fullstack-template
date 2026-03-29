@@ -4,6 +4,8 @@ import { AdminOverview } from '@/features/admin/admin-overview'
 import { requireAdmin } from '@/lib/auth/route-guards'
 
 export const Route = createFileRoute('/_authenticated/dashboard/admin/')({
-  beforeLoad: () => requireAdmin(),
+  beforeLoad: async () => {
+    await requireAdmin()
+  },
   component: AdminOverview,
 })

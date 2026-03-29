@@ -1,4 +1,16 @@
-import { and, count, desc, eq, gte, ilike, isNotNull, isNull, lt, or, type SQL } from 'drizzle-orm'
+import {
+  and,
+  count,
+  desc,
+  eq,
+  gte,
+  ilike,
+  isNotNull,
+  isNull,
+  lt,
+  or,
+  type SQL,
+} from 'drizzle-orm'
 
 import { db } from '@/lib/db'
 import {
@@ -123,19 +135,9 @@ export async function markContactBlocked(telegramUserId: number) {
 
 export async function markMiniAppOpened(telegramUserId: number) {
   const now = new Date()
-  const existing = await db
-    .select()
-    .from(telegramContacts)
-    .where(eq(telegramContacts.telegramUserId, telegramUserId))
-    .limit(1)
-
-  if (existing.length > 0) {
-    await db
-      .update(telegramContacts)
-      .set({ openedMiniAppAt: now, updatedAt: now })
-      .where(eq(telegramContacts.telegramUserId, telegramUserId))
-  } else {
-    await db.insert(telegramContacts).values({
+  await db
+    .insert(telegramContacts)
+    .values({
       telegramUserId,
       messagesSent: 0,
       messagesReceived: 0,
@@ -145,7 +147,13 @@ export async function markMiniAppOpened(telegramUserId: number) {
       createdAt: now,
       updatedAt: now,
     })
-  }
+    .onConflictDoUpdate({
+      target: telegramContacts.telegramUserId,
+      set: {
+        openedMiniAppAt: now,
+        updatedAt: now,
+      },
+    })
 }
 
 export async function getBroadcastableContacts() {

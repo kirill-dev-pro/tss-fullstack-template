@@ -19,8 +19,6 @@ import { Toaster } from '@/components/ui/sonner'
 import i18n from '@/lib/intl/i18n'
 import { seo } from '@/lib/seo'
 
-import appCss from '../styles.css?url'
-
 interface MyRouterContext {
   queryClient: QueryClient
   trpc: TRPCOptionsProxy<TRPCRouter>
@@ -43,12 +41,6 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         keywords:
           'React, TypeScript, tRPC, Drizzle ORM, TanStack, Full-Stack, Web Development, Boilerplate, SaaS, Starter, Tailwind CSS',
       }),
-    ],
-    links: [
-      {
-        rel: 'stylesheet',
-        href: appCss,
-      },
     ],
   }),
   component: () => <RootDocument />,

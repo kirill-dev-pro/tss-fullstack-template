@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { TelegramMiniAppPreview } from '@/features/telegram/telegram-mini-app-preview'
 import { useTRPC } from '@/lib/trpc/react'
 
 export function TelegramOverview() {
@@ -90,6 +91,8 @@ export function TelegramOverview() {
           </CardContent>
         </Card>
       </div>
+
+      <TelegramMiniAppPreview />
 
       <div className="grid gap-4 md:grid-cols-2">
         <Card>

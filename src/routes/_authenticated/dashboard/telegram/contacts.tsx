@@ -6,6 +6,8 @@ import { requireAdmin } from '@/lib/auth/route-guards'
 export const Route = createFileRoute(
   '/_authenticated/dashboard/telegram/contacts',
 )({
-  beforeLoad: () => requireAdmin(),
+  beforeLoad: async () => {
+    await requireAdmin()
+  },
   component: TelegramContactsPage,
 })

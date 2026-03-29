@@ -2,24 +2,12 @@ import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { Loader2 } from 'lucide-react'
 
 import { authClient } from '@/lib/auth/auth-client'
-
-function getSessionSync() {
-  try {
-    return authClient.$store.atoms.session.get()
-  } catch {
-    return null
-  }
-}
+import { getAuthSession } from '@/lib/auth/auth-server'
 
 export const Route = createFileRoute('/_authenticated')({
-  beforeLoad: ({ location }) => {
-    const sessionData = getSessionSync()
-    const hasSession = !!sessionData?.data?.session
-
-    // Session not loaded yet (first visit) — let the component handle loading
-    if (!sessionData) return
-
-    if (!hasSession) {
+  beforeLoad: async ({ location }) => {
+    const session = await getAuthSession()
+    if (!session?.user) {
       throw redirect({
         to: '/login',
         search: { redirect: location.href },

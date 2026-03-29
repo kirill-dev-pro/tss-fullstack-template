@@ -1,18 +1,14 @@
 import { createFileRoute, Link, redirect } from '@tanstack/react-router'
 
 import SignInForm from '@/features/auth/sign-in-form'
-import { authClient } from '@/lib/auth/auth-client'
+import { getAuthSession } from '@/lib/auth/auth-server'
 import { useTranslation } from '@/lib/intl/react'
 
 export const Route = createFileRoute('/(auth)/login')({
-  beforeLoad: () => {
-    try {
-      const sessionData = authClient.$store.atoms.session.get()
-      if (sessionData?.data?.session) {
-        throw redirect({ to: '/dashboard' })
-      }
-    } catch (e) {
-      if (e && typeof e === 'object' && 'type' in e) throw e
+  beforeLoad: async () => {
+    const session = await getAuthSession()
+    if (session?.user) {
+      throw redirect({ to: '/dashboard' })
     }
   },
   component: RouteComponent,

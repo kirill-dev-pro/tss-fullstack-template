@@ -30,6 +30,8 @@ export const env = createEnv({
   client: {
     VITE_SENTRY_ORG: z.string().optional(),
     VITE_SENTRY_PROJECT: z.string().optional(),
+    /** Public site URL; align with SERVER_URL in production (Better Auth client baseURL). */
+    VITE_SERVER_URL: z.url().optional(),
   },
 
   /**
@@ -38,6 +40,7 @@ export const env = createEnv({
    */
   runtimeEnv: {
     ...process.env,
+    VITE_SERVER_URL: import.meta.env.VITE_SERVER_URL,
     SERVER_URL:
       process.env.SERVER_URL ||
       // VERCEL_BRANCH_URL is stable per branch (e.g. my-app-git-main-org.vercel.app)
