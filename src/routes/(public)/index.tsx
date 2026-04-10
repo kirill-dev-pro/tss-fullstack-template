@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import {
   BookOpen,
-  Download,
   ExternalLink,
+  GitFork,
   Layers,
   Layout,
   LayoutDashboard,
@@ -65,7 +65,7 @@ function TopBar() {
           </a>
           <a
             className="flex items-center gap-1 text-xs text-[var(--text-muted)] hover:text-[var(--text-main)]"
-            href="https://github.com"
+            href="https://github.com/kirill-dev-pro/tss-fullstack-template"
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -87,10 +87,16 @@ function TopBar() {
             Register
           </Button>
         </Link>
-        <Button className="hidden gap-1.5 sm:flex" size="sm" variant="default">
-          <Download className="h-3.5 w-3.5" />
-          Clone Template
-        </Button>
+        <a
+          href="https://github.com/kirill-dev-pro/tss-fullstack-template/fork"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <Button className="hidden gap-1.5 sm:flex" size="sm" variant="default">
+            <GitFork className="h-3.5 w-3.5" />
+            Fork Repository
+          </Button>
+        </a>
       </div>
     </header>
   )
@@ -273,10 +279,17 @@ function HeroSection() {
           support. Skip the plumbing, start writing business logic.
         </p>
         <div className="flex gap-3">
-          <Button className="px-4 py-2" variant="default">
-            Initialize Project
-          </Button>
-          <Button className="px-4 py-2">Read Docs</Button>
+          <a
+            href="https://github.com/kirill-dev-pro/tss-fullstack-template/fork"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            <Button className="gap-1.5 px-4 py-2" variant="default">
+              <GitFork className="h-4 w-4" />
+              Fork & Initialize
+            </Button>
+          </a>
+          <Button className="px-4 py-2" variant="outline">Read Docs</Button>
         </div>
       </div>
       <TerminalBlock />
@@ -290,19 +303,22 @@ function QuickLinks() {
       icon: ExternalLink,
       label: 'Open Repo',
       description: 'View source code on GitHub',
-      href: '#',
+      href: 'https://github.com/kirill-dev-pro/tss-fullstack-template',
+      external: true,
     },
     {
       icon: LayoutDashboard,
       label: 'Demo Dashboard',
       description: 'Explore the admin dashboard',
       href: '/dashboard',
+      external: false,
     },
     {
       icon: MessageCircle,
       label: 'Telegram Mini App',
       description: 'Try the Telegram Mini App',
       href: '/telegram-mini-app',
+      external: false,
     },
   ]
 
@@ -315,6 +331,8 @@ function QuickLinks() {
             className="group flex flex-col items-center gap-3 rounded-lg border border-[var(--border-subtle)] bg-[var(--bg-panel)] p-6 transition-colors hover:border-[var(--accent-blue)] hover:bg-[var(--bg-panel-light)]"
             href={link.href}
             key={link.label}
+            rel={link.external ? 'noopener noreferrer' : undefined}
+            target={link.external ? '_blank' : undefined}
           >
             <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[var(--bg-deep)] transition-colors group-hover:bg-[var(--accent-blue)]/10">
               <link.icon className="h-6 w-6 text-[var(--text-muted)] transition-colors group-hover:text-[var(--accent-blue)]" />
