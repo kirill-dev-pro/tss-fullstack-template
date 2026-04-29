@@ -1,0 +1,5 @@
+ALTER TABLE "user" ADD COLUMN "telegram_id" text UNIQUE;
+--> statement-breakpoint
+ALTER TABLE "user" ADD COLUMN "telegram_username" text;
+--> statement-breakpoint
+ALTER TABLE "user" ADD COLUMN "telegram_phone_number" text;

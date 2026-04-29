@@ -1,7 +1,9 @@
 import { passkeyClient } from '@better-auth/passkey/client'
+import { telegramClient } from 'better-auth-telegram/client'
 import {
   adminClient,
   emailOTPClient,
+  genericOAuthClient,
   magicLinkClient,
   multiSessionClient,
   organizationClient,
@@ -20,7 +22,12 @@ import {
 
 export const authClient = createAuthClient({
   baseURL: env.VITE_SERVER_URL,
+  fetchOptions: {
+    credentials: 'include',
+  },
   plugins: [
+    genericOAuthClient(),
+    telegramClient(),
     twoFactorClient(),
     passkeyClient(),
     adminClient({

@@ -92,7 +92,11 @@ function TopBar() {
           rel="noopener noreferrer"
           target="_blank"
         >
-          <Button className="hidden gap-1.5 sm:flex" size="sm" variant="default">
+          <Button
+            className="hidden gap-1.5 sm:flex"
+            size="sm"
+            variant="default"
+          >
             <GitFork className="h-3.5 w-3.5" />
             Fork Repository
           </Button>
@@ -289,7 +293,9 @@ function HeroSection() {
               Fork & Initialize
             </Button>
           </a>
-          <Button className="px-4 py-2" variant="outline">Read Docs</Button>
+          <Button className="px-4 py-2" variant="outline">
+            Read Docs
+          </Button>
         </div>
       </div>
       <TerminalBlock />
@@ -435,7 +441,7 @@ function TelegramSection() {
               </p>
               <div className="mt-auto flex flex-col gap-1.5">
                 <div className="overflow-hidden rounded bg-[var(--bg-deep)] px-2 py-1 font-mono text-[10px] text-[var(--text-muted)]">
-                  <span className="truncate block">{feature.codeLine}</span>
+                  <span className="block truncate">{feature.codeLine}</span>
                 </div>
                 <a
                   className="text-[11px] text-[var(--accent-blue)] hover:underline"
@@ -641,7 +647,6 @@ function SocialMedia() {
   )
 }
 
-
 function BlogSection() {
   const posts = [
     {
@@ -691,7 +696,6 @@ function BlogSection() {
     </section>
   )
 }
-
 
 function Footer() {
   return (
