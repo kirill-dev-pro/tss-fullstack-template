@@ -1,20 +1,18 @@
 import type { QueryClient } from '@tanstack/react-query'
 import type { TRPCOptionsProxy } from '@trpc/tanstack-react-query'
 
-import { TanStackDevtools } from '@tanstack/react-devtools'
-import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools'
 import {
   createRootRouteWithContext,
   HeadContent,
   Outlet,
   Scripts,
 } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { ThemeProvider } from 'next-themes'
 import { I18nextProvider } from 'react-i18next'
 
 import type { TRPCRouter } from '@/server/router'
 
+import { DevTools } from '@/components/dev-tools'
 import { Toaster } from '@/components/ui/sonner'
 import i18n from '@/lib/intl/i18n'
 import { seo } from '@/lib/seo'
@@ -63,33 +61,7 @@ function RootDocument() {
           <I18nextProvider defaultNS={'translation'} i18n={i18n}>
             <Outlet />
             <Toaster />
-            <TanStackDevtools
-              config={{ defaultOpen: false }}
-              plugins={[
-                {
-                  name: 'Tanstack Query',
-                  render: <ReactQueryDevtoolsPanel />,
-                },
-                {
-                  name: 'Tanstack Router',
-                  render: <TanStackRouterDevtoolsPanel />,
-                },
-                {
-                  name: 'Drizzle Studio',
-                  render: () => (
-                    <iframe
-                      src="https://local.drizzle.studio"
-                      style={{
-                        flexGrow: 1,
-                        width: '100%',
-                        height: '100%',
-                        border: 0,
-                      }}
-                    />
-                  ),
-                },
-              ]}
-            />
+            {import.meta.env.DEV && <DevTools />}
             <Scripts />
           </I18nextProvider>
         </ThemeProvider>
