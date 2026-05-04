@@ -69,7 +69,9 @@ export const telegramRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input }) => {
-      const total = await countBroadcastAudience(input as BroadcastAudienceFilters)
+      const total = await countBroadcastAudience(
+        input as BroadcastAudienceFilters,
+      )
       return { total }
     }),
 
@@ -84,7 +86,9 @@ export const telegramRouter = createTRPCRouter({
     )
     .mutation(async ({ input }) => {
       const { text, ...filters } = input
-      const contacts = await getBroadcastAudienceContacts(filters as BroadcastAudienceFilters)
+      const contacts = await getBroadcastAudienceContacts(
+        filters as BroadcastAudienceFilters,
+      )
       const results = { sent: 0, blocked: 0, failed: 0, total: contacts.length }
 
       for (let i = 0; i < contacts.length; i += 30) {

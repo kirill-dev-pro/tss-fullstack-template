@@ -3,28 +3,43 @@ import {
   BookOpen,
   ExternalLink,
   GitFork,
+  Bot,
+  Brain,
+  Container,
+  Globe,
+  KeyRound,
+  Languages,
   Layers,
   Layout,
   LayoutDashboard,
   LogIn,
+  Mail,
   MessageCircle,
   MessageSquare,
+  Monitor,
+  Moon,
   Radio,
-  Send,
-  Smartphone,
-  UserPlus,
-  Zap,
-  Container,
-  Globe,
   Rabbit,
+  Send,
+  ShieldCheck,
+  Smartphone,
+  TableProperties,
+  UserCog,
+  UserPlus,
+  Users,
+  Zap,
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 import { ModeToggle } from '@/components/theme-toggle'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { getPackageVersions } from '@/lib/package-versions'
 
 export const Route = createFileRoute('/(public)/')({
+  loader: async () => {
+    return await getPackageVersions()
+  },
   component: LandingPage,
 })
 
@@ -92,7 +107,11 @@ function TopBar() {
           rel="noopener noreferrer"
           target="_blank"
         >
-          <Button className="hidden gap-1.5 sm:flex" size="sm" variant="default">
+          <Button
+            className="hidden gap-1.5 sm:flex"
+            size="sm"
+            variant="default"
+          >
             <GitFork className="h-3.5 w-3.5" />
             Fork Repository
           </Button>
@@ -148,17 +167,25 @@ function LeftSidebar() {
     { icon: BookOpen, label: 'Engineering Blog' },
   ]
 
-  const configElements = [
-    'tRPC Router',
-    'Drizzle Schema',
-    'Vite Config',
-    'React Hook Form',
-    'Zod Schema',
-    'Better Auth',
-    'TanStack Store',
-    'Tailwind Config',
-    'Docker Compose',
-    'T3 Env',
+  const features = [
+    { icon: LogIn, label: 'Email & Password Auth' },
+    { icon: KeyRound, label: 'Two-Factor Auth (2FA)' },
+    { icon: KeyRound, label: 'Passkey Support' },
+    { icon: Users, label: 'Organization & Teams' },
+    { icon: Mail, label: 'Member Invitations' },
+    { icon: UserCog, label: 'Admin User Management' },
+    { icon: ShieldCheck, label: 'Role-Based Access Control' },
+    { icon: Bot, label: 'Telegram Bot & Mini App' },
+    { icon: Brain, label: 'AI Chat & Streaming' },
+    { icon: Brain, label: 'RAG — Chat with PDFs' },
+    { icon: Brain, label: 'AI Image Generation' },
+    { icon: Monitor, label: 'MCP Server' },
+    { icon: TableProperties, label: 'Data Tables & Filtering' },
+    { icon: Languages, label: 'i18n Multi-language' },
+    { icon: Moon, label: 'Dark & Light Themes' },
+    { icon: Mail, label: 'Email System (Resend)' },
+    { icon: Zap, label: 'TanStack DB Reactive' },
+    { icon: Monitor, label: 'Sentry Error Tracking' },
   ]
 
   return (
@@ -184,17 +211,15 @@ function LeftSidebar() {
 
       <div className="py-2">
         <div className="px-3 py-1 text-[10px] font-semibold tracking-wider text-[var(--text-muted)] uppercase">
-          Config Elements
+          Features
         </div>
-        {configElements.map((item) => (
+        {features.map((feature) => (
           <div
             className="flex cursor-pointer items-center gap-2 px-3 py-1.5 text-xs text-[var(--text-muted)] hover:bg-[var(--bg-panel)] hover:text-[var(--text-main)]"
-            key={item}
+            key={feature.label}
           >
-            <span className="font-mono text-[10px] text-[var(--text-muted)]">
-              [ ]
-            </span>{' '}
-            {item}
+            <feature.icon className="h-3.5 w-3.5 opacity-70" />
+            {feature.label}
           </div>
         ))}
       </div>
@@ -289,10 +314,74 @@ function HeroSection() {
               Fork & Initialize
             </Button>
           </a>
-          <Button className="px-4 py-2" variant="outline">Read Docs</Button>
+          <Button className="px-4 py-2" variant="outline">
+            Read Docs
+          </Button>
         </div>
       </div>
       <TerminalBlock />
+    </section>
+  )
+}
+
+function TryItOut() {
+  return (
+    <section>
+      <SectionTitle>Try It Out</SectionTitle>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <Card className="flex flex-col gap-4 p-5">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent-green)]/10">
+              <UserPlus className="h-4 w-4 text-[var(--accent-green)]" />
+            </div>
+            <div className="text-sm font-medium text-[var(--text-main)]">
+              Free Registration
+            </div>
+          </div>
+          <p className="text-xs leading-relaxed text-[var(--text-muted)]">
+            Registration is completely free. Create your own account in seconds
+            and start exploring the dashboard, todo lists, and user settings.
+          </p>
+          <Link className="w-fit" to="/register">
+            <Button className="gap-1.5" size="sm" variant="default">
+              <UserPlus className="h-3.5 w-3.5" />
+              Register for Free
+            </Button>
+          </Link>
+        </Card>
+
+        <Card className="flex flex-col gap-4 p-5">
+          <div className="flex items-center gap-2">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[var(--accent-orange)]/10">
+              <ShieldCheck className="h-4 w-4 text-[var(--accent-orange)]" />
+            </div>
+            <div className="text-sm font-medium text-[var(--text-main)]">
+              Admin Demo
+            </div>
+          </div>
+          <p className="text-xs leading-relaxed text-[var(--text-muted)]">
+            Want to explore admin features? Use the demo admin account below.
+          </p>
+          <div className="space-y-2 rounded-md border border-[var(--border-subtle)] bg-[var(--bg-deep)] p-3 font-mono text-[11px]">
+            <div className="flex items-center gap-2">
+              <KeyRound className="h-3 w-3 text-[var(--text-muted)]" />
+              <span className="text-[var(--text-muted)]">Email:</span>
+              <span className="text-[var(--text-main)]">test@test.com</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <KeyRound className="h-3 w-3 text-[var(--text-muted)]" />
+              <span className="text-[var(--text-muted)]">Password:</span>
+              <span className="text-[var(--text-main)]">12345678</span>
+            </div>
+          </div>
+          <Link className="w-fit" to="/login">
+            <Button className="gap-1.5" size="sm" variant="outline">
+              <LogIn className="h-3.5 w-3.5" />
+              Login as Admin
+            </Button>
+          </Link>
+        </Card>
+      </div>
     </section>
   )
 }
@@ -435,7 +524,7 @@ function TelegramSection() {
               </p>
               <div className="mt-auto flex flex-col gap-1.5">
                 <div className="overflow-hidden rounded bg-[var(--bg-deep)] px-2 py-1 font-mono text-[10px] text-[var(--text-muted)]">
-                  <span className="truncate block">{feature.codeLine}</span>
+                  <span className="block truncate">{feature.codeLine}</span>
                 </div>
                 <a
                   className="text-[11px] text-[var(--accent-blue)] hover:underline"
@@ -641,7 +730,6 @@ function SocialMedia() {
   )
 }
 
-
 function BlogSection() {
   const posts = [
     {
@@ -692,7 +780,6 @@ function BlogSection() {
   )
 }
 
-
 function Footer() {
   return (
     <footer className="flex items-center justify-between border-t border-[var(--border-subtle)] py-10 text-[11px] text-[var(--text-muted)]">
@@ -704,43 +791,21 @@ function Footer() {
 
 // --- Right Sidebar ---
 
-function RightSidebar() {
+function RightSidebar({
+  dependencies,
+  deploymentTargets,
+}: {
+  dependencies: { name: string; version: string }[]
+  deploymentTargets: { name: string; version: string }[]
+}) {
   const [strictTypes, setStrictTypes] = useState(true)
   const [edgeRuntime, setEdgeRuntime] = useState(false)
 
-  const npmDependencies = [
-    { name: 'React', version: '19.2' },
-    { name: 'React DOM', version: '19.2' },
-    { name: 'TanStack Start', version: '1.167' },
-    { name: 'TanStack Router', version: '1.168' },
-    { name: 'TanStack Query', version: '5.95' },
-    { name: 'TanStack Form', version: '1.28' },
-    { name: 'TanStack Store', version: '0.8' },
-    { name: 'TanStack DB', version: '0.1' },
-    { name: 'tRPC', version: '11.15' },
-    { name: 'Drizzle ORM', version: '0.44' },
-    { name: 'Vite', version: '7.3' },
-    { name: 'Tailwind CSS', version: '4.2' },
-    { name: 'Better Auth', version: '1.5' },
-    { name: 'React Hook Form', version: '7.72' },
-    { name: 'Zod', version: '4.3' },
-    { name: '@ai-sdk/react', version: '2.0' },
-    { name: 'ai', version: '6.0' },
-    { name: 'Resend', version: '6.9' },
-    { name: 'React Email', version: '4.3' },
-    { name: 'i18next', version: '25.10' },
-    { name: 'Sentry', version: '10.45' },
-    { name: 'shadcn/ui', version: 'latest' },
-    { name: 'Lucide Icons', version: '0.546' },
-    { name: 'Framer Motion', version: '12.38' },
-    { name: 'Grammy (Telegram)', version: '1.36' },
-  ]
-
-  const deploymentTargets = [
-    { name: 'Bun', version: '1.3', icon: Rabbit },
-    { name: 'Docker', version: 'latest', icon: Container },
-    { name: 'Vercel', version: 'ready', icon: Globe },
-  ]
+  const targetIcons: Record<string, React.ElementType> = {
+    Bun: Rabbit,
+    Docker: Container,
+    Vercel: Globe,
+  }
 
   return (
     <aside className="hidden flex-col overflow-y-auto border-l border-[var(--border-subtle)] bg-[var(--bg-panel)] lg:flex">
@@ -817,7 +882,7 @@ function RightSidebar() {
         <div className="border-b border-[var(--border-subtle)] bg-[var(--bg-panel-light)] px-3 py-2 text-[11px] font-semibold tracking-wider uppercase">
           NPM Dependencies
         </div>
-        {npmDependencies.map((dep) => (
+        {dependencies.map((dep) => (
           <div
             className="grid grid-cols-[14px_1fr_40px] items-center gap-3 border-b border-[var(--border-subtle)] px-3 py-1.5 hover:bg-[var(--bg-panel-light)]"
             key={dep.name}
@@ -836,31 +901,35 @@ function RightSidebar() {
         <div className="border-b border-[var(--border-subtle)] bg-[var(--bg-panel-light)] px-3 py-2 text-[11px] font-semibold tracking-wider uppercase">
           Deployment Targets
         </div>
-        {deploymentTargets.map((target) => (
-          <div
-            className="grid grid-cols-[14px_1fr_40px] items-center gap-3 border-b border-[var(--border-subtle)] px-3 py-1.5 hover:bg-[var(--bg-panel-light)]"
-            key={target.name}
-          >
-            <target.icon className="h-3.5 w-3.5 text-[var(--accent-orange)] opacity-80" />
-            <div className="text-xs">{target.name}</div>
-            <div className="text-right font-mono text-[10px] text-[var(--text-muted)]">
-              {target.version}
+        {deploymentTargets.map((target) => {
+          const Icon = targetIcons[target.name] ?? Globe
+          return (
+            <div
+              className="grid grid-cols-[14px_1fr_40px] items-center gap-3 border-b border-[var(--border-subtle)] px-3 py-1.5 hover:bg-[var(--bg-panel-light)]"
+              key={target.name}
+            >
+              <Icon className="h-3.5 w-3.5 text-[var(--accent-orange)] opacity-80" />
+              <div className="text-xs">{target.name}</div>
+              <div className="text-right font-mono text-[10px] text-[var(--text-muted)]">
+                {target.version}
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
       </div>
 
       {/* Toggles */}
       <div className="p-3">
         <div className="flex items-center justify-between pb-3">
           <div className="text-xs text-[var(--text-muted)]">Strict Types</div>
-          <div
+          <button
             className={`relative h-3 w-6 cursor-pointer rounded-full border transition-colors ${
               strictTypes
                 ? 'border-[var(--accent-blue)] bg-[var(--accent-blue)]'
                 : 'border-[var(--border-active)] bg-[var(--bg-deep)]'
             }`}
             onClick={() => setStrictTypes(!strictTypes)}
+            type="button"
           >
             <div
               className={`absolute top-px h-2 w-2 rounded-full transition-all ${
@@ -869,17 +938,18 @@ function RightSidebar() {
                   : 'left-0.5 bg-[var(--text-muted)]'
               }`}
             />
-          </div>
+          </button>
         </div>
         <div className="flex items-center justify-between">
           <div className="text-xs text-[var(--text-muted)]">Edge Runtime</div>
-          <div
+          <button
             className={`relative h-3 w-6 cursor-pointer rounded-full border transition-colors ${
               edgeRuntime
                 ? 'border-[var(--accent-blue)] bg-[var(--accent-blue)]'
                 : 'border-[var(--border-active)] bg-[var(--bg-deep)]'
             }`}
             onClick={() => setEdgeRuntime(!edgeRuntime)}
+            type="button"
           >
             <div
               className={`absolute top-px h-2 w-2 rounded-full transition-all ${
@@ -888,7 +958,7 @@ function RightSidebar() {
                   : 'left-0.5 bg-[var(--text-muted)]'
               }`}
             />
-          </div>
+          </button>
         </div>
       </div>
     </aside>
@@ -898,6 +968,8 @@ function RightSidebar() {
 // --- Main Page ---
 
 function LandingPage() {
+  const data = Route.useLoaderData()
+
   return (
     <div className="grid h-screen grid-cols-1 grid-rows-[40px_1fr] lg:grid-cols-[280px_1fr_320px]">
       <TopBar />
@@ -917,6 +989,7 @@ function LandingPage() {
 
         <div className="relative z-10 mx-auto flex max-w-[900px] flex-col gap-15 px-10 py-10">
           <HeroSection />
+          <TryItOut />
           <QuickLinks />
           <TelegramSection />
           <CoreInfrastructure />
@@ -926,7 +999,10 @@ function LandingPage() {
           <Footer />
         </div>
       </main>
-      <RightSidebar />
+      <RightSidebar
+        dependencies={data.dependencies}
+        deploymentTargets={data.deploymentTargets}
+      />
       <ScrollActionBar />
     </div>
   )

@@ -44,8 +44,15 @@ export async function getFilteredBroadcastableContacts(
   const search = validateState(telegramContactsFilterSchema.definition, parsed)
 
   // Strip pagination/meta fields so only filter fields remain
-  const { size: _size, cursor: _cursor, direction: _dir, sort: _sort, live: _live, uuid: _uuid, ...filterOnly } =
-    search as Record<string, unknown>
+  const {
+    size: _size,
+    cursor: _cursor,
+    direction: _dir,
+    sort: _sort,
+    live: _live,
+    uuid: _uuid,
+    ...filterOnly
+  } = search as Record<string, unknown>
 
   const filterConditions = buildWhereConditions(
     telegramContactsColumnMapping,
@@ -63,4 +70,3 @@ export async function getFilteredBroadcastableContacts(
     .where(whereClause)
     .orderBy(telegramContacts.lastMessageAt)
 }
-
