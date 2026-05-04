@@ -4,7 +4,12 @@ import SuperJSON from 'superjson'
 import { adminUsersFilterSchema } from '@/features/admin/admin-users-table-schema'
 import { adminUsersDrizzleHandler } from '@/lib/admin-users-table/drizzle'
 import { auth } from '@/lib/auth/auth'
-import { canManageUsers, type UserRole } from '@/lib/auth/permissions'
+import {
+  canManageUsers,
+  canViewUserEmails,
+  redactEmail,
+  type UserRole,
+} from '@/lib/auth/permissions'
 import { parseState, validateState } from '@/lib/store/schema/serialization'
 
 export const Route = createFileRoute('/api/admin/users-table')({
@@ -27,8 +32,16 @@ export const Route = createFileRoute('/api/admin/users-table')({
 
         const result = await adminUsersDrizzleHandler.execute(search)
 
+        const showEmails = canViewUserEmails(role)
+        const data = showEmails
+          ? result.data
+          : result.data.map((u) => ({
+              ...u,
+              email: redactEmail(String(u.email)),
+            }))
+
         const payload = {
-          data: result.data,
+          data,
           meta: {
             totalRowCount: result.totalRowCount,
             filterRowCount: result.filterRowCount,

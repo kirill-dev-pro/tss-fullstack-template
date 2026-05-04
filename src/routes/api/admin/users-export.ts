@@ -3,7 +3,12 @@ import { createFileRoute } from '@tanstack/react-router'
 import { adminUsersFilterSchema } from '@/features/admin/admin-users-table-schema'
 import { adminUsersDrizzleHandler } from '@/lib/admin-users-table/drizzle'
 import { auth } from '@/lib/auth/auth'
-import { canManageUsers, type UserRole } from '@/lib/auth/permissions'
+import {
+  canManageUsers,
+  canViewUserEmails,
+  redactEmail,
+  type UserRole,
+} from '@/lib/auth/permissions'
 import { parseState, validateState } from '@/lib/store/schema/serialization'
 
 const EXPORT_ROW_CAP = 50_000
@@ -73,7 +78,15 @@ export const Route = createFileRoute('/api/admin/users-export')({
           direction: 'next',
         })
 
-        const csv = rowsToCsv(result.data as Record<string, unknown>[])
+        const showEmails = canViewUserEmails(role)
+        const rows = showEmails
+          ? (result.data as Record<string, unknown>[])
+          : (result.data as Record<string, unknown>[]).map((u) => ({
+              ...u,
+              email: redactEmail(String(u.email)),
+            }))
+
+        const csv = rowsToCsv(rows)
         const stamp = new Date().toISOString().slice(0, 10)
         const truncated =
           result.data.length >= EXPORT_ROW_CAP &&

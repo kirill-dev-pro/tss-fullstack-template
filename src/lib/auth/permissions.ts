@@ -83,6 +83,21 @@ export function canCreateUsers(role: UserRole): boolean {
   return role === 'admin' || role === 'superadmin'
 }
 
+export function canViewUserEmails(role: UserRole): boolean {
+  return role === 'superadmin'
+}
+
+/**
+ * Mask an email address for display to non-superadmins.
+ * Keeps the first character and the domain, masks the rest of the local part.
+ */
+export function redactEmail(email: string): string {
+  const [localPart, domain] = email.split('@')
+  if (!domain) return email
+  const first = localPart.at(0) ?? ''
+  return `${first}***@${domain}`
+}
+
 export function canManageOrganizations(role: UserRole): boolean {
   return role === 'admin' || role === 'superadmin'
 }
