@@ -3,6 +3,7 @@ import {
   backButton,
   initData,
   init as initSDK,
+  mainButton,
   miniApp,
   viewport,
   mockTelegramEnv,
@@ -22,14 +23,19 @@ export async function init(options: {
 }): Promise<void> {
   // Set @tma.js/sdk-react debug mode and initialize it.
   setDebug(options.debug)
-  initSDK()
+  try {
+    initSDK()
+  } catch (e) {
+    console.log('Error in initSDK', e)
+  }
 
-  // // Add Eruda if needed.
-  // options.eruda &&
+  // Uncomment to enable Eruda mobile debugger (run: bun add eruda)
+  // if (options.eruda) {
   //   void import('eruda').then(({ default: eruda }) => {
-  //     eruda.init();
-  //     eruda.position({ x: window.innerWidth - 50, y: 0 });
-  //   });
+  //     eruda.init()
+  //     eruda.position({ x: window.innerWidth - 50, y: 0 })
+  //   })
+  // }
 
   // Telegram for macOS has a ton of bugs, including cases, when the client doesn't
   // even response to the "web_app_request_theme" method. It also generates an incorrect
@@ -67,12 +73,13 @@ export async function init(options: {
 
   // Mount all components used in the project.
   backButton.mount()
+  mainButton.mount()
   initData.restore()
 
   try {
     miniApp.mount()
     themeParams.bindCssVars()
-  } catch (e) {
+  } catch {
     // miniApp not available
   }
 
@@ -80,7 +87,7 @@ export async function init(options: {
     viewport.mount().then(() => {
       viewport.bindCssVars()
     })
-  } catch (e) {
+  } catch {
     // viewport not available
   }
 }

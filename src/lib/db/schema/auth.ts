@@ -25,6 +25,9 @@ export const user = pgTable('user', {
   banned: boolean('banned'),
   banReason: text('ban_reason'),
   banExpires: timestamp('ban_expires'),
+  telegramId: text('telegram_id').unique(),
+  telegramUsername: text('telegram_username'),
+  telegramPhoneNumber: text('telegram_phone_number'),
 })
 
 export const session = pgTable(
