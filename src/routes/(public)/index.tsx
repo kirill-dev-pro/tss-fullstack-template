@@ -34,12 +34,7 @@ import { useEffect, useState } from 'react'
 import { ModeToggle } from '@/components/theme-toggle'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { getPackageVersions } from '@/lib/package-versions'
-
 export const Route = createFileRoute('/(public)/')({
-  loader: async () => {
-    return await getPackageVersions()
-  },
   component: LandingPage,
 })
 
@@ -791,15 +786,42 @@ function Footer() {
 
 // --- Right Sidebar ---
 
-function RightSidebar({
-  dependencies,
-  deploymentTargets,
-}: {
-  dependencies: { name: string; version: string }[]
-  deploymentTargets: { name: string; version: string }[]
-}) {
+function RightSidebar() {
   const [strictTypes, setStrictTypes] = useState(true)
   const [edgeRuntime, setEdgeRuntime] = useState(false)
+
+  const dependencies = [
+    { name: 'React', version: '19.2' },
+    { name: 'React DOM', version: '19.2' },
+    { name: 'TanStack Start', version: '1.167' },
+    { name: 'TanStack Router', version: '1.168' },
+    { name: 'TanStack Query', version: '5.95' },
+    { name: 'TanStack Form', version: '1.28' },
+    { name: 'TanStack Store', version: '0.8' },
+    { name: 'TanStack DB', version: '0.5' },
+    { name: 'tRPC', version: '11.15' },
+    { name: 'Drizzle ORM', version: '0.45' },
+    { name: 'Vite', version: '8.0' },
+    { name: 'Tailwind CSS', version: '4.2' },
+    { name: 'Better Auth', version: '1.5' },
+    { name: 'React Hook Form', version: '7.72' },
+    { name: 'Zod', version: '4.3' },
+    { name: '@ai-sdk/react', version: '3.0' },
+    { name: 'ai', version: '6.0' },
+    { name: 'Resend', version: '6.9' },
+    { name: 'React Email', version: '4.3' },
+    { name: 'i18next', version: '25.10' },
+    { name: 'Sentry', version: '10.45' },
+    { name: 'Lucide Icons', version: '1.0' },
+    { name: 'Framer Motion', version: '12.38' },
+    { name: 'Grammy (Telegram)', version: '1.41' },
+  ]
+
+  const deploymentTargets = [
+    { name: 'Bun', version: '1.3' },
+    { name: 'Docker', version: 'latest' },
+    { name: 'Vercel', version: 'ready' },
+  ]
 
   const targetIcons: Record<string, React.ElementType> = {
     Bun: Rabbit,
@@ -968,8 +990,6 @@ function RightSidebar({
 // --- Main Page ---
 
 function LandingPage() {
-  const data = Route.useLoaderData()
-
   return (
     <div className="grid h-screen grid-cols-1 grid-rows-[40px_1fr] lg:grid-cols-[280px_1fr_320px]">
       <TopBar />
@@ -999,10 +1019,7 @@ function LandingPage() {
           <Footer />
         </div>
       </main>
-      <RightSidebar
-        dependencies={data.dependencies}
-        deploymentTargets={data.deploymentTargets}
-      />
+      <RightSidebar />
       <ScrollActionBar />
     </div>
   )
